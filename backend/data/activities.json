@@ -1,0 +1,561 @@
+[
+    {
+        "name": "Truth or Dare (Scare)",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Truth_or_dare.png?ik-sdk-version=javascript-1.4.3&updatedAt=1669885847791",
+        "description":"Klassiskt spel som kan lekas av både vuxna och yngre. Du kan köpa färdiga spel med frågor eller skriva egna frågor",
+        "type":["grownup", "kids"],
+        "belong_to_themes": "all"
+      },
+      {
+        "name": "Skattjakt",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Skattjakt_fyisldEFd?ik-sdk-version=javascript-1.4.3&updatedAt=1669889325773",
+        "description":" Deltagarna har två koordinatsystem var, ett för att rita in och “gömma” skatter och ett för att själv gissa var kompisen har gömt sina skatter.",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+            "halloween",
+            "djungle",
+            "sangria night"
+
+        ]
+      },
+      {
+        "name": "Alkoholpingis",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/image-from-rawpixel-id-5928037-jpeg.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1669894284886",
+        "description":"Du behöver ett pingisbord, pingisboll, valfri alkoholdryck och pingisracket, om ni inte väljer att köra med handflatorna.",
+        "type":"grownup",
+        "belong_to_themes": [
+            "halloween",
+            "sangria night",
+            "möhippa",
+            "svensexa"
+        ]
+      },
+      {
+        "name": "Kubb",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Kubb_pe4jbyTeU7?ik-sdk-version=javascript-1.4.3&updatedAt=1669901222009",
+        "description":"Kubb är ett klassiskt kast-spel som passar att spela såväl i den egna trädgården som i parken eller på stranden",
+        "type":["grownup","kids"],
+        "belong_to_themes": "all"
+      },
+      {
+        "name": "Spökkoppar",
+        "image": "",
+        "description":"Stapla koppar gjorda som spöken och försök få ner dem genom att skjuta med Nerf-vapen på 10 fots avstånd. Ge ut ett litet pris för den som lyckas att skjuta ner dem alla!",
+        "type":["grownup","kids"],
+        "belong_to_themes": "halloween"
+      },
+      {
+        "name": "Halloween dekorations-jakt",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Halloween_decor_4mcXnd1l6?ik-sdk-version=javascript-1.4.3&updatedAt=1669901950151",
+        "description":"Gå på skattjakt för att hitta olika typer av Halloween-dekorationer",
+        "type":"kids",
+        "belong_to_themes": "halloween"
+      },
+      {
+        "name": "Pictionary ",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/pictionary_g2NiemjHR?ik-sdk-version=javascript-1.4.3&updatedAt=1669902235243",
+        "description":"Varje lag har en spelpjäs som de förflyttar över spelplanens rutor för att hålla koll på ställningen. Varje ruta indikerar med en färg eller tecken vilken typ av bild som ska ritas. Vissa rutor gör så att alla lag ska rita samma sak samtidigt, då är det det laget som gissar rätt först som vinner den omgången.",
+        "type":["grownup","kids"],
+        "belong_to_themes":[
+            "halloween",
+            "zombie",
+            "sangria night",
+            "möhippa",
+            "svensexa",
+            "filmkväll",
+            "harry potter",
+            "lord of the rings",
+            "pirater",
+            "pyjamas party",
+            "star wars",
+            "pyssel och målning",
+            "brädspels-turnering"
+        ]
+      },
+      {
+        "name": "Frågesport",
+        "image": "",
+        "description": "Fågesport är ett favoritspel som vanligtvis spelas på barer och pubar över hela världen. Du kan spela frågesport online, eller köpa kort med frågor. Det finns många olika ämne som man kan välja från t ex sport, film, kändisar och m.m",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "filmkväll",
+          "harry potter",
+          "sagan om ringen",
+          "pyjamas party",
+          "star wars",
+          "jurassic park",
+          "marvel avengers",
+          "game of thrones",
+          "rockstars",
+          "90s disco",
+          "80s disco",
+          "sci-fi",
+          "kända par"
+        ] 
+      },
+      {
+        "name": "Kostymtävling",
+        "image": "",
+        "description":"Välj ämne och förbered kostym för festen. Under kvällen utses vinnare av bäst kostym",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "filmkväll",
+          "harry potter",
+          "sagan om ringen",
+          "pyjamas party",
+          "star wars",
+          "jurassic park",
+          "marvel avengers",
+          "sagolandet",
+          "monster",
+          "turtles",
+          "pippi långstrump",
+          "game of thrones",
+          "rockstars",
+          "90s disco",
+          "80s disco",
+          "sci-fi",
+          "yttre rymden",
+          "pirater",
+          "kända par",
+          "vilda västern",
+          "gangsters",
+          "bollywood",
+          "galna hattar",
+          "crazy hair",
+          "ugly bridesmaids",
+          "din värsta mardröm",
+          "arabiska nätter",
+          "barbie",
+          "st patricks day",
+          "anime",
+          "ugly sweater",
+          "maskeradbal",
+          "vinter wonderland",
+          "detektiv & gåtor",
+          "hippies",
+          "zombies",
+          "hollywood glam",
+          "frozen",
+          "paw patrol"
+
+          ] 
+      },
+      {
+        "name": "Poker turnering",
+        "image": "",
+        "description":"",
+        "type":"grownup",
+        "belong_to_themes":[
+          "casino",
+          "pokerkväll",
+          "black & white",
+          "overdressed",
+          "röda mattan",
+          "las vegas baby"
+        ]
+      },
+      {
+        "name": "Dans med ballong",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/image-from-rawpixel-id-99906-jpeg_nsqIcgwvb?ik-sdk-version=javascript-1.4.3&updatedAt=1669895239901",
+        "description":"Välj din danspartner och lägg en ballong mellan er. Det par som dansar längst utan att tappa sin ballong vinner",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "halloween",
+          "festival",
+          "karnival",
+          "90s disco",
+          "80s disco",
+          "disco"
+        ]
+      },
+      {
+        "name": "Brädspelsmarathon",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/board_game_night_odMM0CSV-?ik-sdk-version=javascript-1.4.3&updatedAt=1669889282604",
+        "description":"Välj några brädspel som ni ska spela, läs reglerna och bjud kompisar för många roliga timmar med era favorit brädspel",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "harry potter",
+          "sagan om ringen",
+          "pyjamas party",
+          "star wars",
+          "jurassic park",
+          "marvel avengers",
+          "game of thrones",
+          "sci-fi",
+          "zombies",
+          "brädspels-turnering"
+          
+        ]
+      },
+      {
+        "name": "Twister",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/twister_IswrWj_Fi?ik-sdk-version=javascript-1.4.3&updatedAt=1669889379230",
+        "description":"Klassiskt spel som alla känner till. Du behöver ha en matta med olika färgprickar samt sätt att välja vilken kroppsdel som ska läggas på vilken färg vid varje omgång.",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "halloween",  
+          "djungel",
+          "80s disco",
+          "möhippa",
+          "pyjamas party",
+          "turtles",
+          "monster",
+          "cirkus",
+          "90s disco",
+          "sportfest",
+          "paw patrol",
+          "gameshow",
+          "hippies",
+          "ugly sweater",
+          "ugly bridesmaids"
+        ]
+      },
+      {
+        "name": "Escape room - olika ämne",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Photo_by_Bastien_Herv%C3%A9_escape_room_NBv7PmR3t?ik-sdk-version=javascript-1.4.3&updatedAt=1669984836034",
+        "description":"Favorit spel för många, kan du hitta ut från labirynten eller vem är mördaren? Garanterat många timmar lek för alla åldrar. ",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "halloween",
+          "harry potter",
+          "djungel",
+          "baby shower",
+          "möhippa",
+          "svensexa",
+          "filmkväll",
+          "sagan om ringen",
+          "pirater",
+          "vilda västern",
+          "pyjamas party",
+          "star wars",
+          "lego",
+          "monster",
+          "pyssel och målning",
+          "jurassic park",
+          "sagolandet",
+          "yttre rymden",
+          "marvel avengers",
+          "game of thrones",
+          "pimps n hoes",
+          "gameshow",
+          "zombies",
+          "around the world",
+          "brädspels-turnering",
+          "detektiv & gåtor",
+          "börjar på bokstaven..",
+          "murder mystery",
+          "dödliga synder",
+          "arabiska nätter",
+          "din värsta mardröm",
+          "sci-fi",
+          "picknick",
+          "gangsters"
+        ]
+      },
+      {
+        "name": "Förbereda din egen drink",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/drink_Photo_by_Adam_Jaime_Ws12QL4bD?ik-sdk-version=javascript-1.4.3&updatedAt=1669985017305",
+        "description":"Tycker du om karaibiska drinkar? Lär dig att göra dina egna hemma. Du behöver: olika alkohol, frukt, blender och fantasi samt tillgång till olika recept.",
+        "type":"grownup",
+        "belong_to_themes": [
+          "halloween",
+          "möhippa",
+          "svensexa",
+          "filmkväll",
+          "sci-fi",
+          "vilda västern",
+          "pyjamas party",
+          "festival",
+          "karnival",
+          "karaoke",
+          "rockstars",
+          "80s disco",
+          "90s disco",
+          "disco",
+          "spa-dag",
+          "pimps n hoes",
+          "hollywood glam",
+          "around the world",
+          "black & white",
+          "overdressed",
+          "magisk trädgård",
+          "vinter wonderland",
+          "maskeradbal",
+          "röda mattan",
+          "las vegas baby",
+          "pokerkväll",
+          "casino",
+          "speed dating/matchmaking",
+          "trädgprds BBQ",
+          "coctail party",
+          "kärlek"
+        ]
+      },
+      {
+        "name": "Öltesting",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Beer_Image_by_Karolina__Kaboompics_for_rawpixel_X-L4OpdEH.com?ik-sdk-version=javascript-1.4.3&updatedAt=1669894455709",
+        "description":"Prova öl från olika länder och hitta era favoriter.",
+        "type":"grownup",
+        "belong_to_themes": [
+          "halloween",
+          "möhippa",
+          "svensexa",
+          "filmkväll",
+          "sci-fi",
+          "vilda västern",
+          "pyjamas party",
+          "festival",
+          "karnival",
+          "karaoke",
+          "rockstars",
+          "80s disco",
+          "90s disco",
+          "disco",
+          "spa-dag",
+          "pimps n hoes",
+          "hollywood glam",
+          "around the world",
+          "black & white",
+          "overdressed",
+          "magisk trädgård",
+          "vinter wonderland",
+          "maskeradbal",
+          "röda mattan",
+          "las vegas baby",
+          "pokerkväll",
+          "casino",
+          "speed dating/matchmaking",
+          "trädgprds BBQ",
+          "coctail party",
+          "kärlek",
+          "oktoberfest",
+          "sportfest",
+          "grill & chill",
+          "st patricks day"
+        ]
+      },
+      {
+        "name": "Vintesting",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Image_by_Karolina__Kaboompics_for_rawpixel_uolumnMO9.com?ik-sdk-version=javascript-1.4.3&updatedAt=1669894674427",
+        "description":"Prova vin från olika länder och hitta era favoriter.",
+        "type":"grownup",
+        "belong_to_themes": [
+          "halloween",
+          "möhippa",
+          "svensexa",
+          "filmkväll",
+          "sci-fi",
+          "vilda västern",
+          "pyjamas party",
+          "festival",
+          "karnival",
+          "karaoke",
+          "rockstars",
+          "80s disco",
+          "90s disco",
+          "disco",
+          "spa-dag",
+          "pimps n hoes",
+          "hollywood glam",
+          "around the world",
+          "black & white",
+          "overdressed",
+          "magisk trädgård",
+          "vinter wonderland",
+          "maskeradbal",
+          "röda mattan",
+          "las vegas baby",
+          "pokerkväll",
+          "casino",
+          "speed dating/matchmaking",
+          "trädgprds BBQ",
+          "coctail party",
+          "kärlek"
+        ]
+      },
+      {
+        "name": "Dansstopp",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/image-from-rawpixel-id-99906-jpeg_nsqIcgwvb?ik-sdk-version=javascript-1.4.3&updatedAt=1669895239901",
+        "description":"Ställ fram så många stolar som ni är spelare, minus en, och välj sen musik. Alla dansar runt stolarna tills musiken tystnar och försöker sätta sig på varsin stol. Den person som inte får plats åker ut. Fortsätt tills alla stolar är borta och sista person kvar vinner. ",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "halloween",
+          "festival",
+          "karnival",
+          "90s disco",
+          "80s disco",
+          "disco",
+          "paw patrol",
+          "pippi långstrump",
+          "pirater",
+          "barbie",
+          "arabiska nätter"
+        ]
+      },
+      {
+        "name": "Gör din egen klänning till din docka",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/create_Photo_by_Darling_Arias_EuQ_TcOD-?ik-sdk-version=javascript-1.4.3&updatedAt=1669985209235",
+        "description":"Förbered: papper, tygrester, sax, tejp, nålar, trådar. Välj material som ska passa till barnens ålder och låt dem göra eget klänning till dockor. ",
+        "type":"kids",
+        "belong_to_themes": [
+          "pyssel och målning",
+          "barbie"
+        ]
+      },     
+      {
+        "name": "Målar tävling",
+        "image": "",
+        "description":"Välj ämne och måla din egen tavla",
+        "type":["grownup","kids"],
+        "belong_to_themes": "pyssel och målning"
+      },     
+      {
+        "name": "Förbered din egen mask",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/mask_Photo_by_Julio_Rionaldo_TFxLKzPh5?ik-sdk-version=javascript-1.4.3&updatedAt=1669985448382",
+        "description":"Förbered: papper, tygrester, sax och allt som behövs till att göra en mask",
+        "type":["grownup","kids"],
+        "belong_to_themes": "all"
+      },      
+      {
+        "name": "Gå på plankan",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/plank_1irIz2XRD?ik-sdk-version=javascript-1.4.3&updatedAt=1669885934521",
+        "description":"Förbered en planka och några block. Spika fast plankan på de små blocken, men se till att den är stadig. Håll plankan bara några centimeter från marken för att undvika olyckor. Efter att plankan har satts kan du antingen använda en liten uppblåsbar pool eller en blå presenning att lägga under plankan för att ge den `havs`-känsla. Nu, för att börja det roliga, låt alla stå i kö och gå över plankan. Den som faller i poolen eller presenningen förlorar.",
+        "type":["grownup","kids"],
+        "belong_to_themes": "pirater"
+      },      
+      {
+        "name": "Golvet är lava",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/floor_is_a_lava_sWrnar6vy?ik-sdk-version=javascript-1.4.3&updatedAt=1669985934597",
+        "description":"Alla står på golvet när musik spelar, när musiken tystnar behöver man hoppa på någon möbel över golvet då golvet blir lava. Sista person som klarar sig från lavan åker ut. Ni spelar fram till att det bara är en person kvar. ",
+        "type":"kids",
+        "belong_to_themes": [
+          "halloween",
+          "möhippa",
+          "svensexa",
+          "filmkväll",
+          "sci-fi",
+          "vilda västern",
+          "pyjamas party",
+          "festival",
+          "karnival",
+          "karaoke",
+          "rockstars",
+          "80s disco",
+          "90s disco",
+          "disco",
+          "spa-dag",
+          "pimps n hoes",
+          "hollywood glam",
+          "around the world",
+          "black & white",
+          "overdressed",
+          "magisk trädgård",
+          "vinter wonderland",
+          "maskeradbal",
+          "röda mattan",
+          "las vegas baby",
+          "pokerkväll",
+          "casino",
+          "speed dating/matchmaking",
+          "trädgprds BBQ",
+          "coctail party",
+          "kärlek"
+        ]
+      },      
+      {
+        "name": "Kanonbollskastning - boule",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Boule_gi2lLlVYq?ik-sdk-version=javascript-1.4.3&updatedAt=1669887492578",
+        "description":"Spelet börjar med att man lottar om vem som ska kasta lillen. En spelare i det lag som vann lotten ritar en ring i gruset och kastar ut lillen mellan 6 och 10 meter. Omgången spelas sedan från denna ring, och det är det lag som inte är närmast lillen som spelar nästa klot. I vilken ordning man spelar sina klot inom laget avgör man själv",
+        "type":["grownup","kids"],
+        "belong_to_themes": [
+          "pirater",
+          "djungel"
+        ]
+      },      
+      {
+        "name": "Boule Match",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Boule_gi2lLlVYq?ik-sdk-version=javascript-1.4.3&updatedAt=1669887492578",
+        "description":"Spelet börjar med att man lottar om vem som ska kasta lillen. En spelare i det lag som vann lotten ritar en ring i gruset och kastar ut lillen mellan 6 och 10 meter. Omgången spelas sedan från denna ring, och det är det lag som inte är närmast lillen som spelar nästa klot. I vilken ordning man spelar sina klot inom laget avgör man själv",
+        "type":"grownup",
+        "belong_to_themes": [
+          "sportfest",
+          "bowling",
+          "trädgprds BBQ",
+          "ugly sweater",
+          "brunch",
+          "grill & chill",
+          "picknick",
+          "oktoberfest"
+        ]
+      },      
+      {
+        "name": "Lego city",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/lego_build_Photo_by_Kelly_Sikkema__5VSs0YVMl?ik-sdk-version=javascript-1.4.3&updatedAt=1669986518729",
+        "description":"Vem kan bygga högst byggnad i staden? Förbered olika legoklossar och låt barnen bygga en egen stad eller torn. ",
+        "type":"kids",
+        "belong_to_themes": "all"
+      },     
+      {
+        "name": "Beauty night - treatment",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/spa_picture_made_by_raphael-lovaski_unsplash_9zZH05NMf?ik-sdk-version=javascript-1.4.3&updatedAt=1669986911587",
+        "description":"Välj vilken ritual ni vill göra och förbered alla produkter som behövs. Glöm inte avslappnade musik och tända ljus. ",
+        "type":"grownup",
+        "belong_to_themes": [
+          "möhippa",
+          "pyjamas party",
+          "spa-dag",
+          "baby shower"
+        ]
+      },      
+      {
+        "name": "Quidditch match",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Quidditch_picture_by_Tony_Hisgett_flickr_c5CZSmKzj?ik-sdk-version=javascript-1.4.3&updatedAt=1669987298390",
+        "description": "Förbered 3 bollar (handboll x 2 och en liten ball), kvastskaft till alla spelare och förska vinna din första Quidditch",
+        "type":["grownup","kids"],
+        "belong_to_themes": "harry potter"
+      },      
+      {
+        "name": "UNO spel",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/UNO_f_7-IvOsc?ik-sdk-version=javascript-1.4.3&updatedAt=1669887542418",
+        "description":"Du behöver att köpa spel. Målet är att bli av med alla kort men för att kunna spela ut det sista kortet måste du komma ihåg att skrika ”UNO!” så fort du blir av med ditt näst sista kort. Om en spelare glömmer bort att säga UNO måste denne dra två kort från korthögen. Denne behöver även stå över sin tur.",
+        "type":["grownup","kids"],
+        "belong_to_themes": "all"
+      },      
+      {
+        "name": "Roulette",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/Roulette_KhlCDSN_O?ik-sdk-version=javascript-1.4.3&updatedAt=1669896787979",
+        "description": "",
+        "type":"grownup",
+        "belong_to_themes": [
+          "möhippa",
+          "svensexa",
+          "pyjamas party",
+          "pimps n hoes",
+          "hollywood glam",
+          "black & white",
+          "overdressed",
+          "röda mattan",
+          "las vegas baby",
+          "casino",
+          "coctail party",
+          "glow in the dark",
+          "gangsters"
+        ]
+      },      
+      {
+        "name": "Lego run - förälder test",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/lego_Photo_by_xavi_cabrera_7yMPy3W-y?ik-sdk-version=javascript-1.4.3&updatedAt=1669986607564",
+        "description":"Förbered många bitar av lego och lägg dem stökigt på golvet, låt framtida föräldrar göra en legobyggnad som imiterar framtida hemaktiviteter när barn leker med lego.",
+        "type":"grownup",
+        "belong_to_themes": "baby shower"
+      },      
+      {
+        "name": "Ansiktsmålning",
+        "image": "https://ik.imagekit.io/qzqy86it9/Activities/face_paint_Photo_by_Samar_Ahmad_unsplash__8KLikjrl4?ik-sdk-version=javascript-1.4.3&updatedAt=1669987934188",
+        "description":"",
+        "type":"kids",
+        "belong_to_themes": "all"
+      }    
+
+]

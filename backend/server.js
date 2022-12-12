@@ -281,15 +281,24 @@ app.patch("/:userId/admin/change", async (req, res) => {
 })
 
 // ************ CATEGORY ENDPOINTS *************** //
-app.get("/themes", async (req,res) => {
-  await Theme.find().then(themes => {
-     res.status(200).json({
-      success: true,
-      theme: themes
-     })
-   })
- })
 
+/* --------- THEMES GET  ----------- */
+/* app.get("/themes",authenticateUser) */
+app.get("/themes", async (req,res) => {
+  try {
+    const themesCollection = await Theme.find()
+    res.status(200).json({
+      response: themesCollection,
+      success: true
+    })
+  } catch (error) {
+    res.status(400).json({
+      response: "Can't find any themes options right now",
+      success: false
+    })
+  }
+})
+/* app.get("/themes/:id",authenticateUser) */
  app.get("/themes/:id", async (req, res) => {
   try {
     const themeId = await Theme.findById(req.params.id);
@@ -315,75 +324,72 @@ app.get("/themes", async (req,res) => {
   }
 
 })
-
-app.get("/themes/type/kids", async (req, res) => {
-  try {
-    const themeKids = await Theme.find({ kids: true });
-
-    if (themeKids) {
-      res.status(200).json({
-      success: true,
-      theme: themeKids
+/* app.get("/themes/type/:type",authenticateUser) */
+app.get("/themes/type/:type", async (req, res) => {
+  
+  try{
+  const typeOf = await Theme.find({type : req.params.type})
+   if (!typeOf) {
+    res.status(400).json({
+      response: "not found",
+      success: false, 
     })
-    } else {
-      res.status(404).json({
-        success: false,
-        status_code: 404,
-        error: `not found`
-    })
-    }
-  } catch (err) {
-    res.status(400).json({ 
-      success: false,
-      status_code: 400,
-      error: "Invalid route" 
-    })
-  }
-})
-
-app.get("/themes/type/grownup", async (req, res) => {  
-  try {
-    const themeGrownup = await Theme.find({ grownup: true });
-
-    if (themeKids) {
-      res.status(200).json({
-      success: true,
-      theme: themeGrownup
-    })
-    } else {
-      res.status(404).json({
-        success: false,
-        status_code: 404,
-        error: `not found`
-    })
-    }
-  } catch (err) {
-    res.status(400).json({ 
-      success: false,
-      status_code: 400,
-      error: "Invalid route" 
-    })
-  }
-})
-
-app.get("/food", async (req, res) => {
-  await Food.find().then(foods => {
+  } else {
     res.status(200).json({
-     success: true,
-     food: foods
+      response: typeOf,
+      success: true  
     })
+  } 
+} catch (error) {
+  res.status(400).json({
+    response: "Can't find any activities options for your type right now",
+    success: false
   })
+}
 })
 
+/* --------- DECORATIONS GET ----------- */
+/* app.get("/decorations",authenticateUser) */
 app.get("/decorations", async (req, res) => {
-  await Decoration.find().then(decorations => {
+  try {
+    const decorationsCollection = await Decoration.find()
     res.status(200).json({
-     success: true,
-     decorations: decorations
+      response: decorationsCollection,
+      success: true
     })
-  })
+  } catch (error) {
+    res.status(400).json({
+      response: "Can't find any decorations options right now",
+      success: false
+    })
+  }
 })
 
+/* app.get("/decorations/type/:type",authenticateUser) */
+app.get("/decorations/type/:type", async (req, res) => {
+  
+  try{
+  const typeOf = await Decoration.find({type : req.params.type})
+   if (!typeOf) {
+    res.status(400).json({
+      response: "not found",
+      success: false, 
+    })
+  } else {
+    res.status(200).json({
+      response: typeOf,
+      success: true  
+    })
+  } 
+} catch (error) {
+  res.status(400).json({
+    response: "Can't find any decorations options for your type right now",
+    success: false
+  })
+}
+})
+/* --------- DRINKS GET  ----------- */
+/* app.get("/drinks",authenticateUser) */
 app.get("/drinks", async ( req, res) => {
 
   try {
@@ -400,26 +406,33 @@ app.get("/drinks", async ( req, res) => {
   }
 })
 
-// grownup = true 
-/* app.get("/drinks/grownup", async ( req, res) => {
-  try {
-    const drinksGrownup = await Drink.find({ grownup: true });
-
-    if(drinksGrownup){
-      res.status(200).json({
-        response: drinksGrownup,
-        success: true
-      })
-    } 
-  } catch (error) {
+/* app.get("/drinks/type/:type",authenticateUser) */
+app.get("/drinks/type/:type", async (req, res) => {
+  
+  try{
+  const typeOf = await Drink.find({type : req.params.type})
+   if (!typeOf) {
     res.status(400).json({
-      response: "Can't find any drinks for adults right now",
-      success: false
+      response: "not found",
+      success: false, 
     })
-  }
+  } else {
+    res.status(200).json({
+      response: typeOf,
+      success: true  
+    })
+  } 
+} catch (error) {
+  res.status(400).json({
+    response: "Can't find any drinks options for your type right now",
+    success: false
+  })
+}
 })
- */
 
+
+/* --------- FOOD GET  ----------- */
+/* app.get("/food",authenticateUser) */
 app.get("/food", async ( req, res) => {
 
   try {
@@ -436,7 +449,32 @@ app.get("/food", async ( req, res) => {
   }
 })
 
-app.get("activities", async ( req, res) => {
+/* app.get("/food/type/:type",authenticateUser) */
+app.get("/food/type/:type", async (req, res) => {
+  
+  try{
+  const typeOf = await Food.find({type : req.params.type})
+   if (!typeOf) {
+    res.status(400).json({
+      response: "not found",
+      success: false, 
+    })
+  } else {
+    res.status(200).json({
+      response: typeOf,
+      success: true  
+    })
+  } 
+} catch (error) {
+  res.status(400).json({
+    response: "Can't find any food options for your type right now",
+    success: false
+  })
+}
+})
+/* --------- ACTIVITIES GET  ----------- */
+/* app.get("/activities",authenticateUser) */
+app.get("/activities", async ( req, res) => {
 
   try {
     const activitiesCollection = await Activity.find()
@@ -450,6 +488,30 @@ app.get("activities", async ( req, res) => {
       success: false
     })
   }
+})
+
+/* app.get("/activities/type/:type",authenticateUser) */
+app.get("/activities/type/:type", async (req, res) => {
+  
+  try{
+  const typeOf = await Activity.find({type : req.params.type})
+   if (!typeOf) {
+    res.status(400).json({
+      response: "not found",
+      success: false, 
+    })
+  } else {
+    res.status(200).json({
+      response: typeOf,
+      success: true  
+    })
+  } 
+} catch (error) {
+  res.status(400).json({
+    response: "Can't find any Activity options for your type right now",
+    success: false
+  })
+}
 })
 
 
