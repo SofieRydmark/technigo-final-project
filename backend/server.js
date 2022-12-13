@@ -89,11 +89,15 @@ const ProjectSchema = new mongoose.Schema({
     phone: Number, 
     default: null
   },
-  themes: { type: Array, default: null },
+  themes:{
+    type: ThemeSchema,
+   /*  required:true,  */
+  }
+ /*  themes: { type: Array, default: null },
   decorations:{ type: Array, default: null },
   food: { type: Array, default: null },
   drinks: { type: Array, default: null },
-  activities: { type: Array, default: null }
+  activities: { type: Array, default: null } */
 })
 
 const GuestSchema = new mongoose.Schema({
@@ -717,6 +721,35 @@ app.delete("/project-board/projects/:projectId", async (req, res) => {
 
     } 
   })
+
+  app.post("/project-board/projects/add/:projectId", async (req, res) => {
+    const { projectId } = req.params
+    const { theme, decorations, food, drinks, activities} = req.body
+
+   try{
+    const addToProject= await Project.findByIdAndUpdate({ _id: projectId }, 
+      { theme, decorations, food, drinks, activities},
+      {new: true }
+      )
+      if (addToProject){
+          res.status(200).json({
+          response: "Added to project",
+          data: addToProject
+        })
+  
+      } else {
+        res.status(500).json({
+          response: "Could not update"
+        })
+      }
+   }catch(error) {
+        res.status(401).json({
+          response: "Invalid credentials",
+          success: false,
+          error: error
+   })
+  }
+  }) 
 
 
 
