@@ -67,12 +67,54 @@ const ActivitySchema = new mongoose.Schema({
   belongs_to_themes: Array
 })
 
+const ProjectSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 30,
+    trim: true // remove unnecessary white spaces
+  },
+  due_date: {
+    type: String,
+    default: "YY-MM-DD"
+  },
+  createdAt: {
+    type: Date,
+    default: () => new Date()
+  },
+  guestList: {
+    type: [GuestSchema],
+    name: String,
+    phone: Number, 
+    default: null
+  },
+  themes: { type: Array, default: null },
+  decorations:{ type: Array, default: null },
+  food: { type: Array, default: null },
+  drinks: { type: Array, default: null },
+  activities: { type: Array, default: null }
+})
+
+const GuestSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    trim: true
+  },
+  phone: {
+    type: Number,
+  }
+  
+})
+
 const User = mongoose.model("User", UserSchema);
 const Theme = mongoose.model("Theme", ThemeSchema);
 const Decoration = mongoose.model("Decoration", DecorationSchema);
 const Food = mongoose.model("Food", FoodSchema);
 const Drink = mongoose.model("Drink", DrinkSchema);
 const Activity = mongoose.model("Activity", ActivitySchema);
+const Project = mongoose.model("Project", ProjectSchema);
+const Guest = mongoose.model("Guest", GuestSchema);
 
 
 // ************ RESET DB *************** //
@@ -516,8 +558,194 @@ app.get("/activities/type/:type", async (req, res) => {
 
 
 // ************ PROJECT ENDPOINTS *************** //
+/* GET all active projects */ // WORKS PERFECT
+app.get("/project-board/projects", authenticateUser) 
+app.get("/project-board/projects", async (req, res) => {
+  const allProjects = await Project.find()
+  try{
+    res.status(200).json({
+      response: allProjects,
+      success: true,
+
+    })
+
+  }catch(error){
+    res.status(404).json({
+      response: `Could not find any projects!`,
+      success: false
+    })
+  }
+
+})
+/* GET singleProject */ //WORKS PERFEKT
+app.get("/project-board/projects/:projectId", async(req, res) => {
+  const { projectId } = req.params
+  try {
+    const singleProject = await Project.findById({ _id: projectId})
+  if(projectId){
+    res.status(200).json({
+      response: `Everything is ok`,
+      success: true,
+      data: singleProject
+    }) 
+
+    }else {
+      res.status(404).json({
+        response: `Could not find the project`,
+        success: false
+      })
+    }
+  } catch(error){
+    res.status(400).json({
+      response: error,
+      success: false
+    })
+
+  }
+})
+
+/* add project to the board */ //WORKS PERFECT
+app.get("/project-board/projects/addProject", authenticateUser) 
+app.post("/project-board/projects/addProject", async (req, res) => {
+  const { name, due_date } = req.body
+  try{
+    const newProject = new Project({name, due_date})
+    await newProject.save()
+    res.status(200).json({
+      success: true,
+      response: newProject
+    })
+  }catch(error) {
+    res.status(400).json({
+      success: false,
+      response: `Project failed to add`,
+      error: error
+    })
+
+  }
+})
+
+/* change name and due date in single project and add guests to guest list */ 
+app.get("/project-board/projects/:projectId", authenticateUser) 
+app.patch("/project-board/projects/:projectId", async (req, res) => {
+  const { projectId } = req.params
+  const { guestList, phone, name, due_date } = req.body
+  // console.log("name", req.body.guestList)
+ try{
+  const projectToChange= await Project.findOne({ projectId })
+    if (projectToChange){
+      // const guestListupdate = req.body.guestList
+      // const nameUpdate = req.body.name
+      const updatedProject = await Project.findByIdAndUpdate({ _id: projectId}, { $push:{
+        guestList: guestList},  $set: {name: name, due_date: due_date} })
+        res.status(200).json({
+        response: "Updated",
+        data: updatedProject
+      })
+      console.log("something", guestList)
+
+    } else {
+      res.status(500).json({
+        response: "Could not update"
+      })
+    }
+ }catch(error) {
+      res.status(401).json({
+        response: "Invalid credentials",
+        success: false,
+        error: error
+ })
+}
+})
+
+app.delete("/project-board/projects/:projectId", async (req, res) => {
+  const { projectId } = req.params
+  const { guestList, name, guestListName } = req.body
+  // console.log("name", req.body.guestList)
+ try{
+  const projectToChange= await Project.findOne({ projectId })
+    if (projectToChange){
+      // const guestListupdate = req.body.guestList
+      // const nameUpdate = req.body.name
+      const updatedProject = await Project.findByIdAndUpdate({ _id: projectId}, { $push:{
+        guestList: guestList},  $set: {name: name, name: guestListName} })
+        res.status(200).json({
+        response: "Updated",
+        data: updatedProject
+      })
+      console.log(name, guestList)
+
+    } else {
+      res.status(500).json({
+        response: "Could not update"
+      })
+    }
+ }catch(error) {
+      res.status(401).json({
+        response: "Invalid credentials",
+        success: false,
+        error: error
+ })
+}
+})
+
+
+/* DELETE the project from the project board */ //WORKS PERFECT
+  app.get("/project-board/projects/:projectId", authenticateUser) 
+  app.delete("/project-board/projects/:projectId", async (req, res) => {
+    const { projectId } = req.params
+    try{
+      const projectToDelete= await Project.findByIdAndRemove({ _id: projectId })
+      if(projectId){
+        res.status(200).json({
+          response: `Project has been deleted!!`,
+          success: true
+
+        })
+      }else {
+        res.status(404).json({
+          response: `Project not found`,
+          success: false
+        })
+      }
+
+    } catch(error) {
+      res.status(401).json({
+        response: "Invalid credentials",
+        success: false
+      })
+
+    } 
+  })
+
+
+
 
 // ************ PROJECTBOARD ENDPOINTS *************** //
+/* authenticate user */
+
+app.get("/project-board", authenticateUser) 
+
+/* GET user project board */ //WORKS PERFECT
+
+app.get("/project-board", async (req, res) => {
+
+  try{
+    const userBoard = await User.findById(req.params._id)
+
+      res.status(200).json({
+        response: `Welcome back`,
+        success: true
+
+      })
+  } catch(error) {
+    res.status(401).json({
+      response: "Invalid credentials",
+      success: false
+    })
+
+  } 
+})
 
 // ************ START SERVER *************** //
 app.listen(port, () => {
