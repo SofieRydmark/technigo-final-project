@@ -75,10 +75,10 @@ const ProjectSchema = new mongoose.Schema({
     maxlength: 30,
     trim: true, // remove unnecessary white spaces
   },
-  /* user: {
+  userProject: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-  },*/
+  },
   due_date: {
     type: String,
     default: 'YY-MM-DD',
@@ -273,8 +273,7 @@ app.post('/signIn', async (req, res) => {
   }
 })
 
-app.delete('/:userId/admin/delete', authenticateUser)
-app.delete('/:userId/admin/delete', async (req, res) => {
+app.delete('/:userId/admin/delete', authenticateUser, async (req, res) => {
   const { userId } = req.params
   try {
     const user = await User.findOneAndDelete({ userId })
@@ -297,8 +296,7 @@ app.delete('/:userId/admin/delete', async (req, res) => {
   }
 })
 
-app.patch('/:userId/admin/change', authenticateUser)
-app.patch('/:userId/admin/change', async (req, res) => {
+app.patch('/:userId/admin/change', authenticateUser, async (req, res) => {
   const { userId } = req.params
   const { password } = req.body
   const salt = bcrypt.genSaltSync()
@@ -336,8 +334,7 @@ app.patch('/:userId/admin/change', async (req, res) => {
 // ************ CATEGORY ENDPOINTS *************** //
 
 /* --------- THEMES GET  ----------- */
-/* app.get("/themes",authenticateUser) */
-app.get('/themes', async (req, res) => {
+app.get('/themes', authenticateUser, async (req, res) => {
   try {
     const themesCollection = await Theme.find()
     res.status(200).json({
@@ -351,8 +348,7 @@ app.get('/themes', async (req, res) => {
     })
   }
 })
-/* app.get("/themes/:id",authenticateUser) */
-app.get('/themes/:id', async (req, res) => {
+app.get('/themes/:id', authenticateUser, async (req, res) => {
   try {
     const themeId = await Theme.findById(req.params.id)
 
@@ -376,8 +372,7 @@ app.get('/themes/:id', async (req, res) => {
     })
   }
 })
-/* app.get("/themes/type/:type",authenticateUser) */
-app.get('/themes/type/:type', async (req, res) => {
+app.get('/themes/type/:type', authenticateUser, async (req, res) => {
   try {
     const typeOf = await Theme.find({ type: req.params.type })
     if (!typeOf) {
@@ -400,8 +395,7 @@ app.get('/themes/type/:type', async (req, res) => {
 })
 
 /* --------- DECORATIONS GET ----------- */
-/* app.get("/decorations",authenticateUser) */
-app.get('/decorations', async (req, res) => {
+app.get('/decorations', authenticateUser, async (req, res) => {
   try {
     const decorationsCollection = await Decoration.find()
     res.status(200).json({
@@ -416,8 +410,7 @@ app.get('/decorations', async (req, res) => {
   }
 })
 
-/* app.get("/decorations/type/:type",authenticateUser) */
-app.get('/decorations/type/:type', async (req, res) => {
+app.get('/decorations/type/:type', authenticateUser, async (req, res) => {
   try {
     const typeOf = await Decoration.find({ type: req.params.type })
     if (!typeOf) {
@@ -439,8 +432,7 @@ app.get('/decorations/type/:type', async (req, res) => {
   }
 })
 /* --------- DRINKS GET  ----------- */
-/* app.get("/drinks",authenticateUser) */
-app.get('/drinks', async (req, res) => {
+app.get('/drinks', authenticateUser, async (req, res) => {
   try {
     const drinks = await Drink.find()
     res.status(200).json({
@@ -455,8 +447,7 @@ app.get('/drinks', async (req, res) => {
   }
 })
 
-/* app.get("/drinks/type/:type",authenticateUser) */
-app.get('/drinks/type/:type', async (req, res) => {
+app.get('/drinks/type/:type', authenticateUser, async (req, res) => {
   try {
     const typeOf = await Drink.find({ type: req.params.type })
     if (!typeOf) {
@@ -479,8 +470,7 @@ app.get('/drinks/type/:type', async (req, res) => {
 })
 
 /* --------- FOOD GET  ----------- */
-/* app.get("/food",authenticateUser) */
-app.get('/food', async (req, res) => {
+app.get('/food', authenticateUser, async (req, res) => {
   try {
     const foodCollection = await Food.find()
     res.status(200).json({
@@ -495,8 +485,7 @@ app.get('/food', async (req, res) => {
   }
 })
 
-/* app.get("/food/type/:type",authenticateUser) */
-app.get('/food/type/:type', async (req, res) => {
+app.get('/food/type/:type', authenticateUser, async (req, res) => {
   try {
     const typeOf = await Food.find({ type: req.params.type })
     if (!typeOf) {
@@ -518,8 +507,7 @@ app.get('/food/type/:type', async (req, res) => {
   }
 })
 /* --------- ACTIVITIES GET  ----------- */
-/* app.get("/activities",authenticateUser) */
-app.get('/activities', async (req, res) => {
+app.get('/activities', authenticateUser, async (req, res) => {
   try {
     const activitiesCollection = await Activity.find()
     res.status(200).json({
@@ -534,8 +522,7 @@ app.get('/activities', async (req, res) => {
   }
 })
 
-/* app.get("/activities/type/:type",authenticateUser) */
-app.get('/activities/type/:type', async (req, res) => {
+app.get('/activities/type/:type', authenticateUser, async (req, res) => {
   try {
     const typeOf = await Activity.find({ type: req.params.type })
     if (!typeOf) {
@@ -559,14 +546,15 @@ app.get('/activities/type/:type', async (req, res) => {
 
 // ************ PROJECT ENDPOINTS *************** //
 /* GET all active projects */ // WORKS PERFECT
-app.get('/project-board/projects', authenticateUser)
-app.get('/project-board/projects', async (req, res) => {
-  const allProjects = await Project.find()
+app.get('/:userId/project-board/projects', authenticateUser, async (req, res) => {
+  const { userId } = req.params
+  const allProjects = await Project.find({ userId })
   try {
-    res.status(200).json({
-      response: allProjects,
-      success: true,
-    })
+    if (userId)
+      res.status(200).json({
+        response: allProjects,
+        success: true,
+      })
   } catch (error) {
     res.status(404).json({
       response: `Could not find any projects!`,
@@ -574,11 +562,11 @@ app.get('/project-board/projects', async (req, res) => {
     })
   }
 })
-/* GET singleProject */ //WORKS PERFEKT
-app.get('/project-board/projects/:projectId', async (req, res) => {
-  const { projectId } = req.params
+/* GET singleProject */ //WORKS PERFECT
+app.get('/:userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
+  const { userId, projectId } = req.params
   try {
-    const singleProject = await Project.findById({ _id: projectId })
+    const singleProject = await Project.findById({ _id: projectId, userProject: userId })
     if (projectId) {
       res.status(200).json({
         response: `Everything is ok`,
@@ -600,11 +588,11 @@ app.get('/project-board/projects/:projectId', async (req, res) => {
 })
 
 /* add project to the board */ //WORKS PERFECT
-app.get('/project-board/projects/addProject', authenticateUser)
-app.post('/project-board/projects/addProject', async (req, res) => {
-  const { name, due_date } = req.body
+app.post('/:userId/project-board/projects/addProject', authenticateUser, async (req, res) => {
+  const { userId } = req.params
+  const { name, due_date, userProject } = req.body
   try {
-    const newProject = new Project({ name, due_date })
+    const newProject = new Project({ name, due_date, userProject: userId })
     await newProject.save()
     res.status(200).json({
       success: true,
@@ -620,13 +608,12 @@ app.post('/project-board/projects/addProject', async (req, res) => {
 })
 
 /* change name and due date in single project and add guests to guest list */
-app.get('/project-board/projects/:projectId', authenticateUser)
-app.patch('/project-board/projects/:projectId', async (req, res) => {
-  const { projectId } = req.params
+app.patch(':userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
+  const { userId, projectId } = req.params
   const { guestList, phone, name, due_date } = req.body
   // console.log("name", req.body.guestList)
   try {
-    const projectToChange = await Project.findOne({ projectId })
+    const projectToChange = await Project.findOne({ _id: projectId, userProject: userId })
     if (projectToChange) {
       // const guestListupdate = req.body.guestList
       // const nameUpdate = req.body.name
@@ -658,12 +645,12 @@ app.patch('/project-board/projects/:projectId', async (req, res) => {
   }
 })
 
-app.delete('/project-board/projects/:projectId', async (req, res) => {
-  const { projectId } = req.params
+app.delete('/:userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
+  const { userId, projectId } = req.params
   const { guestList, name, guestListName } = req.body
   // console.log("name", req.body.guestList)
   try {
-    const projectToChange = await Project.findOne({ projectId })
+    const projectToChange = await Project.findOne({ _id: projectId, userProject: userId })
     if (projectToChange) {
       // const guestListupdate = req.body.guestList
       // const nameUpdate = req.body.name
@@ -696,44 +683,47 @@ app.delete('/project-board/projects/:projectId', async (req, res) => {
 })
 
 /* DELETE the project from the project board */ //WORKS PERFECT
-app.get('/project-board/projects/delete/:projectId', authenticateUser)
-app.delete('/project-board/projects/delete/:projectId', async (req, res) => {
-  const { projectId } = req.params
-  try {
-    const projectToDelete = await Project.findByIdAndRemove({ _id: projectId })
-    if (projectToDelete) {
-      res.status(200).json({
-        response: `Project has been deleted!!`,
-        success: true,
-      })
-    } else {
-      res.status(404).json({
-        response: `Project not found`,
+app.delete(
+  '/:userId/project-board/projects/delete/:projectId',
+  authenticateUser,
+  async (req, res) => {
+    const { userId, projectId } = req.params
+    try {
+      const user = await User.find({ userId })
+      if (user) {
+        const projectToDelete = await Project.findOneAndDelete({ projectId })
+        res.status(200).json({
+          response: `Project ${projectToDelete._id} has been deleted!!`,
+          success: true,
+        })
+      } else {
+        res.status(404).json({
+          response: `Project not found`,
+          success: false,
+        })
+      }
+    } catch (error) {
+      res.status(401).json({
+        response: 'Invalid credentials',
         success: false,
       })
     }
-  } catch (error) {
-    res.status(401).json({
-      response: 'Invalid credentials',
-      success: false,
-    })
   }
-})
+)
 
 // ************ PROJECTBOARD ENDPOINTS *************** //
-/* authenticate user */
-
-app.get('/project-board', authenticateUser)
 
 /* GET user project board */ //WORKS PERFECT
 
-app.get('/project-board', async (req, res) => {
+app.get('/:userId/project-board', authenticateUser, async (req, res) => {
+  const { userId } = req.params
   try {
-    const userBoard = await User.findById(req.params.id)
-    res.status(200).json({
-      response: `Welcome back`,
-      success: true,
-    })
+    const user = await User.find({ userId })
+    if (user)
+      res.status(200).json({
+        response: `Welcome back`,
+        success: true,
+      })
   } catch (error) {
     res.status(401).json({
       response: 'Invalid credentials',
