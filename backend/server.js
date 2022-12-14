@@ -548,13 +548,19 @@ app.get('/activities/type/:type', authenticateUser, async (req, res) => {
 /* GET all active projects */ // WORKS PERFECT
 app.get('/:userId/project-board/projects', authenticateUser, async (req, res) => {
   const { userId } = req.params
-  const allProjects = await Project.find({ userId })
+  const allProjects = await Project.find({ userProject: userId })
   try {
-    if (userId)
+    if (allProjects) {
       res.status(200).json({
         response: allProjects,
         success: true,
       })
+    } else if (allProjects.length === 0) {
+      res.status(200).json({
+        response: `Could not find any projects!`,
+        success: false,
+      })
+    }
   } catch (error) {
     res.status(404).json({
       response: `Could not find any projects!`,
@@ -565,9 +571,10 @@ app.get('/:userId/project-board/projects', authenticateUser, async (req, res) =>
 /* GET singleProject */ //WORKS PERFECT
 app.get('/:userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
   const { userId, projectId } = req.params
+
   try {
-    const singleProject = await Project.findById({ _id: projectId, userProject: userId })
-    if (projectId) {
+    const singleProject = await Project.find({ projectId, userProject: userId })
+    if (singleProject) {
       res.status(200).json({
         response: `Everything is ok`,
         success: true,
@@ -575,7 +582,7 @@ app.get('/:userId/project-board/projects/:projectId', authenticateUser, async (r
       })
     } else {
       res.status(404).json({
-        response: `Could not find the project`,
+        response: `Could not find project`,
         success: false,
       })
     }
@@ -590,7 +597,7 @@ app.get('/:userId/project-board/projects/:projectId', authenticateUser, async (r
 /* add project to the board */ //WORKS PERFECT
 app.post('/:userId/project-board/projects/addProject', authenticateUser, async (req, res) => {
   const { userId } = req.params
-  const { name, due_date, userProject } = req.body
+  const { name, due_date } = req.body
   try {
     const newProject = new Project({ name, due_date, userProject: userId })
     await newProject.save()
@@ -690,10 +697,10 @@ app.delete(
     const { userId, projectId } = req.params
     try {
       const user = await User.find({ userId })
-      if (user) {
-        const projectToDelete = await Project.findOneAndDelete({ projectId })
+      const projectToDelete = await Project.findOneAndDelete({ projectId })
+      if (user && projectToDelete) {
         res.status(200).json({
-          response: `Project ${projectToDelete._id} has been deleted!!`,
+          response: `Project has been deleted`,
           success: true,
         })
       } else {
@@ -717,7 +724,7 @@ app.delete(
 app.get('/:userId/project-board', authenticateUser, async (req, res) => {
   const { userId } = req.params
   try {
-    const user = await User.find({ userId })
+    const user = await User.findOne({ userId })
     if (user)
       res.status(200).json({
         response: `Welcome back`,
