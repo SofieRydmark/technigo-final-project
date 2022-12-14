@@ -714,7 +714,6 @@ app.delete(
 // ************ PROJECTBOARD ENDPOINTS *************** //
 
 /* GET user project board */ //WORKS PERFECT
-
 app.get('/:userId/project-board', authenticateUser, async (req, res) => {
   const { userId } = req.params
   try {
