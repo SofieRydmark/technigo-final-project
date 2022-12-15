@@ -37,9 +37,9 @@ const ThemeSchema = new mongoose.Schema({
   name: String,
   image: String,
   type: Array,
-  ThemId: {
+/*   ThemId: {
   type: mongoose.Schema.Types.ObjectId,
-  ref: 'Theme',}
+  ref: 'Theme',} */
 })
 
 const DecorationSchema = new mongoose.Schema({
@@ -102,6 +102,26 @@ const ProjectSchema = new mongoose.Schema({
     name: String, 
     default: null, 
   }, 
+  decorations: {
+    type: [DecorationSchema],
+    name: String, 
+    default: null,
+  },
+  food: {
+    type: [FoodSchema],
+    name: String, 
+    default: null, 
+  },
+  drinks: {
+    type: [DrinkSchema],
+    name: String, 
+    default: null, 
+  },
+  activities: {
+    type: [ActivitySchema],
+    name: String, 
+    default: null, 
+  }
   /* decorations: {
     type: mongoose.Schema.Types.ObjectId,
     ref:"Decorations"
@@ -118,13 +138,13 @@ const ProjectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: "Activity"
   } */
-})
+
 /* themes: { type: Array, default: null },
   decorations: { type: Array, default: null },
   food: { type: Array, default: null },
   drinks: { type: Array, default: null },
-  activities: { type: Array, default: null },
-})   */
+  activities: { type: Array, default: null }, */
+})  
 
 
 const GuestSchema = new mongoose.Schema({
@@ -767,7 +787,7 @@ app.get('/:userId/project-board', authenticateUser, async (req, res) => {
 
 
 app.post("/:userId/project-board/projects/add/:projectId", async (req, res) => {
-  const { userId, projectId, themeId } = req.params
+  const { userId, projectId } = req.params
   const { theme, decorations, food, drinks, activities} = req.body
 
  try{
@@ -795,19 +815,59 @@ app.post("/:userId/project-board/projects/add/:projectId", async (req, res) => {
 }
 }) 
 
-app.delete("/:userId/project-board/projects/delete/:projectId", async (req, res) => {
+// Add more drinks to your project 
+app.patch("/:userId/project-board/projects/add/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
   const { theme, decorations, food, drinks, activities} = req.body
 
  try{
-  const addToProject= await Project.findByIdAndUpdate({userProject: userId, _id: projectId }, 
-    { theme, decorations, food, drinks, activities},
-    {new: true }
-    )
-    if (addToProject){
+  const addOn = await Project.findOne({ projectId })
+ 
+    if (addOn){
+      const addToProject= await Project.findByIdAndUpdate({ _id: projectId }, {$push:{
+        drinks: drinks, 
+        decorations: decorations, 
+        food: food, 
+        activities: activities
+      }}
+        )
         res.status(200).json({
         response: "Added to project",
         data: addToProject
+      })
+
+    } else {
+      res.status(500).json({
+        response: "Could not update"
+      })
+    }
+ }catch(error) {
+      res.status(401).json({
+        response: "Invalid credentials",
+        success: false,
+        error: error
+ })
+}
+}) 
+
+app.delete("/:userId/project-board/projects/deleteaddon/:projectId", authenticateUser, async (req, res) => {
+  const { userId, projectId, categoryID } = req.params
+  const { theme } = req.body
+
+ try{
+  const projectToChange = await Project.find ({ userProject: userId, _id: projectId })
+  
+    if (projectToChange){
+      const deleteAddon= await Project.findByIdAndUpdate({ _id: projectId },
+        {
+          $push:{
+            theme: theme, 
+          }, 
+          $set:{theme: null }
+        })
+        res.status(200).json({
+        response: "deleted object",
+        data: deleteAddon
       })
 
     } else {
