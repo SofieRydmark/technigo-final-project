@@ -1,5 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  Pressable,
+  Platform,
+} from 'react-native'
 
 import colors from '../config/colors'
 
@@ -41,47 +52,60 @@ const WelcomeScreen = () => {
       }) */
   }
   return (
-    <View style={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.headerH1}>Welcome</Text>
-        <Text style={styles.headerH2}>Not a member yet? Sign up here</Text>
-      </View>
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          onChangeText={(email) => setEmail(email)}
-          value={email}
-          required
-          placeholder='user@email.com'
-          keyboardType='email-address'
-        />
-        <TextInput
-          label='Password'
-          style={styles.input}
-          onChangeText={(password) => setPassword(password)}
-          value={password}
-          required
-          maxLength='20'
-          secureTextEntry={true}
-          placeholder='*******'
-          keyboardType='numeric'
-        />
-        <TouchableOpacity onPress={signInSubmit} style={styles.signinButton} title='Sign in'>
-          <Text style={styles.buttonText}>Sign in</Text>
-        </TouchableOpacity>
+    <KeyboardAvoidingView
+      style={styles.keyboard}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
+        <ScrollView contentContainerStyle={styles.background}>
+          <View style={styles.header}>
+            <Text style={styles.headerH1}>Welcome</Text>
+            <Text style={styles.headerH2}>Not a member yet? Sign up here</Text>
+          </View>
+          <View style={styles.form}>
+            <Text style={styles.label}>EMAIL</Text>
+            <TextInput
+              label='Email'
+              style={styles.input}
+              onChangeText={(email) => setEmail(email)}
+              value={email}
+              required
+              placeholder='user@email.com'
+              keyboardType='email-address'
+            />
+            <Text style={styles.label}>PASSWORD</Text>
+            <TextInput
+              label='Password'
+              style={styles.input}
+              onChangeText={(password) => setPassword(password)}
+              value={password}
+              required
+              secureTextEntry={true}
+              placeholder='*******'
+            />
+            <TouchableOpacity
+              onPress={() => signInSubmit()}
+              style={styles.signinButton}
+              title='Sign in'>
+              <Text style={styles.buttonText}>Sign in</Text>
+            </TouchableOpacity>
 
-        <Text style={styles.forgotPassword}>Forgot password?</Text>
-      </View>
-    </View>
+            <Text style={styles.forgotPassword} onPress={() => null}>
+              Forgot password?
+            </Text>
+          </View>
+        </ScrollView>
+      </Pressable>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: colors.primary,
     flex: 1,
+    backgroundColor: colors.green,
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
   },
   buttonText: {
     fontSize: 20,
@@ -89,14 +113,14 @@ const styles = StyleSheet.create({
   },
   form: {
     borderRadius: 10,
-    padding: 20,
+    padding: 25,
     width: '80%',
-    height: '50%',
-    backgroundColor: colors.light,
+    backgroundColor: colors.white,
   },
   forgotPassword: {
     marginTop: 20,
     fontSize: 16,
+    color: colors.darkGrey,
     textAlign: 'center',
   },
   header: {
@@ -111,11 +135,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  keyboard: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
   input: {
-    height: 40,
-    margin: 12,
+    backgroundColor: colors.lightGrey,
+    marginBottom: 20,
+    marginTop: 10,
     borderWidth: 1,
-    padding: 10,
+    padding: 15,
+    borderRadius: 12,
+    fontSize: 16,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey,
+  },
+  label: {
+    fontSize: 15,
+    color: colors.darkGrey,
+  },
+  pressable: {
+    flex: 1,
+    background: 'transparent',
   },
   signinButton: {
     alignItems: 'center',
@@ -125,7 +166,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 70,
     borderRadius: 8,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.peach,
   },
 })
 export default WelcomeScreen
