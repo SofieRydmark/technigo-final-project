@@ -101,6 +101,7 @@ const ProjectSchema = new mongoose.Schema({
     type:[ThemeSchema],
     name: String, 
     default: null, 
+    objectId: Number, 
   }, 
   decorations: {
     type: [DecorationSchema],
@@ -121,6 +122,7 @@ const ProjectSchema = new mongoose.Schema({
     type: [ActivitySchema],
     name: String, 
     default: null, 
+    
   }
   /* decorations: {
     type: mongoose.Schema.Types.ObjectId,
@@ -856,15 +858,14 @@ app.delete("/:userId/project-board/projects/deleteaddon/:projectId", authenticat
   const { theme } = req.body
 
  try{
-  const projectToChange = await Project.findOne({ userProject: userId, _id: projectId })
+  const projectToChange = await Project.findOne({ projectId })
   
     if (projectToChange){
-      const deleteAddon= await Project.findOneAndUpdate({ theme:theme },
-        {
-          $push:{
+      const deleteAddon= await Project.findByIdAndDelete({ _id: projectId},
+        { $push:{
             theme: null, 
           }, 
-          $set:{theme: null }
+          /* $set:{theme: null } */
         })
         res.status(200).json({
         response: "deleted object",
