@@ -97,7 +97,7 @@ const ProjectSchema = new mongoose.Schema({
     phone: Number,
     default: null,
   },
-  theme: {
+  themeProject: {
     type:[ThemeSchema],
     name: String, 
     default: null, 
@@ -116,7 +116,7 @@ const ProjectSchema = new mongoose.Schema({
     name: String, 
     default: null, 
   },
-  drinks: {
+  drinksProject: {
     type: [DrinkSchema],
     name: String, 
     default: null, 
@@ -822,11 +822,11 @@ app.post("/:userId/project-board/projects/addtheme/:projectId", async (req, res)
 // Add on all objects except theme that you only can have 1 of . 
 app.post("/:userId/project-board/projects/addObject/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
-  const { decorations, food, drinks, activities} = req.body
+  const { decorations, food, drinksProject, activities} = req.body
 
  try{
   const addToProject= await Project.findByIdAndUpdate({userProject: userId, _id: projectId }, 
-    { $push: {decorations:decorations, food:food, drinks:drinks, activities:activities} }
+    { $push: {decorations:decorations, food:food, drinksProject:drinksProject, activities:activities} }
     )
     if (addToProject){
         res.status(200).json({
@@ -884,27 +884,48 @@ app.post("/:userId/project-board/projects/addObject/:projectId", async (req, res
 })  */
 
 // Works when you only have one object. maybe you need to have one seperate endpoint. 
-app.delete("/:userId/project-board/projects/deleteaddon/:projectId", authenticateUser, async (req, res) => {
-  const { userId, projectId } = req.params
-  const { theme, decorations, drinks, food, activities  } = req.body
+app.delete("/:userId/project-board/projects/:drinksProjectId/:projectId", authenticateUser, async (req, res) => {
+  const { userId, projectId, drinksProjectId } = req.params
+/*   const { drinksProject } = req.body */
 
  try{
-  const projectToChange = await Project.findOne({ projectId })
+     const projectToChange= await Project.findById(projectId);
+     const deletedAdd = await ProjectSchema.findByIdAndUpdate(drinksProjectId,
+      {$pull: {
+        drinksProject: drinksProjectId,
+      },
+      },
+     {new:true} 
+      ).populate({
+        path:"projectDrinks",
+        model: ProjectSchema,
+      
+      })
   
-    if (projectToChange){
-      const deleteAddon= await Project.findOneAndUpdate({ _id: projectId },
-        { $set:{
-            theme,
-            decorations,
+    if (deletedAdd){
+    /*   const projectToChange = await Project.findOne({ projectId })
+      
+      const deleteAddon= await Project.findByIdAndUpdate({ drinksProject }
+        {
+          $pull:{drinks: { $elemMatch:{drinks: drinks.name} }}
+        }  
+
+      ) */
+        
+      /*   { _id: projectId },
+        { $pull:{ drinks: { ObjectId : _id }
+            /* decorations,
             drinks ,
             food,
-            activities ,
-          }, 
-          /* $set:{theme: null } */
-        })
+            activities , */
+        /*   }, */
+          /* $set:{theme: null } 
+        },
+        {new:true}
+        ) */
         res.status(200).json({
         response: "deleted object",
-        data: deleteAddon
+        data: deletedAdd
       })
 
     } else {
