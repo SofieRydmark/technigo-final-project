@@ -101,7 +101,10 @@ const ProjectSchema = new mongoose.Schema({
     type:[ThemeSchema],
     name: String, 
     default: null, 
-    objectId: Number, 
+    objectId: {
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Theme'
+    }
   }, 
   decorations: {
     type: [DecorationSchema],
@@ -787,15 +790,14 @@ app.get('/:userId/project-board', authenticateUser, async (req, res) => {
   }
 })
 
-
-app.post("/:userId/project-board/projects/add/:projectId", async (req, res) => {
+// Add theme to your project
+app.post("/:userId/project-board/projects/addtheme/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
-  const { theme, decorations, food, drinks, activities} = req.body
+  const { theme} = req.body
 
  try{
   const addToProject= await Project.findByIdAndUpdate({userProject: userId, _id: projectId }, 
-    { theme, decorations, food, drinks, activities},
-    {new: true }
+    {theme: theme }
     )
     if (addToProject){
         res.status(200).json({
@@ -817,10 +819,39 @@ app.post("/:userId/project-board/projects/add/:projectId", async (req, res) => {
 }
 }) 
 
-// Add more objects to your project - har inte lagt till theme än på denna. 
-app.patch("/:userId/project-board/projects/add/:projectId", async (req, res) => {
+// Add on all objects except theme that you only can have 1 of . 
+app.post("/:userId/project-board/projects/addObject/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
-  const { theme, decorations, food, drinks, activities} = req.body
+  const { decorations, food, drinks, activities} = req.body
+
+ try{
+  const addToProject= await Project.findByIdAndUpdate({userProject: userId, _id: projectId }, 
+    { $push: {decorations:decorations, food:food, drinks:drinks, activities:activities} }
+    )
+    if (addToProject){
+        res.status(200).json({
+        response: "Added to project",
+        data: addToProject
+      })
+
+    } else {
+      res.status(500).json({
+        response: "Could not update"
+      })
+    }
+ }catch(error) {
+      res.status(401).json({
+        response: "Invalid credentials",
+        success: false,
+        error: error
+ })
+}
+}) 
+
+// Add more objects to your project - har inte lagt till theme än på denna. Behövs ej på denna
+/* app.patch("/:userId/project-board/projects/add/:projectId", async (req, res) => {
+  const { userId, projectId } = req.params
+  const {  decorations, food, drinks, activities} = req.body
 
  try{
   const addOn = await Project.findOne({ projectId })
@@ -850,20 +881,24 @@ app.patch("/:userId/project-board/projects/add/:projectId", async (req, res) => 
         error: error
  })
 }
-}) 
+})  */
 
-// Delete an addon Cant make it work 
+// Works when you only have one object. maybe you need to have one seperate endpoint. 
 app.delete("/:userId/project-board/projects/deleteaddon/:projectId", authenticateUser, async (req, res) => {
   const { userId, projectId } = req.params
-  const { theme } = req.body
+  const { theme, decorations, drinks, food, activities  } = req.body
 
  try{
   const projectToChange = await Project.findOne({ projectId })
   
     if (projectToChange){
-      const deleteAddon= await Project.findByIdAndDelete({ _id: projectId},
-        { $push:{
-            theme: null, 
+      const deleteAddon= await Project.findOneAndUpdate({ _id: projectId },
+        { $set:{
+            theme,
+            decorations,
+            drinks ,
+            food,
+            activities ,
           }, 
           /* $set:{theme: null } */
         })
