@@ -14,13 +14,12 @@ import {
 
 import colors from '../config/colors'
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
 
   const signInSubmit = () => {
     console.log('hello', email, password)
-
     /* const options = {
       method: 'POST',r
       headers: {
@@ -59,7 +58,13 @@ const WelcomeScreen = () => {
         <ScrollView contentContainerStyle={styles.background}>
           <View style={styles.header}>
             <Text style={styles.headerH1}>Welcome</Text>
-            <Text style={styles.headerH2}>Not a member yet? Sign up here</Text>
+            <Text style={styles.headerH2}>
+              Not a member yet? Sign up
+              <Text style={styles.here} onPress={() => navigation.navigate('SignUp')}>
+                {' '}
+                here
+              </Text>
+            </Text>
           </View>
           <View style={styles.form}>
             <Text style={styles.label}>EMAIL</Text>
@@ -134,6 +139,9 @@ const styles = StyleSheet.create({
   headerH2: {
     fontSize: 16,
     textAlign: 'center',
+  },
+  here: {
+    fontWeight: 'bold',
   },
   keyboard: {
     flex: 1,
