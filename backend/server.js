@@ -815,7 +815,7 @@ app.post("/:userId/project-board/projects/add/:projectId", async (req, res) => {
 }
 }) 
 
-// Add more drinks to your project 
+// Add more objects to your project - har inte lagt till theme än på denna. 
 app.patch("/:userId/project-board/projects/add/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
   const { theme, decorations, food, drinks, activities} = req.body
@@ -850,18 +850,19 @@ app.patch("/:userId/project-board/projects/add/:projectId", async (req, res) => 
 }
 }) 
 
+// Delete an addon Cant make it work 
 app.delete("/:userId/project-board/projects/deleteaddon/:projectId", authenticateUser, async (req, res) => {
-  const { userId, projectId, categoryID } = req.params
+  const { userId, projectId } = req.params
   const { theme } = req.body
 
  try{
-  const projectToChange = await Project.find ({ userProject: userId, _id: projectId })
+  const projectToChange = await Project.findOne({ userProject: userId, _id: projectId })
   
     if (projectToChange){
-      const deleteAddon= await Project.findByIdAndUpdate({ _id: projectId },
+      const deleteAddon= await Project.findOneAndUpdate({ theme:theme },
         {
           $push:{
-            theme: theme, 
+            theme: null, 
           }, 
           $set:{theme: null }
         })
