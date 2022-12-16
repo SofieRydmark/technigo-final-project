@@ -614,28 +614,28 @@ app.post('/:userId/project-board/projects/addProject', authenticateUser, async (
   }
 })
 
+/* change name and due date in single project and add guests to guest list */ //WORK OK
 app.patch("/:userId/project-board/projects/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
   const { name, due_date } = req.body
-  // console.log("name", req.body.guestList)
+
  try{
 
   const projectToChange= await Project.findOne({ userId, projectId })
     if (projectToChange){
-//       // const guestListupdate = req.body.guestList
-//       // const nameUpdate = req.body.name
 
       const updatedProject = await Project.findByIdAndUpdate({ _id: projectId}, { 
-         $set: {name: name, due_date: due_date} })
-        res.status(200).json({
-        response: "Updated",
-        data: updatedProject
-      })
-      console.log("something", guestList)
+         $set: {name: name, due_date: due_date}
+        });
+    
+            res.status(200).json({
+            response: "Updated",
+            data: updatedProject
+      });
 
     } else {
-      res.status(500).json({
-        response: "Could not update"
+            res.status(500).json({
+            response: "Could not update"
       });
     }
  }catch(error) {
@@ -647,43 +647,8 @@ app.patch("/:userId/project-board/projects/:projectId", async (req, res) => {
 }
 })
 
-/* change name and due date in single project and add guests to guest list */
-// app.patch(':userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
-//   const { userId, projectId } = req.params
-//   const { name, due_date } = req.body
-//   // console.log("name", req.body.guestList)
-//  try{
-//   const user = await User.find({ userId })
-//    const projectToChange = await Project.findOne({ projectId })
-//    console.log("projectToChange", projectToChange )
-//     if (projectToChange) {
-//       // const guestListupdate = req.body.guestList
-//       // const nameUpdate = req.body.name
-//       const updatedProject = await Project.findByIdAndUpdate(
-//         { _id: projectId },
-//         {
-//           $set: { name: name, due_date: due_date },
-//         }
-//       )
-//       res.status(200).json({
-//         response: 'Updated',
-//         data: updatedProject,
-//       })
-//       console.log('something', guestList)
-//     } else {
-//       res.status(500).json({
-//         response: 'Could not update',
-//       })
-//     }
-//   } catch (error) {
-//     res.status(401).json({
-//       response: 'Invalid credentials',
-//       success: false,
-//       error: error,
-//     })
-//   }
-// })
-// Add new guest to the the guest list on project // WORKS OK
+
+/* Add new guest to the the guest list on project */// WORKS OK
 app.post("/:userId/project-board/projects/:projectId/addGuest", authenticateUser, async (req, res) => {
   const { userId, projectId } = req.params
   const { guestList, guestName, phone} = req.body
@@ -717,14 +682,18 @@ app.post("/:userId/project-board/projects/:projectId/addGuest", authenticateUser
 
 /* DELETE the guest from the guest list*/ 
 
-app.delete('/:userId/project-board/projects/:projectId/delete/:guestId', authenticateUser, async (req, res) => {
+app.delete('/project-board/projects/:projectId/delete/:guestId', authenticateUser, async (req, res) => {
   const { userId, projectId, guestId } = req.params
   const { guestList, name, guestListName } = req.body
 
   try {
     const user = await User.find({ userId })
-    const guestToDelete = await Guest.findOneAndDelete({ projectId })
-    if (user && guestToDelete) {
+    const project = await Project.find({ projectId })
+    const guestToDelete = await Project.findOneAndDelete({ "guestList[0]._id": guestId  })
+
+    if (user && project) {
+
+      console.log("guestToDelete",guestToDelete)
       res.status(200).json({
         response: `Guest has been deleted`,
         success: true,
