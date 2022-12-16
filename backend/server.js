@@ -89,7 +89,7 @@ const ProjectSchema = new mongoose.Schema({
   },
   guestList: {
     type: [GuestSchema],
-    name: String,
+    guestName: String,
     phone: Number,
     default: null,
   },
@@ -101,7 +101,7 @@ const ProjectSchema = new mongoose.Schema({
 })
 
 const GuestSchema = new mongoose.Schema({
-  name: {
+  guestName: {
     type: String,
     trim: true,
   },
@@ -614,80 +614,136 @@ app.post('/:userId/project-board/projects/addProject', authenticateUser, async (
   }
 })
 
-/* change name and due date in single project and add guests to guest list */
-app.patch(':userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
+app.patch("/:userId/project-board/projects/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
-  const { guestList, phone, name, due_date } = req.body
+  const { name, due_date } = req.body
   // console.log("name", req.body.guestList)
-  try {
-    const projectToChange = await Project.findOne({ _id: projectId, userProject: userId })
-    if (projectToChange) {
-      // const guestListupdate = req.body.guestList
-      // const nameUpdate = req.body.name
-      const updatedProject = await Project.findByIdAndUpdate(
-        { _id: projectId },
-        {
-          $push: {
-            guestList: guestList,
-          },
-          $set: { name: name, due_date: due_date },
-        }
-      )
-      res.status(200).json({
-        response: 'Updated',
-        data: updatedProject,
+ try{
+
+  const projectToChange= await Project.findOne({ userId, projectId })
+    if (projectToChange){
+//       // const guestListupdate = req.body.guestList
+//       // const nameUpdate = req.body.name
+
+      const updatedProject = await Project.findByIdAndUpdate({ _id: projectId}, { 
+         $set: {name: name, due_date: due_date} })
+        res.status(200).json({
+        response: "Updated",
+        data: updatedProject
       })
-      console.log('something', guestList)
+      console.log("something", guestList)
+
     } else {
       res.status(500).json({
-        response: 'Could not update',
-      })
+        response: "Could not update"
+      });
     }
-  } catch (error) {
-    res.status(401).json({
-      response: 'Invalid credentials',
-      success: false,
-      error: error,
-    })
-  }
+ }catch(error) {
+      res.status(401).json({
+        response: "Invalid credentials",
+        success: false,
+        error: error
+ })
+}
 })
 
-app.delete('/:userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
+/* change name and due date in single project and add guests to guest list */
+// app.patch(':userId/project-board/projects/:projectId', authenticateUser, async (req, res) => {
+//   const { userId, projectId } = req.params
+//   const { name, due_date } = req.body
+//   // console.log("name", req.body.guestList)
+//  try{
+//   const user = await User.find({ userId })
+//    const projectToChange = await Project.findOne({ projectId })
+//    console.log("projectToChange", projectToChange )
+//     if (projectToChange) {
+//       // const guestListupdate = req.body.guestList
+//       // const nameUpdate = req.body.name
+//       const updatedProject = await Project.findByIdAndUpdate(
+//         { _id: projectId },
+//         {
+//           $set: { name: name, due_date: due_date },
+//         }
+//       )
+//       res.status(200).json({
+//         response: 'Updated',
+//         data: updatedProject,
+//       })
+//       console.log('something', guestList)
+//     } else {
+//       res.status(500).json({
+//         response: 'Could not update',
+//       })
+//     }
+//   } catch (error) {
+//     res.status(401).json({
+//       response: 'Invalid credentials',
+//       success: false,
+//       error: error,
+//     })
+//   }
+// })
+// Add new guest to the the guest list on project // WORKS OK
+app.post("/:userId/project-board/projects/:projectId/addGuest", authenticateUser, async (req, res) => {
   const { userId, projectId } = req.params
-  const { guestList, name, guestListName } = req.body
-  // console.log("name", req.body.guestList)
-  try {
-    const projectToChange = await Project.findOne({ _id: projectId, userProject: userId })
-    if (projectToChange) {
-      // const guestListupdate = req.body.guestList
-      // const nameUpdate = req.body.name
-      const updatedProject = await Project.findByIdAndUpdate(
-        { _id: projectId },
-        {
-          $push: {
-            guestList: guestList,
-          },
-          $set: { name: name, guestList: guestListName },
-        }
-      )
-      res.status(200).json({
-        response: 'Updated',
-        data: updatedProject,
+  const { guestList, guestName, phone} = req.body
+ try{
+  const user = await User.find({ userId })
+  const projectToChange= await Project.findOne({ projectId })
+    if (projectToChange){
+
+      const addedGuest= await Project.findByIdAndUpdate({ _id: projectId}, { $push:{
+        guestList: new Guest({ guestName, phone })},
       })
-      console.log(name, guestList)
+        res.status(200).json({
+        response: "Guest added",
+        data: addedGuest
+      })
+      console.log("something", addedGuest)
+
     } else {
       res.status(500).json({
-        response: 'Could not update',
+        response: "Could not update"
+      });
+    }
+ }catch(error) {
+      res.status(401).json({
+        response: "Invalid credentials",
+        success: false,
+        error: error
+ })
+}
+})
+
+/* DELETE the guest from the guest list*/ 
+
+app.delete('/:userId/project-board/projects/:projectId/delete/:guestId', authenticateUser, async (req, res) => {
+  const { userId, projectId, guestId } = req.params
+  const { guestList, name, guestListName } = req.body
+
+  try {
+    const user = await User.find({ userId })
+    const guestToDelete = await Guest.findOneAndDelete({ projectId })
+    if (user && guestToDelete) {
+      res.status(200).json({
+        response: `Guest has been deleted`,
+        success: true,
+      })
+    } else {
+      res.status(404).json({
+        response: `Guest not found`,
+        success: false,
       })
     }
   } catch (error) {
     res.status(401).json({
       response: 'Invalid credentials',
       success: false,
-      error: error,
     })
   }
-})
+}
+)
+
 
 /* DELETE the project from the project board */ //WORKS PERFECT
 app.delete(
