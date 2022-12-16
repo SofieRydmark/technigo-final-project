@@ -15,35 +15,32 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
-import user from '../reducers/user'
 import colors from '../config/colors'
+import user from '../reducers/user'
 
-const SignUp = ({ navigation }) => {
+const WelcomeScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true)
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
-  const [confirmPassword, setConfirmPassword] = useState(null)
   const [loginError, setLoginError] = useState(null)
-
   const dispatch = useDispatch()
-  // const accessToken = useSelector((store) => store.user.accessToken)
 
+  // toggle see or hide password on input
   const showPassword = () => {
     setHidePassword(!hidePassword)
   }
 
-  const signUpSubmit = () => {
-    console.log('sign up', email, password, confirmPassword)
-
+  // sign ip form function with post sign in url
+  const signInSubmit = (values) => {
+    setLoginError(null)
+    console.log('everything ok, lets fetch')
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email: email, password: password }),
+      body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('http://localhost:8080/signUp', options) // signUp url
+    fetch('http://10.0.2.2:8080/signIn', options) // registration URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -73,27 +70,24 @@ const SignUp = ({ navigation }) => {
       <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
         <ScrollView contentContainerStyle={styles.background}>
           <View style={styles.header}>
-            <Text style={styles.headerH1}>Create new account</Text>
+            <Text style={styles.headerH1}>Welcome</Text>
             <Text style={styles.headerH2}>
-              Already a member? Sign in
-              <Text style={styles.here} onPress={() => navigation.navigate('SignIn')}>
+              Not a member yet? Sign up
+              <Text style={styles.here} onPress={() => navigation.navigate('SignUp')}>
                 {' '}
                 here
               </Text>
             </Text>
           </View>
           <Formik
-            initialValues={{ email: '', password: '', confirmPassword: '' }}
-            onSubmit={(values) => {
-              if (values.email === '' || values.password === '' || values.confirmPassword === '') {
+            initialValues={{ email: '', password: '' }}
+            onSubmit={(values, actions) => {
+              console.log('cred formik', values)
+              if (values.email === '' || values.password === '') {
                 return setLoginError('Please fill in all fields')
-              } else if (values.password !== values.confirmPassword) {
-                return setLoginError('Passwords do not match')
               } else {
-                setEmail(values.email)
-                setPassword(values.password)
-                setConfirmPassword(values.confirmPassword)
-                signUpSubmit()
+                signInSubmit(values)
+                actions.resetForm()
               }
             }}>
             {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -110,55 +104,33 @@ const SignUp = ({ navigation }) => {
                   keyboardType='email-address'
                 />
                 <Text style={styles.label}>PASSWORD</Text>
-                <View styles={styles.passwordInput}>
-                  <TextInput
-                    label='password'
-                    style={styles.input}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    required
-                    secureTextEntry={hidePassword === true ? 'true' : 'false'}
-                    placeholder='*******'
+                <TextInput
+                  label='password'
+                  style={styles.input}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  required
+                  //secureTextEntry={hidePassword === true ? 'true' : 'false'}
+                  placeholder='*******'
+                />
+                <TouchableOpacity onPress={showPassword}>
+                  <Octicons
+                    name={hidePassword === true ? 'eye-closed' : 'eye'}
+                    size={20}
+                    style={styles.eyeIcon}
                   />
-                  <TouchableOpacity onPress={showPassword}>
-                    <Octicons
-                      name={hidePassword === true ? 'eye-closed' : 'eye'}
-                      size={20}
-                      style={styles.eyeIcon}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.label}>CONFIRM PASSWORD</Text>
-                <View styles={styles.passwordInput}>
-                  <TextInput
-                    label='confirmPassword'
-                    style={styles.input}
-                    onChangeText={handleChange('confirmPassword')}
-                    onBlur={handleBlur('confirmPassword')}
-                    value={values.confirmPassword}
-                    required
-                    secureTextEntry={hidePassword === true ? 'true' : 'false'}
-                    placeholder='*******'
-                  />
-                  <TouchableOpacity onPress={showPassword}>
-                    <Octicons
-                      name={hidePassword === true ? 'eye-closed' : 'eye'}
-                      size={20}
-                      style={styles.eyeIcon}
-                    />
-                  </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
                 {loginError !== null && <Text>{loginError}</Text>}
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={styles.signUpButton}
-                  title='Sign in'>
-                  <Text style={styles.buttonText}>Sign Up</Text>
+                <TouchableOpacity onPress={handleSubmit} style={styles.signInButton}>
+                  <Text style={styles.buttonText}>Sign in</Text>
                 </TouchableOpacity>
               </View>
             )}
           </Formik>
+          <Text style={styles.forgotPassword} onPress={''}>
+            Forgot password?
+          </Text>
         </ScrollView>
       </Pressable>
     </KeyboardAvoidingView>
@@ -193,6 +165,7 @@ const styles = StyleSheet.create({
   forgotPassword: {
     marginTop: 20,
     fontSize: 16,
+    color: colors.darkGrey,
     textAlign: 'center',
   },
   header: {
@@ -229,14 +202,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.darkGrey,
   },
-  passwordInput: {
-    position: 'relative',
-  },
   pressable: {
     flex: 1,
     background: 'transparent',
   },
-  signUpButton: {
+  signInButton: {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 15,
@@ -247,4 +217,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
 })
-export default SignUp
+export default WelcomeScreen
