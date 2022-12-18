@@ -97,7 +97,7 @@ const ProjectSchema = new mongoose.Schema({
     phone: Number,
     default: null,
   },
-  themeProject: {
+  theme: {
     type:[ThemeSchema],
     name: String, 
     default: null, 
@@ -116,7 +116,7 @@ const ProjectSchema = new mongoose.Schema({
     name: String, 
     default: null, 
   },
-  drinksProject: {
+  drinks: {
     type: [DrinkSchema],
     name: String, 
     default: null, 
@@ -822,11 +822,11 @@ app.post("/:userId/project-board/projects/addtheme/:projectId", async (req, res)
 // Add on all objects except theme that you only can have 1 of . 
 app.post("/:userId/project-board/projects/addObject/:projectId", async (req, res) => {
   const { userId, projectId } = req.params
-  const { decorations, food, drinksProject, activities} = req.body
+  const { decorations, food, drinks, activities} = req.body
 
  try{
   const addToProject= await Project.findByIdAndUpdate({userProject: userId, _id: projectId }, 
-    { $push: {decorations:decorations, food:food, drinksProject:drinksProject, activities:activities} }
+    { $push: {decorations:decorations, food:food, drinks:drinks, activities:activities} }
     )
     if (addToProject){
         res.status(200).json({
