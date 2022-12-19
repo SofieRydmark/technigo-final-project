@@ -682,16 +682,16 @@ app.post("/:userId/project-board/projects/:projectId/addGuest", authenticateUser
 
 /* DELETE the guest from the guest list*/ 
 
-app.delete('/project-board/projects/:projectId/delete/:guestId', authenticateUser, async (req, res) => {
+app.delete('/:userId/project-board/projects/:projectId/delete/:guestId', authenticateUser, async (req, res) => {
   const { userId, projectId, guestId } = req.params
   const { guestList, name, guestListName } = req.body
 
   try {
     const user = await User.find({ userId })
-    const project = await Project.find({ projectId })
-    const guestToDelete = await Project.findOneAndDelete({ "guestList[0]._id": guestId  })
+    const projectToUpdate = await Project.find({ projectId })
 
-    if (user && project) {
+    if (user && projectToUpdate) {
+      const guestToDelete =  Project.findByIdAndUpdate({_id: projectId}, {$pull: {guestList:{ _id: guestId } }});
 
       console.log("guestToDelete",guestToDelete)
       res.status(200).json({
