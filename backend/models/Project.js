@@ -1,4 +1,4 @@
-const Guest = require('../models/Guest.js')
+// const Guest = require('../models/Guest.js')
 import mongoose from "mongoose";
 
 const ProjectSchema = new mongoose.Schema({
@@ -21,20 +21,32 @@ const ProjectSchema = new mongoose.Schema({
       type: Date,
       default: () => new Date(),
     },
-    /* guestList: {
-      type: [GuestSchema],
-      name: String,
+    guestList: {
+      type: mongoose.ObjectId,
+      ref: "Guest",
+      guestName: String,
       phone: Number,
       default: null,
-    }, */
+    }, 
     themes: { type: Array, default: null },
     decorations: { type: Array, default: null },
     food: { type: Array, default: null },
     drinks: { type: Array, default: null },
     activities: { type: Array, default: null },
-  })
+  });
   
   const Project = mongoose.model('Project', ProjectSchema)
   module.exports = Project; 
 
-  
+  const GuestSchema = new mongoose.Schema({
+    guestName: {
+      type: String,
+      trim: true,
+    },
+    phone: {
+      type: Number,
+    },
+  });
+
+  const Guest = mongoose.model('Guest', GuestSchema);
+  module.exports = Guest; 

@@ -17,7 +17,7 @@ import { drinksCategory, drinksType } from './endpoints/Drinks'
 import { foodCategory, foodType } from './endpoints/Food'
 import { activityCategory, activityType } from './endpoints/Activity'
 import { addNewProject, allProjects, ProjectBoard, SingleProjectId } from './endpoints/ProjectBoard'
-import { UpdateProjectName } from './endpoints/UpdateProject'
+import { addNewGuest, DeleteGuest, UpdateProjectName } from './endpoints/UpdateProject'
 import { deleteProject } from './endpoints/DeleteProject'
 
 const Food = require('../backend/models/Food')
@@ -130,133 +130,103 @@ app.get('/:userId/project-board/projects/:projectId', authenticateUser,SinglePro
 app.post('/:userId/project-board/projects/addProject', authenticateUser,addNewProject)
 
 /* change name and due date in single project and add guests to guest list */ //WORK OK
-app.patch("/:userId/project-board/projects/:projectId", async (req, res) => {
-  const { userId, projectId } = req.params
-  const { name, due_date } = req.body
+app.patch("/:userId/project-board/projects/:projectId", authenticateUser, UpdateProjectName)
+//   const { userId, projectId } = req.params
+//   const { name, due_date } = req.body
 
- try{
+//  try{
 
-  const projectToChange= await Project.findOne({ userId, projectId })
-    if (projectToChange){
+//   const projectToChange= await Project.findOne({ userId, projectId })
+//     if (projectToChange){
 
-      const updatedProject = await Project.findByIdAndUpdate({ _id: projectId}, { 
-         $set: {name: name, due_date: due_date}
-        });
+//       const updatedProject = await Project.findByIdAndUpdate({ _id: projectId}, { 
+//          $set: {name: name, due_date: due_date}
+//         });
     
-            res.status(200).json({
-            response: "Updated",
-            data: updatedProject
-      });
+//             res.status(200).json({
+//             response: "Updated",
+//             data: updatedProject
+//       });
 
-    } else {
-            res.status(500).json({
-            response: "Could not update"
-      });
-    }
- }catch(error) {
-      res.status(401).json({
-        response: "Invalid credentials",
-        success: false,
-        error: error
- })
-}
-})
+//     } else {
+//             res.status(500).json({
+//             response: "Could not update"
+//       });
+//     }
+//  }catch(error) {
+//       res.status(401).json({
+//         response: "Invalid credentials",
+//         success: false,
+//         error: error
+//  })
+// }
+// })
 
 
 /* Add new guest to the the guest list on project */// WORKS OK
-app.post("/:userId/project-board/projects/:projectId/addGuest", authenticateUser, async (req, res) => {
-  const { userId, projectId } = req.params
-  const { guestList, guestName, phone} = req.body
- try{
-  const user = await User.find({ userId })
-  const projectToChange= await Project.findOne({ projectId })
-    if (projectToChange){
-
-      const addedGuest= await Project.findByIdAndUpdate({ _id: projectId}, { $push:{
-        guestList: new Guest({ guestName, phone })},
-      })
-        res.status(200).json({
-        response: "Guest added",
-        data: addedGuest
-      })
-      console.log("something", addedGuest)
-
-    } else {
-      res.status(500).json({
-        response: "Could not update"
-      });
-    }
- }catch(error) {
-      res.status(401).json({
-        response: "Invalid credentials",
-        success: false,
-        error: error
- })
-}
-})
+app.post("/:userId/project-board/projects/:projectId/addGuest", authenticateUser, addNewGuest)
 
 /* DELETE the guest from the guest list*/ 
 
-app.delete('/:userId/project-board/projects/:projectId/delete/:guestId', authenticateUser, async (req, res) => {
-  const { userId, projectId, guestId } = req.params
-  const { guestList, name, guestListName } = req.body
+app.delete('/:userId/project-board/projects/:projectId/delete/:guestId', authenticateUser, DeleteGuest)
+//  async (req, res) => {
+//   const { userId, projectId, guestId } = req.params
+//   const { guestList, name, guestListName } = req.body
 
-  try {
-    const user = await User.find({ userId })
-    const projectToUpdate = await Project.find({ projectId })
+//   try {
+//     const user = await User.find({ userId })
+//     const projectToUpdate = await Project.find({ projectId })
 
-    if (user && projectToUpdate) {
-      const guestToDelete =  Project.findByIdAndUpdate({_id: projectId}, {$pull: {guestList:{ _id: guestId } }});
+//     if (user && projectToUpdate) {
+//       const guestToDelete =  Project.findByIdAndUpdate({_id: projectId}, {$pull: {guestList:{ _id: guestId } }});
 
-      console.log("guestToDelete",guestToDelete)
-      res.status(200).json({
-        response: `Guest has been deleted`,
-        success: true,
-      })
-    } else {
-      res.status(404).json({
-        response: `Guest not found`,
-        success: false,
-      })
-    }
-  } catch (error) {
-    res.status(401).json({
-      response: 'Invalid credentials',
-      success: false,
-    })
-  }
-}
+//       console.log("guestToDelete",guestToDelete)
+//       res.status(200).json({
+//         response: `Guest has been deleted`,
+//         success: true,
+//       })
+//     } else {
+//       res.status(404).json({
+//         response: `Guest not found`,
+//         success: false,
+//       })
+//     }
+//   } catch (error) {
+//     res.status(401).json({
+//       response: 'Invalid credentials',
+//       success: false,
+//     })
+//   }
+// }
 )
 
 
 /* DELETE the project from the project board */ //WORKS PERFECT
-app.delete(
-  '/:userId/project-board/projects/delete/:projectId',
-  authenticateUser,
-  async (req, res) => {
-    const { userId, projectId } = req.params
-    try {
-      const user = await User.find({ userId })
-      const projectToDelete = await Project.findOneAndDelete({ projectId })
-      if (user && projectToDelete) {
-        res.status(200).json({
-          response: `Project has been deleted`,
-          success: true,
-        })
-      } else {
-        res.status(404).json({
-          response: `Project not found`,
-          success: false,
-        })
-      }
-    } catch (error) {
-      res.status(401).json({
-        response: 'Invalid credentials',
-        success: false,
-      })
-    }
-  }
-)
+app.delete('/:userId/project-board/projects/delete/:projectId', authenticateUser, deleteProject)
+//   async (req, res) => {
+//     const { userId, projectId } = req.params
+//     try {
+//       const user = await User.find({ userId })
+//       const projectToDelete = await Project.findOneAndDelete({ projectId })
+//       if (user && projectToDelete) {
+//         res.status(200).json({
+//           response: `Project has been deleted`,
+//           success: true,
+//         })
+//       } else {
+//         res.status(404).json({
+//           response: `Project not found`,
+//           success: false,
+//         })
+//       }
+//     } catch (error) {
+//       res.status(401).json({
+//         response: 'Invalid credentials',
+//         success: false,
+//       })
+//     }
+//   }
+// )
 
 // ************ PROJECTBOARD ENDPOINTS *************** //
 
