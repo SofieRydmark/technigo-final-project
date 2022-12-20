@@ -5,7 +5,8 @@ export const deleteProject = async (req, res) => {
       const { userId, projectId } = req.params
       try {
         const user = await User.find({ userId })
-        const projectToDelete = await Project.findOneAndDelete({ projectId })
+        const projectToDelete = await Project.findOneAndDelete({ userProject: userId, _id: projectId })
+        console.log("delete", user, projectToDelete)
         if (user && projectToDelete) {
           res.status(200).json({
             response: `Project has been deleted`,

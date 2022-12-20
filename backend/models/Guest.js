@@ -1,8 +1,7 @@
 import mongoose from "mongoose"
 
-
 const GuestSchema = new mongoose.Schema({
-    name: {
+    guestName: {
       type: String,
       trim: true,
     },

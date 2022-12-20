@@ -17,7 +17,7 @@ import { drinksCategory, drinksType } from './endpoints/Drinks'
 import { foodCategory, foodType } from './endpoints/Food'
 import { activityCategory, activityType } from './endpoints/Activity'
 import { addNewProject, allProjects, ProjectBoard, SingleProjectId } from './endpoints/ProjectBoard'
-import { UpdateProjectName } from './endpoints/UpdateProject'
+import { UpdateProjectName, addNewGuest } from './endpoints/UpdateProject'
 import { deleteProject } from './endpoints/DeleteProject'
 
 const Food = require('../backend/models/Food')
@@ -130,7 +130,9 @@ app.get('/:userId/project-board/projects/:projectId', authenticateUser,SinglePro
 app.post('/:userId/project-board/projects/addProject', authenticateUser,addNewProject)
 
 /* change name and due date in single project and add guests to guest list */
-app.patch('/:userId/project-board/projects/:projectId', authenticateUser, UpdateProjectName)
+app.patch('/:userId/project-board/projects/change/:projectId', authenticateUser, UpdateProjectName)
+app.post('/:userId/project-board/projects/addGuest/:projectId', authenticateUser, addNewGuest)
+
 
 // ************ DELETE PROJECT *************** //
 app.delete('/:userId/project-board/projects/delete/:projectId',authenticateUser, deleteProject)

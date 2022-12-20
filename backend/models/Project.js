@@ -1,5 +1,5 @@
-const Guest = require('../models/Guest.js')
 import mongoose from "mongoose";
+const Guest = require('../models/Guest.js')
 
 const ProjectSchema = new mongoose.Schema({
     name: {
@@ -21,12 +21,12 @@ const ProjectSchema = new mongoose.Schema({
       type: Date,
       default: () => new Date(),
     },
-    /* guestList: {
-      type: [GuestSchema],
-      name: String,
+    guestList: {
+      type: Array,
+      guestName: String,
       phone: Number,
       default: null,
-    }, */
+    },
     themes: { type: Array, default: null },
     decorations: { type: Array, default: null },
     food: { type: Array, default: null },
