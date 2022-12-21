@@ -143,11 +143,11 @@ app.patch('/:userId/project-board/projects/addDecoration/:projectId', authentica
 app.patch('/:userId/project-board/projects/addActivity/:projectId', authenticateUser, addActivity)
 
 // ************ DELETE OBJECT FROM YOUR PROJECT *************** //
-app.delete('/:userId/project-board/projects/deleteTheme/:themeId/:projectId', authenticateUser, DeleteTheme ) 
-app.delete('/:userId/project-board/projects/deleteDrink/:drinksId/:projectId', authenticateUser, DeleteDrink ) 
-app.delete('/:userId/project-board/projects/deleteFood/:foodId/:projectId', authenticateUser, DeleteFood ) 
-app.delete('/:userId/project-board/projects/deleteActivity/:activityId/:projectId', authenticateUser, DeleteActivity ) 
-app.delete('/:userId/project-board/projects/deleteDecoration/:decorationId/:projectId', authenticateUser, DeleteDecoration )
+app.delete('/:userId/project-board/projects/:projectId/deleteTheme/:themeId', authenticateUser, DeleteTheme ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteDrink/:drinksId', authenticateUser, DeleteDrink ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteFood/:foodId', authenticateUser, DeleteFood ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteActivity/:activityId', authenticateUser, DeleteActivity ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteDecoration/:decorationId', authenticateUser, DeleteDecoration )
 
 
 // ************ DELETE PROJECT *************** //
