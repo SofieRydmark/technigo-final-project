@@ -76,14 +76,14 @@ export const addTheme = async (req, res) => {
  //********************** ADD FOOD ************************* */
   export const addFood = async (req, res) => {
     const { userId, projectId } = req.params
-    const { FoodProjectList, foodProject, FoodName} = req.body
+    const { foodProjectList, foodProject, foodName} = req.body
   
    try{
     const projectToUpdate= await Project.findOne({ userProject: userId, _id: projectId})
    
       if (projectToUpdate){
         const addToProject= await Project.findByIdAndUpdate({ _id: projectId }, {$push:{
-          FoodProjectList: new FoodProject({FoodName})
+          foodProjectList: new FoodProject({foodName})
           
         }}
           )
@@ -109,7 +109,7 @@ export const addTheme = async (req, res) => {
   //********************** ADD ACTIVITY  ************************* */
   export const addActivity = async (req, res) => {
     const { userId, projectId } = req.params
-    const { activitiesProjectList,activityProject,  activitiesName} = req.body
+    const { activitiesProjectList, activityProject,  activitiesName} = req.body
   
    try{
     const projectToUpdate= await Project.findOne({ userProject: userId, _id: projectId})
@@ -142,14 +142,14 @@ export const addTheme = async (req, res) => {
    //********************** ADD DECORATIONS  ************************* */
    export const addDecorations = async (req, res) => {
     const { userId, projectId } = req.params
-    const { DecorationsProjectList, decorationProject , decorationsName} = req.body
+    const { decorationsProjectList, decorationProject , decorationsName} = req.body
   
    try{
     const projectToUpdate= await Project.findOne({ userProject: userId, _id: projectId})
    
       if (projectToUpdate){
         const addToProject= await Project.findByIdAndUpdate({ _id: projectId }, {$push:{
-          DecorationsProjectList: new DecorationProject({decorationsName})
+          decorationsProjectList: new DecorationProject({decorationsName})
           
         }}
           )

@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const ActivityProjectSchema = new mongoose.Schema({
-    DrinksName: {
+  activitiesName: {
       type: String, 
     }
   })
