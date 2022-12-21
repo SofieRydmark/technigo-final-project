@@ -21,6 +21,7 @@ import { UpdateProjectName, addNewGuest } from './endpoints/UpdateProject'
 import { deleteProject } from './endpoints/DeleteProject'
 import { addActivity, addDecorations, addDrinks, addFood, addTheme/* , deleteObject */ } from './endpoints/AddObject'
 import { DeleteActivity, DeleteDecoration, DeleteDrink, DeleteFood, DeleteTheme } from './endpoints/DeleteObject'
+import { ToggleActivity, ToggleDecoration, ToggleDrinks, ToggleFood, ToggleTheme } from './endpoints/ToggleCompleted'
 
 const Food = require('../backend/models/Food')
 const Decoration = require('../backend/models/Decorations')
@@ -149,6 +150,13 @@ app.delete('/:userId/project-board/projects/:projectId/deleteFood/:foodId', auth
 app.delete('/:userId/project-board/projects/:projectId/deleteActivity/:activityId', authenticateUser, DeleteActivity ) 
 app.delete('/:userId/project-board/projects/:projectId/deleteDecoration/:decorationId', authenticateUser, DeleteDecoration )
 
+// ************ TOGGLE COMPLETED FOR OBJECT *************** //
+
+app.patch('/:userId/project-board/projects/:projectId/completed/drink/:drinksId', authenticateUser, ToggleDrinks)
+app.patch('/:userId/project-board/projects/:projectId/completed/food/:foodId', authenticateUser, ToggleFood)
+app.patch('/:userId/project-board/projects/:projectId/completed/decoration/:decorationId', authenticateUser, ToggleDecoration)
+app.patch('/:userId/project-board/projects/:projectId/completed/activity/:activityId', authenticateUser, ToggleActivity)
+app.patch('/:userId/project-board/projects/:projectId/completed/theme/:themeId', authenticateUser, ToggleTheme)
 
 // ************ DELETE PROJECT *************** //
 app.delete('/:userId/project-board/projects/delete/:projectId',authenticateUser, deleteProject)
