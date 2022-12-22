@@ -166,3 +166,33 @@ export const ToggleTheme = async (req, res ) => {
                   success: false,
                   })}}
                   
+  export const ToggleGuest = async (req, res ) => {
+      try {
+        const { userId, projectId, guestId } = req.params
+        const { isCompleted } = req.body
+                    
+        const user = await User.findById(userId)
+        const project = await Project.findById(projectId)
+        const guestToToggle = await Project.findByIdAndUpdate(projectId,
+                    {
+                      $set: {
+                          'guestProjectList.$[elem].isCompleted': isCompleted }},
+                            { new: true, arrayFilters: [
+                            {'elem._id': mongoose.Types.ObjectId(guestId)}]})
+                                if (user && project) {
+                                    res.status(200).json({
+                                      response: 'Theme has been completed',
+                                      guestToToggle,
+                                      success: true,
+                                    })
+                                  } else {
+                                    res.status(404).json({
+                                      response: `User or project not found`,
+                                      success: false,
+                                    })
+                                  }
+                                  } catch (error) {
+                                  res.status(401).json({
+                                  response: 'Invalid credentials',
+                                  success: false,
+                                  })}}

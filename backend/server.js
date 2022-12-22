@@ -21,7 +21,7 @@ import { UpdateProjectName, addNewGuest, deleteGuest } from './endpoints/UpdateP
 import { deleteProject } from './endpoints/DeleteProject'
 import { addActivity, addDecorations, addDrinks, addFood, addTheme } from './endpoints/AddObject'
 import { DeleteActivity, DeleteDecoration, DeleteDrink, DeleteFood, DeleteTheme } from './endpoints/DeleteObject'
-import { ToggleActivity, ToggleDecoration, ToggleDrinks, ToggleFood, ToggleTheme } from './endpoints/ToggleCompleted'
+import { ToggleActivity, ToggleDecoration, ToggleDrinks, ToggleFood, ToggleGuest, ToggleTheme } from './endpoints/ToggleCompleted'
 import { AddBudget, deleteItemFromBudget, /* updateBudget */ } from './endpoints/Budget'
 
 const Food = require('../backend/models/Food')
@@ -158,6 +158,7 @@ app.patch('/:userId/project-board/projects/:projectId/completed/food/:foodId', a
 app.patch('/:userId/project-board/projects/:projectId/completed/decoration/:decorationId', authenticateUser, ToggleDecoration)
 app.patch('/:userId/project-board/projects/:projectId/completed/activity/:activityId', authenticateUser, ToggleActivity)
 app.patch('/:userId/project-board/projects/:projectId/completed/theme/:themeId', authenticateUser, ToggleTheme)
+app.patch('/:userId/project-board/projects/:projectId/completed/guest/:guestId', authenticateUser, ToggleGuest )
 
 // ************ BUDGET ENDPOINTS *************** //
 app.post('/:userId/project-board/projects/:projectId/addItem', authenticateUser, AddBudget)
