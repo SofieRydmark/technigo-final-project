@@ -46,7 +46,7 @@ export const allProjects =  async (req, res) => {
     const { userId, projectId } = req.params
   
     try {
-      const singleProject = await Project.find({ projectId, userProject: userId })
+      const singleProject = await Project.find({_id: projectId, userProject: userId })
       if (singleProject) {
         res.status(200).json({
           response: `Everything is ok`,
