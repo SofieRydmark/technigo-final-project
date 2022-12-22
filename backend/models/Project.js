@@ -53,6 +53,11 @@ const ProjectSchema = new mongoose.Schema({
       activitiesName: String, 
       default: null 
     },
+    budgetList: {
+      type: Array,
+      itemName: String,
+      //  default: null,
+    }
   })
   
   const Project = mongoose.model('Project', ProjectSchema)
