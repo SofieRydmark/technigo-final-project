@@ -19,7 +19,7 @@ import { activityCategory, activityType } from './endpoints/Activity'
 import { addNewProject, allProjects, ProjectBoard, SingleProjectId } from './endpoints/ProjectBoard'
 import { UpdateProjectName, addNewGuest, deleteGuest } from './endpoints/UpdateProject'
 import { deleteProject } from './endpoints/DeleteProject'
-import { addActivity, addDecorations, addDrinks, addFood, addTheme/* , deleteObject */ } from './endpoints/AddObject'
+import { addActivity, addDecorations, addDrinks, addFood, addTheme } from './endpoints/AddObject'
 import { DeleteActivity, DeleteDecoration, DeleteDrink, DeleteFood, DeleteTheme } from './endpoints/DeleteObject'
 import { ToggleActivity, ToggleDecoration, ToggleDrinks, ToggleFood, ToggleTheme } from './endpoints/ToggleCompleted'
 
