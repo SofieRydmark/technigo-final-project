@@ -17,7 +17,7 @@ import { drinksCategory, drinksType } from './endpoints/Drinks'
 import { foodCategory, foodType } from './endpoints/Food'
 import { activityCategory, activityType } from './endpoints/Activity'
 import { addNewProject, allProjects, ProjectBoard, SingleProjectId } from './endpoints/ProjectBoard'
-import { UpdateProjectName, addNewGuest } from './endpoints/UpdateProject'
+import { UpdateProjectName, addNewGuest, deleteGuest } from './endpoints/UpdateProject'
 import { deleteProject } from './endpoints/DeleteProject'
 
 const Food = require('../backend/models/Food')
@@ -136,6 +136,9 @@ app.post('/:userId/project-board/projects/addGuest/:projectId', authenticateUser
 
 // ************ DELETE PROJECT *************** //
 app.delete('/:userId/project-board/projects/delete/:projectId',authenticateUser, deleteProject)
+
+// ************ DELETE GUEST FROM GUEST LIST *************** //
+app.delete('/:userId/project-board/projects/:projectId/deleteGuest/:guestId', authenticateUser, deleteGuest)
 
 
 // ************ START SERVER *************** //

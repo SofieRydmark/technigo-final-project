@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 const Project = require('../models/Project')
 const User = require('../models/User')
 const Guest = require('../models/Guest')
@@ -67,3 +68,35 @@ response: "Guest added",
  }
  }
 
+ export const deleteGuest = async (req, res) => {
+  const { userId, projectId, guestId } = req.params
+  const { guestList } = req.body
+
+  try {
+   const user = await User.find({ userId })
+   const project = await Project.find({ projectId })
+  console.log("project", project)
+  const guestToDelete =  await Project.findByIdAndUpdate({_id: projectId}, {$pull: {guestList: {_id: mongoose.Types.ObjectId(guestId)}}});
+  console.log("guestToDelete",guestToDelete)
+    if (user && project) {
+
+      // const guestToDelete =  await Project.findByIdAndUpdate({_id: projectId}, {$pull: {_id: guestId}});
+ 
+      res.status(200).json({
+        response: `Guest has been deleted`,
+        success: true,
+      })
+    } else {
+      res.status(404).json({
+        response: `Guest not found`,
+        success: false,
+      })
+    }
+  } catch (error) {
+    res.status(401).json({
+      response: 'Invalid credentials',
+      success: false,
+    })
+  }
+
+ }
