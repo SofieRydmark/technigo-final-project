@@ -19,14 +19,17 @@ import { activityCategory, activityType } from './endpoints/Activity'
 import { addNewProject, allProjects, ProjectBoard, SingleProjectId } from './endpoints/ProjectBoard'
 import { UpdateProjectName, addNewGuest } from './endpoints/UpdateProject'
 import { deleteProject } from './endpoints/DeleteProject'
+import { addActivity, addDecorations, addDrinks, addFood, addTheme/* , deleteObject */ } from './endpoints/AddObject'
+import { DeleteActivity, DeleteDecoration, DeleteDrink, DeleteFood, DeleteTheme } from './endpoints/DeleteObject'
+import { ToggleActivity, ToggleDecoration, ToggleDrinks, ToggleFood, ToggleTheme } from './endpoints/ToggleCompleted'
 
 const Food = require('../backend/models/Food')
 const Decoration = require('../backend/models/Decorations')
 const Activity = require('../backend/models/Activity')
 const Drink = require('../backend/models/Drink')
 const Theme = require('../backend/models/Theme')
-const Project = require('../backend/models/Project')
-const User = require('../backend/models/User')
+/* const Project = require('../backend/models/Project')
+const User = require('../backend/models/User') */
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -133,6 +136,27 @@ app.post('/:userId/project-board/projects/addProject', authenticateUser,addNewPr
 app.patch('/:userId/project-board/projects/change/:projectId', authenticateUser, UpdateProjectName)
 app.post('/:userId/project-board/projects/addGuest/:projectId', authenticateUser, addNewGuest)
 
+// ************ ADD OBJECTS TO YOUR PROJECT*************** //
+app.post('/:userId/project-board/projects/addTheme/:projectId', authenticateUser, addTheme)
+app.patch('/:userId/project-board/projects/addDrinks/:projectId', authenticateUser, addDrinks)
+app.patch('/:userId/project-board/projects/addFood/:projectId', authenticateUser, addFood)
+app.patch('/:userId/project-board/projects/addDecoration/:projectId', authenticateUser, addDecorations)
+app.patch('/:userId/project-board/projects/addActivity/:projectId', authenticateUser, addActivity)
+
+// ************ DELETE OBJECT FROM YOUR PROJECT *************** //
+app.delete('/:userId/project-board/projects/:projectId/deleteTheme/:themeId', authenticateUser, DeleteTheme ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteDrink/:drinksId', authenticateUser, DeleteDrink ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteFood/:foodId', authenticateUser, DeleteFood ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteActivity/:activityId', authenticateUser, DeleteActivity ) 
+app.delete('/:userId/project-board/projects/:projectId/deleteDecoration/:decorationId', authenticateUser, DeleteDecoration )
+
+// ************ TOGGLE COMPLETED FOR OBJECT *************** //
+
+app.patch('/:userId/project-board/projects/:projectId/completed/drink/:drinksId', authenticateUser, ToggleDrinks)
+app.patch('/:userId/project-board/projects/:projectId/completed/food/:foodId', authenticateUser, ToggleFood)
+app.patch('/:userId/project-board/projects/:projectId/completed/decoration/:decorationId', authenticateUser, ToggleDecoration)
+app.patch('/:userId/project-board/projects/:projectId/completed/activity/:activityId', authenticateUser, ToggleActivity)
+app.patch('/:userId/project-board/projects/:projectId/completed/theme/:themeId', authenticateUser, ToggleTheme)
 
 // ************ DELETE PROJECT *************** //
 app.delete('/:userId/project-board/projects/delete/:projectId',authenticateUser, deleteProject)

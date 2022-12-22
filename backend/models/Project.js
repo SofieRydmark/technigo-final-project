@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 const Guest = require('../models/Guest.js')
 
+
 const ProjectSchema = new mongoose.Schema({
     name: {
       type: String,
@@ -27,11 +28,31 @@ const ProjectSchema = new mongoose.Schema({
       phone: Number,
       default: null,
     },
-    themes: { type: Array, default: null },
-    decorations: { type: Array, default: null },
-    food: { type: Array, default: null },
-    drinks: { type: Array, default: null },
-    activities: { type: Array, default: null },
+    themeProjectList: {
+      type: Array,
+      themesName: String,
+      default: null
+    },
+    decorationsProjectList: { 
+      type: Array,
+      decorationsName: String, 
+      default: null 
+    },
+    foodProjectList: { 
+      type: Array, 
+      foodName: String,
+      default: null 
+    },
+    drinksProjectList: { 
+      type: Array,
+      drinksName: String,  
+      default: null 
+    },
+    activitiesProjectList: {
+      type: Array, 
+      activitiesName: String, 
+      default: null 
+    },
   })
   
   const Project = mongoose.model('Project', ProjectSchema)
