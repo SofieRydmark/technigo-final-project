@@ -12,6 +12,8 @@ import SignUp from '../screens/SignUp'
 import ProjectBoard from '../screens/ProjectBoard'
 import BrowsCategoriesPage from '../screens/BrowsingCategoriesPage'
 import Themes from '../screens/Themes'
+import Decorations from '../screens/Decorations'
+import Activities from '../screens/Activities'
 
 const Stack = createStackNavigator()
 
@@ -36,6 +38,8 @@ const RootStack = () => {
         <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
         <Stack.Screen name= 'BrowsingCategoriesPage' component={BrowsCategoriesPage} />
         <Stack.Screen name ='Themes' component={Themes} />
+        <Stack.Screen name ='Decorations' component={Decorations} />
+        <Stack.Screen name ='Activities' component={Activities} />
       </Stack.Navigator>
     </NavigationContainer>
   )

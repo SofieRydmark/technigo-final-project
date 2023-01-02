@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useDispatch, batch } from 'react-redux'
 import {
   View,
@@ -37,7 +38,7 @@ const BrowsCategoriesPage = ({ navigation }) => {
   }, [accessToken])
 
   return(
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.background}>
     {accessToken && (
     <View>
         
@@ -75,5 +76,20 @@ const BrowsCategoriesPage = ({ navigation }) => {
   )
 
 }
+
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: colors.green,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+})
 
 export default BrowsCategoriesPage
