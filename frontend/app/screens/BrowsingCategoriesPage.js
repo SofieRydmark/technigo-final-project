@@ -15,9 +15,30 @@ import {
 } from 'react-native'
 
 import colors from '../config/colors'
+import user from '../reducers/user'
 
 const BrowsCategoriesPage = ({ navigation }) => {
+  const accessToken = useSelector((store) => store.user.accessToken)
+  const email = useSelector((store) => store.user.email)
+  const dispatch = useDispatch()
+
+  const logout = () => {
+    console.log('logged out')
+    dispatch(user.actions.setEmail(null))
+    dispatch(user.actions.setAccessToken(null))
+  }
+
+  console.log('accesstoken null', accessToken)
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigation.navigate('SignIn')
+    }
+  }, [accessToken])
+
   return(
+    <ScrollView>
+    {accessToken && (
     <View>
         
         <Button 
@@ -44,7 +65,13 @@ const BrowsCategoriesPage = ({ navigation }) => {
             Activities
         </Button>
 
+        <TouchableOpacity onPress={logout}>
+            <Text>Sign out</Text>
+        </TouchableOpacity>
+
     </View>
+    )}
+    </ScrollView>
   )
 
 }
