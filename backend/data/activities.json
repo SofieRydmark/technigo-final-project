@@ -39,7 +39,7 @@
       },
       {
         "name": "Spökkoppar",
-        "image": "",
+        "image": "https://ik.imagekit.io/qzqy86it9/default_/default_JGFzXG4cF?ik-sdk-version=javascript-1.4.3&updatedAt=1672651398919",
         "description":"Stapla koppar gjorda som spöken och försök få ner dem genom att skjuta med Nerf-vapen på 10 fots avstånd. Ge ut ett litet pris för den som lyckas att skjuta ner dem alla!",
         "type":["grownup","kids"],
         "belong_to_themes": "halloween"
@@ -74,7 +74,7 @@
       },
       {
         "name": "Frågesport",
-        "image": "",
+        "image": "https://ik.imagekit.io/qzqy86it9/default_/default_JGFzXG4cF?ik-sdk-version=javascript-1.4.3&updatedAt=1672651398919",
         "description": "Fågesport är ett favoritspel som vanligtvis spelas på barer och pubar över hela världen. Du kan spela frågesport online, eller köpa kort med frågor. Det finns många olika ämne som man kan välja från t ex sport, film, kändisar och m.m",
         "type":["grownup","kids"],
         "belong_to_themes": [
@@ -95,7 +95,7 @@
       },
       {
         "name": "Kostymtävling",
-        "image": "",
+        "image": "https://ik.imagekit.io/qzqy86it9/default_/default_JGFzXG4cF?ik-sdk-version=javascript-1.4.3&updatedAt=1672651398919",
         "description":"Välj ämne och förbered kostym för festen. Under kvällen utses vinnare av bäst kostym",
         "type":["grownup","kids"],
         "belong_to_themes": [
@@ -143,7 +143,7 @@
       },
       {
         "name": "Poker turnering",
-        "image": "",
+        "image": "https://ik.imagekit.io/qzqy86it9/default_/default_JGFzXG4cF?ik-sdk-version=javascript-1.4.3&updatedAt=1672651398919",
         "description":"",
         "type":"grownup",
         "belong_to_themes":[
@@ -405,7 +405,7 @@
       },     
       {
         "name": "Målar tävling",
-        "image": "",
+        "image": "https://ik.imagekit.io/qzqy86it9/default_/default_JGFzXG4cF?ik-sdk-version=javascript-1.4.3&updatedAt=1672651398919",
         "description":"Välj ämne och måla din egen tavla",
         "type":["grownup","kids"],
         "belong_to_themes": "pyssel och målning"
