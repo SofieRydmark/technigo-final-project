@@ -37,13 +37,11 @@ import {
 } from './endpoints/ToggleCompleted'
 import { AddBudget, deleteItemFromBudget /* updateBudget */ } from './endpoints/Budget'
 
-const Food = require('../backend/models/Food')
-const Decoration = require('../backend/models/Decorations')
-const Activity = require('../backend/models/Activity')
-const Drink = require('../backend/models/Drink')
-const Theme = require('../backend/models/Theme')
-/* const Project = require('../backend/models/Project')
-const User = require('../backend/models/User') */
+import Food from './models/Food'
+import Decoration from './models/Decorations'
+import Activity from './models/Activity'
+import Drink from './models/Drink'
+import Theme from './models/Theme'
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
