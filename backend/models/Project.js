@@ -56,7 +56,7 @@ const ProjectSchema = new mongoose.Schema({
     budgetList: {
       type: Array,
       itemName: String,
-      //  default: null,
+      default: null,
     }
   })
   
