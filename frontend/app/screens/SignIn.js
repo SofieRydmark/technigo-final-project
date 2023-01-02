@@ -51,7 +51,7 @@ const SignIn = ({ navigation }) => {
             dispatch(user.actions.setError(null))
             setLoginError(null)
           })
-          navigation.navigate('ProjectBoard')
+          navigation.navigate('WhatAreWeDoing')
         } else {
           batch(() => {
             dispatch(user.actions.setError(data.response))

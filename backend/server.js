@@ -42,6 +42,8 @@ import Decoration from './models/Decorations'
 import Activity from './models/Activity'
 import Drink from './models/Drink'
 import Theme from './models/Theme'
+/* const Project = require('../backend/models/Project')
+const User = require('../backend/models/User') */
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })

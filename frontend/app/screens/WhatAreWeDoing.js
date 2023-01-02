@@ -14,22 +14,22 @@ import {
 
 import colors from '../config/colors'
 
-const WhatKindOfParty = ({ navigation }) => {
+const WhatAreWeDoing = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
-        <Text style={styles.headerH1}>What kind of party do you need ideas for?</Text>
+        <Text style={styles.headerH1}>What are we doing today?</Text>
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage')}
+          onPress={() => navigation.navigate('ProjectBoard')}
           style={styles.partyButton}>
-          <Text style={styles.buttonText}>Grownup party</Text>
+          <Text style={styles.buttonText}>Go to my projectboard</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage')}
+          onPress={() => navigation.navigate('WhatKindOfParty')}
           style={styles.partyButton}>
-          <Text style={styles.buttonText}>Kids party</Text>
+          <Text style={styles.buttonText}>Browse ideas for a new party</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
 })
-export default WhatKindOfParty
+export default WhatAreWeDoing
