@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
 import ProjectBoard from '../screens/ProjectBoard'
+import BrowsCategoriesPage from '../screens/BrowsingCategoriesPage'
 
 const Stack = createStackNavigator()
 
@@ -32,6 +33,7 @@ const RootStack = () => {
         <Stack.Screen name='SignIn' component={SignIn} />
         <Stack.Screen name='SignUp' component={SignUp} />
         <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
+        <Stack.Screen name= 'BrowsingCategoriesPage' component={BrowsCategoriesPage} />
       </Stack.Navigator>
     </NavigationContainer>
   )
