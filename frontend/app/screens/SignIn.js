@@ -14,7 +14,7 @@ import {
 
 import colors from '../config/colors'
 
-const WelcomeScreen = ({ navigation }) => {
+const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
 
@@ -177,4 +177,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
 })
-export default WelcomeScreen
+export default SignIn

@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
-import WelcomeScreen from '../screens/WelcomeScreen'
+import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
 import ProjectBoard from '../screens/ProjectBoard'
 
@@ -29,7 +29,7 @@ const RootStack = () => {
           },
         }}
         initialRouteName='SignIn'>
-        <Stack.Screen name='SignIn' component={WelcomeScreen} />
+        <Stack.Screen name='SignIn' component={SignIn} />
         <Stack.Screen name='SignUp' component={SignUp} />
         <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       </Stack.Navigator>
