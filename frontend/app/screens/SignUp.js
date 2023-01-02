@@ -20,30 +20,30 @@ import colors from '../config/colors'
 
 const SignUp = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true)
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
-  const [confirmPassword, setConfirmPassword] = useState(null)
   const [loginError, setLoginError] = useState(null)
-
   const dispatch = useDispatch()
-  // const accessToken = useSelector((store) => store.user.accessToken)
 
+  // toggle see or hide password on input
   const showPassword = () => {
     setHidePassword(!hidePassword)
   }
 
-  const signUpSubmit = () => {
-    console.log('sign up', email, password, confirmPassword)
-
+  // sign up form function with post sign up url
+  const signUpSubmit = (values) => {
+    if (values.password !== values.confirmPassword) {
+      return setLoginError('Passwords do not match')
+    }
+    setLoginError(null)
+    console.log('everything ok, lets fetch')
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email: email, password: password }),
+      body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('http://localhost:8080/signUp', options) // signUp url
+    fetch('http://10.0.2.2:8080/signUp', options) // registration URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -66,6 +66,7 @@ const SignUp = ({ navigation }) => {
         }
       })
   }
+
   return (
     <KeyboardAvoidingView
       style={styles.keyboard}
@@ -84,16 +85,13 @@ const SignUp = ({ navigation }) => {
           </View>
           <Formik
             initialValues={{ email: '', password: '', confirmPassword: '' }}
-            onSubmit={(values) => {
+            onSubmit={(values, actions) => {
+              console.log('cred formik', values)
               if (values.email === '' || values.password === '' || values.confirmPassword === '') {
                 return setLoginError('Please fill in all fields')
-              } else if (values.password !== values.confirmPassword) {
-                return setLoginError('Passwords do not match')
               } else {
-                setEmail(values.email)
-                setPassword(values.password)
-                setConfirmPassword(values.confirmPassword)
-                signUpSubmit()
+                signUpSubmit(values)
+                actions.resetForm()
               }
             }}>
             {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -118,7 +116,7 @@ const SignUp = ({ navigation }) => {
                     onBlur={handleBlur('password')}
                     value={values.password}
                     required
-                    secureTextEntry={hidePassword === true ? 'true' : 'false'}
+                    //secureTextEntry={hidePassword === true ? 'true' : 'false'}
                     placeholder='*******'
                   />
                   <TouchableOpacity onPress={showPassword}>
@@ -138,7 +136,7 @@ const SignUp = ({ navigation }) => {
                     onBlur={handleBlur('confirmPassword')}
                     value={values.confirmPassword}
                     required
-                    secureTextEntry={hidePassword === true ? 'true' : 'false'}
+                    //secureTextEntry={hidePassword === true ? 'true' : 'false'}
                     placeholder='*******'
                   />
                   <TouchableOpacity onPress={showPassword}>
@@ -150,10 +148,7 @@ const SignUp = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
                 {loginError !== null && <Text>{loginError}</Text>}
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={styles.signUpButton}
-                  title='Sign in'>
+                <TouchableOpacity onPress={handleSubmit} style={styles.signUpButton}>
                   <Text style={styles.buttonText}>Sign Up</Text>
                 </TouchableOpacity>
               </View>
