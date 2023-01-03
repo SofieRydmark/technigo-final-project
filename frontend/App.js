@@ -1,7 +1,5 @@
-import { StatusBar } from 'expo-status-bar'
-
 // navigator stack
-import RootStack from './app/navigators/RootStack'
+import { RootStack } from './app/navigators/RootStack'
 
 // provider and reducer
 import { Provider } from 'react-redux'
@@ -16,7 +14,6 @@ const store = configureStore({ reducer })
 const App = () => {
   return (
     <Provider store={store}>
-      <StatusBar style='auto' />
       <RootStack />
     </Provider>
   )

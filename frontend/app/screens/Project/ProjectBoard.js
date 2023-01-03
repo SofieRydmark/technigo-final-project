@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
-import colors from '../config/colors'
-import user from '../reducers/user'
+import colors from '../../config/colors'
+import user from '../../reducers/user'
+import { StackActions } from '@react-navigation/native'
 
 const ProjectBoard = ({ navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -12,16 +13,13 @@ const ProjectBoard = ({ navigation }) => {
   const dispatch = useDispatch()
 
   const logout = () => {
-    console.log('logged out')
     dispatch(user.actions.setEmail(null))
     dispatch(user.actions.setAccessToken(null))
   }
 
-  console.log('accesstoken null', accessToken)
-
   useEffect(() => {
     if (!accessToken) {
-      navigation.navigate('SignIn')
+      navigation.dispatch(StackActions.replace('SignIn'))
     }
   }, [accessToken])
 
@@ -32,7 +30,8 @@ const ProjectBoard = ({ navigation }) => {
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('SingleProject')}>
+          <TouchableOpacity
+            onPress={() => navigation.dispatch(StackActions.replace('SingleProject'))}>
             <Text>Project</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={logout}>
