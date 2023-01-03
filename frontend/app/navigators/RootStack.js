@@ -12,6 +12,11 @@ import SignUp from '../screens/SignUp'
 import ProjectBoard from '../screens/ProjectBoard'
 import WhatKindOfParty from '../screens/WhatKindOfParty'
 import WhatAreWeDoing from '../screens/WhatAreWeDoing'
+import BrowsCategoriesPage from '../screens/BrowsingCategoriesPage'
+import Themes from '../screens/Themes'
+import Decorations from '../screens/Decorations'
+import Activities from '../screens/Activities'
+import FoodnDrinks from '../screens/FoodnDrinks'
 
 const Stack = createStackNavigator()
 
@@ -36,6 +41,11 @@ const RootStack = () => {
         <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
         <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
         <Stack.Screen name='WhatAreWeDoing' component={WhatAreWeDoing} />
+        <Stack.Screen name= 'BrowsingCategoriesPage' component={BrowsCategoriesPage} />
+        <Stack.Screen name ='Themes' component={Themes} />
+        <Stack.Screen name ='Decorations' component={Decorations} />
+        <Stack.Screen name ='Activities' component={Activities} />
+        <Stack.Screen name = 'FoodnDrinks' component={FoodnDrinks} />
       </Stack.Navigator>
     </NavigationContainer>
   )

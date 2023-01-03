@@ -40,7 +40,7 @@ const SignIn = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('http://10.0.2.2:8080/signIn', options) // registration URL
+    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signIn', options) // registration URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
