@@ -14,15 +14,20 @@ import {
   Platform,
   Button,
   Image,
-  FlatList
+  FlatList,
+  SafeAreaView
 } from 'react-native'
 
 import colors from '../config/colors'
 import user from '../reducers/user'
 
 const Decorations = ()  => {
+
     const accessToken = useSelector((store) => store.user.accessToken)
     const email = useSelector((store) => store.user.email)
+   /*  const userId = useSelector((store) => store.themeProject.userId)
+    const projectId = useSelector((store) => store.themeProject.projectId)
+    const nameTheme = useSelector((store) => store.themeProject.name) */
     const dispatch = useDispatch()
     const [allDecorations, setAllDecorations ] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -57,36 +62,76 @@ const Decorations = ()  => {
 		getAllDecorations();
 	}, []);
 
+  /* const sendObjectToProject = (nameTheme, event) => {
+    event.preventDefault();
+
+    const URLSEND = `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`
+    
+    const options = {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: accessToken,
+			},
+     body: JSON.stringify({
+        name: nameTheme, 
+
+     })
+      
+		};
+    fetch(URLSEND, options)
+    .then(response => response.json())
+    .then(result => {
+      if(result.success) {
+        batch(() => {
+          dispatch(themeProject.actions.setName(result.name));
+          dispatch(themeProject.actions.setUserId(result.userId)); 
+        })
+      }else {
+        batch(() => {
+          dispatch(themeProject.actions.setName(null));
+          
+        })
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+
+ */
+  
 
     return(
-        <>
-        <ScrollView contentContainerStyle={styles.background}>
+        <SafeAreaView style={styles.background}>
         <TextInput
         style={styles.input}
         placeholder="Search for a theme..."
         onChangeText={(text) => setSearchTerm(text)}
         value={searchTerm}
       />
+      <View style={{height : 400 , width: 300, alignItems: 'center', justifyContent:'center'}}>
         <FlatList
         data={allDecorations
           .filter((decoration) => decoration.name.toLowerCase().includes(searchTerm.toLowerCase()))}
         numColumns={2}
         renderItem={({ item }) => (
-          <View style={styles.item} key={item.name}>
+          <View style={styles.scrollContainer} key={item.name}>
+            <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
             <Text>{item.name}</Text>
             <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
+            </TouchableOpacity>
           </View>
         )}
         keyExtractor={(item) => item.id}
       />
+        </View>
         
-        <Text> Hello themes</Text>
-       
         <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>
         </TouchableOpacity>
-        </ScrollView>
-        </>
+        </SafeAreaView>
+  
     )
 }
 
@@ -112,6 +157,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
+  }, 
+  scrollContainer: {
+    padding: 10, 
+    alignItems: 'center',
+    justifyContent: 'center',
+     
   }
 })
 

@@ -13,6 +13,7 @@ import {
   Pressable,
   Platform,
   Button,
+  Image, 
 } from 'react-native'
 
 import colors from '../config/colors'
@@ -37,40 +38,66 @@ const BrowsCategoriesPage = ({ navigation }) => {
     }
   }, [accessToken])
 
+  const imageTheme = require('../assets/theme.jpg')
+  const imageActivity = require('../assets/activity.jpg')
+  const imageFood = require('../assets/test.jpg')
+  const imageDecoration = require('../assets/test1.jpg')
   return(
     <ScrollView contentContainerStyle={styles.background}>
     {accessToken && (
-    <View>
+    <View style={styles.ContainerStyle}>
         
-        <Button 
+        <View 
+        style={styles.SmallContainer}>
+        <TouchableOpacity
         onPress={() => navigation.navigate('Themes')}
-        title= 'Themes'>
-            Themes
-        </Button>
-
-        <Button 
+        title= 'Themes'
+        >
+      <Image source={imageTheme}
+      style={styles.buttonImage} />
+            <Text style={styles.buttonText}>Themes</Text>
+        </TouchableOpacity>
+        </View>
+       
+        <View 
+        style={styles.SmallContainer}>
+        <TouchableOpacity
         onPress={() =>navigation.navigate('Decorations')}
         title= "Decorations">
-            Decorations
-        </Button>
+          <Image source={imageActivity}
+          style={styles.buttonImage} />
+           <Text style={styles.buttonText}> Decorations</Text>
+        </TouchableOpacity>
+         </View>
 
-        <Button 
+         <View 
+        style={styles.SmallContainer}>
+        <TouchableOpacity
         onPress={() => navigation.navigate('FoodnDrinks')}
         title= "Food and Drinks">
-            Food & Drinks 
-        </Button>
-
-        <Button 
-        onPress={() => navigation.navigate('Activities')}
-        title= "Activity">
-            Activities
-        </Button>
-
-        <TouchableOpacity onPress={logout}>
-            <Text>Sign out</Text>
+          <Image
+          source={imageFood}
+          style={styles.buttonImage} />
+          <Text style={styles.buttonText}>Food & Drinks </Text>  
         </TouchableOpacity>
 
+        </View>
+
+        <View 
+        style={styles.SmallContainer}>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('Activities')}
+        title= "Activity">
+        <Image 
+        source={imageActivity}
+        style={styles.buttonImage} />
+            <Text style={styles.buttonText}> Activities</Text>
+        </TouchableOpacity>
+      </View>
+      
+
     </View>
+    
     )}
     </ScrollView>
   )
@@ -80,16 +107,52 @@ const BrowsCategoriesPage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
     backgroundColor: colors.green,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+    
   },
+  /* button: { 
+    width: '100%',
+    height: 200, 
+    alignItems: 'center',
+    justifyContent: 'center',
+  
+  }, */
   buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    /* position: 'absolute', */
+  /*   top: 100,
+    left: 65, */
+    /* transform: [{ translateX: -50 }, { translateY: -50 }], */
   },
-})
+  buttonImage: {
+    width: 90,
+    height: 110,
+    left: 15, 
+  
+  },
+  ContainerStyle: {
+    flexDirection: 'row',
+    flexWrap: 'wrap', 
+    padding: 50, 
+    margin: 30, 
+    alignContent: 'center',
+    justifyContent: 'center',
+    
+  }, 
+  SmallContainer: {
+    width: '48%',
+    margin: 2, 
+    alignContent: 'center',
+    justifyContent: 'center'
+    
+  }
+});
+
+
 
 export default BrowsCategoriesPage

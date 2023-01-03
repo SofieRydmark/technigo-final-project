@@ -14,6 +14,7 @@ import BrowsCategoriesPage from '../screens/BrowsingCategoriesPage'
 import Themes from '../screens/Themes'
 import Decorations from '../screens/Decorations'
 import Activities from '../screens/Activities'
+import FoodnDrinks from '../screens/FoodnDrinks'
 
 const Stack = createStackNavigator()
 
@@ -40,6 +41,7 @@ const RootStack = () => {
         <Stack.Screen name ='Themes' component={Themes} />
         <Stack.Screen name ='Decorations' component={Decorations} />
         <Stack.Screen name ='Activities' component={Activities} />
+        <Stack.Screen name = 'FoodnDrinks' component={FoodnDrinks} />
       </Stack.Navigator>
     </NavigationContainer>
   )
