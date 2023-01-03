@@ -1,15 +1,18 @@
 import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { StyleSheet } from 'react-native'
 
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-// import CustomTabBarButton from '../components/CustomTabBarButton'
-// import CustomTabBar from '../components/CustomTabBar'
-
-import colors from '../config/colors'
-import { Profile, BrowsingCategoriesPage, ProjectBoard } from '../screens'
-
+// React native navigation
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Tab = createBottomTabNavigator()
+
+// components and screens
+import { Profile, ProjectBoard, BrowsingCategoriesPage, WhatKindOfParty } from '../screens'
+
+// config
+import colors from '../config/colors'
+
+// icons
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const BottomTabNavigator = () => {
   return (
@@ -18,7 +21,18 @@ const BottomTabNavigator = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarInactiveTintColor: colors.black,
-        tabBarStyle: styles.tabBarStyle,
+        tabBarStyle: {
+          position: 'absolute',
+          backgroundColor: colors.white,
+          borderRadius: 15,
+          margin: 10,
+          paddingBottom: 20,
+          paddingTop: 5,
+          elevation: 0,
+          borderTopWidth: 0,
+          height: 70,
+          ...styles.shadow,
+        },
         tabBarActiveTintColor: colors.green,
         tabBarIcon: ({ color, size, focused }) => {
           let iconName
@@ -35,9 +49,6 @@ const BottomTabNavigator = () => {
         },
       })}>
       <Tab.Screen
-        screenOptions={{
-          headerShown: false,
-        }}
         name='Profile'
         component={Profile}
         options={{
@@ -55,7 +66,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name='Browse'
-        component={BrowsingCategoriesPage}
+        component={WhatKindOfParty}
         options={{
           // tabBarButton: (props) => <CustomTabBarButton route='Browse' {...props} />,
           tabBarLabel: 'Browse ideas',
@@ -65,15 +76,17 @@ const BottomTabNavigator = () => {
   )
 }
 
-export default BottomTabNavigator
-
 const styles = StyleSheet.create({
-  tabBarStyle: {
-    position: 'absolute',
-    backgroundColor: colors.white,
-    paddingBottom: 20,
-    paddingTop: 5,
-    borderTopWidth: 0,
-    height: 70,
+  shadow: {
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 3.5,
+    elevation: 5,
   },
 })
+
+export default BottomTabNavigator

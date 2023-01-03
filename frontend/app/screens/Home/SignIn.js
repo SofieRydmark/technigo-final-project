@@ -58,7 +58,7 @@ const SignIn = ({ navigation }) => {
             dispatch(user.actions.setError(null))
             setLoginError(null)
           })
-          navigation.dispatch(StackActions.replace('WhatAreWeDoing'))
+          navigation.dispatch(StackActions.replace('HomeStack'))
         } else {
           batch(() => {
             dispatch(user.actions.setError(data.response))

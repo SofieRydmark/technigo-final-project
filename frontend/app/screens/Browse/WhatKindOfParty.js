@@ -12,12 +12,14 @@ const WhatKindOfParty = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('BrowsingCategoriesPage'))}
+          onPress={() => navigation.dispatch('BrowsingCategoriesPage')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Grownup party</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('BrowsingCategoriesPage'))}
+          onPress={() =>
+            navigation.navigate('HomeStack', { screen: 'BrowsingCategoriesPage', initial: false })
+          }
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Kids party</Text>
         </TouchableOpacity>
