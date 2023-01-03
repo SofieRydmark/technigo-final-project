@@ -23,7 +23,8 @@
     "react-router-native": "^6.4.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "nodemon": "^2.0.20"
   },
   "private": true
 }

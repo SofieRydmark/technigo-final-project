@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, FlatList, SafeAreaView } from 'react-native'
 
 import colors from '../config/colors'
 import user from '../reducers/user'
+import { fetchProjects, project } from '../reducers/user'
+// import project from '../reducers/project'
 
-const ProjectBoard = ({ navigation }) => {
+const ProjectBoard = ({ navigation }) => {  
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
+  const userId = useSelector((store) => store.user.userId)
+   const [allProjects, setAllProjects] = useState([])
+  //  const name = useSelector((store) => store.project.name)
+  // const due_date = useSelector((store) => store.project.due_date)
   const dispatch = useDispatch()
-
+  console.log("allProjects", allProjects)
   const logout = () => {
     console.log('logged out')
     dispatch(user.actions.setEmail(null))
@@ -19,19 +25,57 @@ const ProjectBoard = ({ navigation }) => {
 
   console.log('accesstoken null', accessToken)
 
+
   useEffect(() => {
     if (!accessToken) {
       navigation.navigate('SignIn')
     }
   }, [accessToken])
 
+    /* Thinks we need on project board:
+  - fetch all projects from DB (GET)
+  - add new project (POST)
+  - remove project  (DELETE) */
+
+  const getAllProject = (/*{name, due_date, userId}*/) => {
+    return (
+      fetchProjects()
+    )
+
+    // const options = {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: accessToken,
+    //   },
+    //    body: JSON.stringify({ name: name, due_date: due_date }),
+    // }
+    // fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
+    //   .then ((res) => res.json())
+    //   .then((data) => setAllProjects(data.response))
+    //   .catch((error) => console.log(error))
+    //   console.log("data", allProjects)
+    }
+
+    // useEffect (() => {
+    //   getAllProject()
+    // }, [] )
+
   return (
-    <ScrollView contentContainerStyle={styles.background}>
+    <SafeAreaView contentContainerStyle={styles.background}>
       {accessToken && (
         <>
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
           </View>
+          <View>
+            <FlatList
+              {...allProjects.map((project) => project.name)}
+              renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+              keyExtractor={(item) => item._id}
+             /> 
+          </View>
+    
           <TouchableOpacity onPress={() => navigation.navigate('SingleProject')}>
             <Text>Project</Text>
           </TouchableOpacity>
@@ -40,7 +84,7 @@ const ProjectBoard = ({ navigation }) => {
           </TouchableOpacity>
         </>
       )}
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -65,4 +109,5 @@ const styles = StyleSheet.create({
     background: 'transparent',
   },
 })
+
 export default ProjectBoard
