@@ -32,8 +32,11 @@ const ProjectBoard = ({ navigation }) => {
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProjectBoard')}>
             <Text>Project</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
+            <Text>Brows Categories </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>
