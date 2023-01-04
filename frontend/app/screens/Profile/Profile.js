@@ -1,4 +1,3 @@
-import { StackActions } from '@react-navigation/native'
 import React from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
@@ -12,12 +11,12 @@ const Profile = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('Settings'))}
+          onPress={() => navigation.navigate('Settings')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Change password</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('Settings'))}
+          onPress={() => navigation.navigate('Settings')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Delete account</Text>
         </TouchableOpacity>

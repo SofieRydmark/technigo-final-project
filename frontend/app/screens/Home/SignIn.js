@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, batch } from 'react-redux'
-// import { StackActions } from '@react-navigation/native'
 import {
   View,
   ScrollView,
@@ -19,7 +18,7 @@ import { Octicons } from '@expo/vector-icons'
 import colors from '../../config/colors'
 import user from '../../reducers/user'
 
-// validation of input fields with yup
+// Validation of input fields with yup
 import * as Yup from 'yup'
 const ReviewSchema = Yup.object().shape({
   email: Yup.string().email('Please enter valid email').required('Email is required'),
@@ -31,12 +30,12 @@ const SignIn = ({ navigation }) => {
   const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
 
-  // toggle see or hide password on input
+  // Toggle see or hide password on input
   const showPassword = () => {
     setHidePassword(!hidePassword)
   }
 
-  // sign ip form function with post sign in url
+  // Sign up form function with post sign in url
   const signInSubmit = (values) => {
     setLoginError(null)
     const options = {
@@ -58,7 +57,6 @@ const SignIn = ({ navigation }) => {
             dispatch(user.actions.setError(null))
             setLoginError(null)
           })
-          // navigation.dispatch(StackActions.replace('WhatAreWeDoing'))
         } else {
           batch(() => {
             dispatch(user.actions.setError(data.response))

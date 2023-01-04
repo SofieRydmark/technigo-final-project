@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
-// import { StackActions } from '@react-navigation/native'
 
 import colors from '../../config/colors'
 
