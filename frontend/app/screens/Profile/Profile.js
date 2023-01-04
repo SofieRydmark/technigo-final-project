@@ -12,12 +12,12 @@ const Profile = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('Settings'))}
+          onPress={() => navigation.navigate('Settings')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Change password</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('Settings'))}
+          onPress={() => navigation.navigate('Settings')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Delete account</Text>
         </TouchableOpacity>

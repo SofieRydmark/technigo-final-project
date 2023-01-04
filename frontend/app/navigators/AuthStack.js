@@ -1,14 +1,14 @@
 import React from 'react'
 
-// React native navigation stacks
+// React native navigation
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
-
 const Stack = createStackNavigator()
 
 // Screen imports
 import { SignIn, SignUp } from '../screens'
 
+// Navigation stack if you are not logged in
 const AuthStack = () => {
   return (
     <NavigationContainer>

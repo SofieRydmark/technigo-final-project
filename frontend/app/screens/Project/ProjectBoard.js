@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
+//colors and reducer
 import colors from '../../config/colors'
 import user from '../../reducers/user'
-// import { StackActions } from '@react-navigation/native'
 
 const ProjectBoard = ({ navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -24,7 +24,7 @@ const ProjectBoard = ({ navigation }) => {
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('ProjectBoard')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
             <Text>Project</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, batch } from 'react-redux'
-import { StackActions } from '@react-navigation/native'
 import {
   View,
   ScrollView,
@@ -64,7 +63,6 @@ const SignUp = ({ navigation }) => {
             dispatch(user.actions.setError(null))
             setLoginError(null)
           })
-          navigation.dispatch(StackActions.replace('HomeStack'))
         } else {
           batch(() => {
             dispatch(user.actions.setError(data.response))

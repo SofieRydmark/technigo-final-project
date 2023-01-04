@@ -1,11 +1,13 @@
 import React from 'react'
 
+// Our colors
 import colors from '../config/colors'
 
-// React native navigation stacks
+// React native navigation
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 // import BottomTabNavigator from './BottomTabNavigator'
+const Stack = createStackNavigator()
 
 // Screen imports
 import {
@@ -25,8 +27,7 @@ import {
   FindStore,
 } from '../screens'
 
-const Stack = createStackNavigator()
-
+// Navigation stack if you are logged in
 const HomeStack = () => {
   return (
     <NavigationContainer>
@@ -49,7 +50,7 @@ const HomeStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
-        <Stack.Screen name='SingleProject' component={SingleProjectPage} />
+        <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
         <Stack.Screen name='Budget' component={Budget} />
         <Stack.Screen name='GuestList' component={GuestList} />
         <Stack.Screen name='FindStore' component={FindStore} />

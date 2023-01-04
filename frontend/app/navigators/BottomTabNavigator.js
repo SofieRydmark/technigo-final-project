@@ -5,14 +5,13 @@ import { StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Tab = createBottomTabNavigator()
 
-// components and screens
+// Components and screens
 import { Profile, ProjectBoard, WhatAreWeDoing, WhatKindOfParty } from '../screens'
-// import { HomeStack } from '../navigators/AuthStack'
 
-// config
+// Our colors
 import colors from '../config/colors'
 
-// icons
+// Icons
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const BottomTabNavigator = () => {
@@ -49,6 +48,14 @@ const BottomTabNavigator = () => {
           return <MaterialCommunityIcons name={iconName} size={22} color={color} />
         },
       })}>
+      <Tab.Screen
+        name='Home'
+        component={WhatAreWeDoing}
+        options={{
+          // tabBarButton: (props) => <CustomTabBarButton route='Profile' {...props} />,
+          tabBarLabel: 'Home',
+        }}
+      />
       <Tab.Screen
         name='Profile'
         component={Profile}

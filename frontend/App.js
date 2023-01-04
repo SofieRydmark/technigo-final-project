@@ -17,9 +17,6 @@ const reducer = combineReducers({
 const store = configureStore({ reducer })
 
 const AppWrapper = () => {
-  // const store = configureStore({ reducer })
-  // const store = createStore(rootReducer);
-
   return (
     <Provider store={store}>
       <App />
