@@ -12,12 +12,12 @@ const WhatKindOfParty = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage')}
+          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'grownup' })}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Grownup party</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage')}
+          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'kids' })}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Kids party</Text>
         </TouchableOpacity>
