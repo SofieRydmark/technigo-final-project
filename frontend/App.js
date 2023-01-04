@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 
-// stack navigators
+// Stack and navigators
 import AuthStack from './app/navigators/AuthStack'
-import HomeStack from './app/navigators/HomeStack'
+// import HomeStack from './app/navigators/HomeStack'
+import BottomTabNavigator from './app/navigators/BottomTabNavigator'
 
-// provider and reducer
+// Provider and reducers
 import { Provider, useSelector } from 'react-redux'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
-
 import user from './app/reducers/user'
 const reducer = combineReducers({
   user: user.reducer,
 })
-
 const store = configureStore({ reducer })
 
+// Provider wrapper for app
 const AppWrapper = () => {
   return (
     <Provider store={store}>
@@ -30,7 +30,7 @@ const App = () => {
   return (
     <>
       <StatusBar style='auto' />
-      {accessToken === null ? <AuthStack /> : <HomeStack />}
+      {accessToken === null ? <AuthStack /> : <BottomTabNavigator />}
     </>
   )
 }
