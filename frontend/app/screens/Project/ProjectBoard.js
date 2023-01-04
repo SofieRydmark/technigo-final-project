@@ -30,12 +30,7 @@ const ProjectBoard = ({ navigation }) => {
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
           </View>
-<<<<<<< HEAD:frontend/app/screens/Project/ProjectBoard.js
-          <TouchableOpacity
-            onPress={() => navigation.dispatch(StackActions.replace('SingleProject'))}>
-=======
           <TouchableOpacity onPress={() => navigation.navigate('ProjectBoard')}>
->>>>>>> 2580a6ca0e51d03310b033b22abde4b983f1ef9a:frontend/app/screens/ProjectBoard.js
             <Text>Project</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
