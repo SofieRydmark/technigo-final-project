@@ -28,6 +28,7 @@ const user = createSlice({
   },
 })
 
+
 export const project = createSlice({
   name: 'project',
   initialState: {
@@ -65,19 +66,38 @@ export const fetchProjects = ({name, due_date, userId}) => {
         'Content-Type': 'application/json',
         Authorization: accessToken,
       },
+       body: JSON.stringify(data)
+      }
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
+    .then ((res) => res.json())
+    .then((data) => setAllProjects(data))
+    .catch((error) => console.log(error))
+    console.log("data", data, allProjects)
+  }
+
+
+}
+export const addProject = () => {
+  return({getState, dispatch}) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
        body: JSON.stringify({
-        name: getState().project.name,
+        name: getState().projects.name,
+        due_date: getState().projects.due_date,
         userId: getState().user.userId
         }),
       }
-    fetch(`http://localhost:8080/${userId}/project-board/projects`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
     .then ((res) => res.json())
-    .then((data) => setAllProjects(data.response))
+    .then((data) => dispatch(setAllProjects(data)))
     .catch((error) => console.log(error))
-    console.log("data", data)
+    console.log("data", allProjects)
   }
 
-  
 
 }
 export default user
