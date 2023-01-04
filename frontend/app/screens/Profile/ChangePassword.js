@@ -3,11 +3,11 @@ import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-nati
 
 import colors from '../../config/colors'
 
-const Settings = ({ navigation }) => {
+const ChangePassword = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
-        <Text style={styles.headerH1}>Settings</Text>
+        <Text style={styles.headerH1}>Change Password</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.partyButton}>
           <Text style={styles.buttonText}>Back to profile</Text>
         </TouchableOpacity>
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
 })
-export default Settings
+export default ChangePassword

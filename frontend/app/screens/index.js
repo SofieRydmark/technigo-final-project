@@ -5,7 +5,8 @@ export { default as WhatAreWeDoing } from './Home/WhatAreWeDoing'
 
 // Profile Screens
 export { default as Profile } from './Profile/Profile'
-export { default as Settings } from './Profile/Settings'
+export { default as ChangePassword } from './Profile/ChangePassword'
+export { default as DeleteUser } from './Profile/DeleteUser'
 
 // Browsing Screens
 export { default as WhatKindOfParty } from './Browse/WhatKindOfParty'

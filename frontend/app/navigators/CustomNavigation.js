@@ -18,7 +18,8 @@ import {
   Themes,
   Profile,
   ProjectBoard,
-  Settings,
+  ChangePassword,
+  DeleteUser,
   SingleProjectPage,
   GuestList,
   Budget,
@@ -34,7 +35,7 @@ const HomeNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.primary,
+        headerTintColor: colors.green,
         headerTransparent: true,
         headerTitle: '',
         headerLeftContainerStyle: {
@@ -52,7 +53,8 @@ const HomeNavigator = () => {
       <Stack.Screen name='GuestList' component={GuestList} />
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='Settings' component={Settings} />
+      <Stack.Screen name='ChangePassword' component={ChangePassword} />
+      <Stack.Screen name='DeleteUser' component={DeleteUser} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
       <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
@@ -73,7 +75,6 @@ const ProfileNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.primary,
         headerTransparent: true,
         headerTitle: '',
         headerLeftContainerStyle: {
@@ -86,7 +87,8 @@ const ProfileNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='Settings' component={Settings} />
+      <Stack.Screen name='ChangePassword' component={ChangePassword} />
+      <Stack.Screen name='DeleteUser' component={DeleteUser} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
       <Stack.Screen name='Budget' component={Budget} />
@@ -111,13 +113,17 @@ const ProjectNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.primary,
         headerTransparent: true,
         headerTitle: '',
         headerLeftContainerStyle: {
           paddingLeft: 20,
         },
       }}>
+      <Stack.Screen
+        name='WhatAreWeDoing'
+        component={WhatAreWeDoing}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
       <Stack.Screen name='Budget' component={Budget} />
@@ -130,7 +136,8 @@ const ProjectNavigator = () => {
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='Settings' component={Settings} />
+      <Stack.Screen name='ChangePassword' component={ChangePassword} />
+      <Stack.Screen name='DeleteUser' component={DeleteUser} />
     </Stack.Navigator>
   )
 }
@@ -144,13 +151,17 @@ const BrowseNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.primary,
         headerTransparent: true,
         headerTitle: '',
         headerLeftContainerStyle: {
           paddingLeft: 20,
         },
       }}>
+      <Stack.Screen
+        name='WhatAreWeDoing'
+        component={WhatAreWeDoing}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
       <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
@@ -163,7 +174,8 @@ const BrowseNavigator = () => {
       <Stack.Screen name='GuestList' component={GuestList} />
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='Settings' component={Settings} />
+      <Stack.Screen name='ChangePassword' component={ChangePassword} />
+      <Stack.Screen name='DeleteUser' component={DeleteUser} />
     </Stack.Navigator>
   )
 }
