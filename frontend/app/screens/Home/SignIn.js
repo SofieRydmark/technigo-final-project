@@ -47,7 +47,11 @@ const SignIn = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
+<<<<<<< HEAD:frontend/app/screens/Home/SignIn.js
     fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signIn', options) // sign in URL
+=======
+    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signIn', options) // registration URL
+>>>>>>> 2580a6ca0e51d03310b033b22abde4b983f1ef9a:frontend/app/screens/SignIn.js
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
