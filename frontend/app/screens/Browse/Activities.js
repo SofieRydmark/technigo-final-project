@@ -23,6 +23,7 @@ import user from '../../reducers/user'
 const Activities = ({route, navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
+  const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
   const [allActivities, setAllActivities] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -59,29 +60,24 @@ const Activities = ({route, navigation}) => {
   }, [])
 
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
-  const sendObjectToProject = (itemName) => {
-    /*  const userId = useSelector((store) => store.user.userId)
-     const projectId = 1  */
-  /*    const userId = useSelector((store) => store.themeProject.userId); */
-     /* const projectId = useSelector((store) => store.themeProject.projectId); */
-   
-     const options = {
-       method: 'PATCH',
-       headers: {
-         'Content-Type': 'application/json',
-         Authorization: accessToken,
-       },
-       body: JSON.stringify({
-         name: itemName,
-       }),
-     };
-     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addActivity/${projectId}`, options)
-       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-   };
-   console.log('decoration send',sendObjectToProject)
- 
+  const sendObjectToProject = (name) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+           activitiesName: name,
+      }),
+    };
+    console.log('name', name)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addActivity/63b58581b9761f6338902ec9`, options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+  console.log('Activity send',sendObjectToProject)
 
 
   return (
@@ -100,8 +96,10 @@ const Activities = ({route, navigation}) => {
           numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.item}>
+              <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
               <Text>{item.name}</Text>
               <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
+              </TouchableOpacity>
             </View>
           )}
           keyExtractor={(item) => item.id}

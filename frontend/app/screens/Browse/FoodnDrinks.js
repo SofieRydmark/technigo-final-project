@@ -24,6 +24,7 @@ import user from '../../reducers/user'
 const FoodnDrinks = ({route, navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
+  const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
   const [selectedFetch, setSelectedFetch] = useState('food')
   const [allFood, setAllFood] = useState([])
@@ -88,6 +89,45 @@ const FoodnDrinks = ({route, navigation}) => {
   const handleDrinksButton = () => {
     setSelectedFetch('drinks')
   }
+/****************** SEND FOOD TO SINGLE PROJECT  ************************* */
+  const sendFoodToProject = (name) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+           foodName: name,
+      }),
+    };
+    console.log('name', name)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addFood/63b58581b9761f6338902ec9`, options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+  console.log('Food send',sendFoodToProject)
+
+  /****************** SEND DRINKS TO SINGLE PROJECT  ************************* */
+  const sendDrinksToProject = (name) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+           drinksName: name,
+      }),
+    };
+    console.log('name', name)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDrinks/63b58581b9761f6338902ec9`, options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+  console.log('Drinks send',sendDrinksToProject)
 
   return (
     <SafeAreaView style={styles.background}>
@@ -113,8 +153,10 @@ const FoodnDrinks = ({route, navigation}) => {
             numColumns={2}
             renderItem={({ item }) => (
               <View style={styles.scrollItem}>
-                <Text style={styles.scrollItemText}>{item.name}</Text>
-                <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />
+                <TouchableOpacity onPress={() => sendFoodToProject(item.name)}>
+                  <Text style={styles.scrollItemText}>{item.name}</Text>
+                  <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />
+                </TouchableOpacity>
               </View>
             )}
             keyExtractor={(item) => item.id}
@@ -129,8 +171,10 @@ const FoodnDrinks = ({route, navigation}) => {
             numColumns={2}
             renderItem={({ item }) => (
               <View style={styles.scrollItem}>
-                <Text style={styles.scrollItemText}>{item.name}</Text>
-                <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />
+                <TouchableOpacity onPress={() => sendDrinksToProject(item.name)}>
+                  <Text style={styles.scrollItemText}>{item.name}</Text>
+                  <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />
+                </TouchableOpacity>
               </View>
             )}
             keyExtractor={(item) => item.id}

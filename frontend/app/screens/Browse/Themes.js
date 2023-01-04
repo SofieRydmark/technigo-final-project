@@ -20,12 +20,14 @@ import {
 import colors from '../../config/colors'
 import user from '../../reducers/user'
 
-const Themes = ({userId, projectId, route, navigation}) => {
+const Themes = ({ route, navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
+  const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
   const [allThemes, setAllThemes] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [themeSelected, setThemeSelected] = useState([]);
   const partyType= route.params.partyType
 
   const logout = () => {
@@ -58,6 +60,36 @@ const Themes = ({userId, projectId, route, navigation}) => {
     getAllThemes()
   }, [])
 
+  /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
+  const sendObjectToProject = (name) => {
+    if (themeSelected[name]) {  // check if theme has already been selected
+      // show alert or warning message
+      return;
+
+    }
+    setThemeSelected({ ...themeSelected, [name]: true });  // update themeSelected state
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+           themesName: name,
+      }),
+    };
+    console.log('name', name)
+
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/63b58581b9761f6338902ec9`, options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+  console.log('Theme send',sendObjectToProject)
+
+
+
   return (
     <>
       {/* <ScrollView contentContainerStyle={styles.background}> */}
@@ -74,14 +106,14 @@ const Themes = ({userId, projectId, route, navigation}) => {
         numColumns={2}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text>{item.name}</Text>
-            <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
+            <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
+              <Text>{item.name}</Text>
+              <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
+            </TouchableOpacity>
           </View>
         )}
         keyExtractor={(item) => item.id}
       />
-
-      <Text> Hello themes</Text>
 
       <TouchableOpacity onPress={logout}>
         <Text>Sign out</Text>

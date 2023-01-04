@@ -1,12 +1,14 @@
-import { createSlice} from "@reduxjs/toolkit";
+/* import { createSlice} from "@reduxjs/toolkit";
 
-const themeProject = createSlice({
-    name: 'theme', 
+const decorationProject = createSlice({
+    name: 'decorationsName', 
     initialState: {
         userId: null, 
         accessToken: null, 
-        name: null, 
-        projectId: null,  
+        decorationsName: null, 
+        projectId: null, 
+        isCompleted: null, 
+        _id: null,  
     }, 
     reducers: {
         setAccessToken: (store, action) => {
@@ -17,15 +19,21 @@ const themeProject = createSlice({
             console.log('userid', action)
             store.userId = action.payload
           }, 
-          setName: (store, action) => {
+          setDecorationsName: (store, action) => {
             console.log('nameTheme', action)
             store.name = action.payload
           }, 
           setProjectId: (store, action) => {
             console.log('projectId',action )
             store.projectId = action.payload
+          }, 
+          set_Id: (store, action) => {
+            store._id = action.payload
+          }, 
+          setIsCompleted: (store, action) => {
+            store.isCompleted = action.payload
           }
     }
 })
 
-export default themeProject
+export default decorationProject */

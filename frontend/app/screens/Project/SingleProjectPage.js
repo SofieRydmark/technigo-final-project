@@ -27,6 +27,7 @@ const SingleProjectPage = ({ navigation /* projectId */ }) => {
 
   const [singleProject, setSingleProject] = useState([])
   const userId = useSelector((store) => store.user.userId)
+  /* const projectId = useSelector((store) => store) */
   const dispatch = useDispatch()
 /*   dispatch(project.actions.setProjectId(project._id))
   const projectId = useSelector((store) => store.project._id) */
@@ -67,7 +68,7 @@ const SingleProjectPage = ({ navigation /* projectId */ }) => {
       {project.themeProjectList.map((theme) => {
         return (
           <View key={theme._id}>
-            <Text>{theme.themeName}</Text>
+            <Text>{theme.themesName}</Text>
             {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
           </View>
         );

@@ -20,13 +20,12 @@ import {
 
 import colors from '../../config/colors'
 import user from '../../reducers/user'
+import decorationProject from '../../reducers/decorations'
 
-const Decorations = ({route, navigation, userId, projectId}) => {
+const Decorations = ({route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
-  /*  const userId = useSelector((store) => store.themeProject.userId)
-    const projectId = useSelector((store) => store.themeProject.projectId)
-    const nameTheme = useSelector((store) => store.themeProject.name) */
+  const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
   const [allDecorations, setAllDecorations] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -62,12 +61,8 @@ const Decorations = ({route, navigation, userId, projectId}) => {
     getAllDecorations()
   }, [])
 
-  const sendObjectToProject = (itemName) => {
-    /*  const userId = useSelector((store) => store.user.userId)
-     const projectId = 1  */
-  /*    const userId = useSelector((store) => store.themeProject.userId); */
-     /* const projectId = useSelector((store) => store.themeProject.projectId); */
-   
+  /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
+  const sendObjectToProject = (name) => {
      const options = {
        method: 'PATCH',
        headers: {
@@ -75,10 +70,11 @@ const Decorations = ({route, navigation, userId, projectId}) => {
          Authorization: accessToken,
        },
        body: JSON.stringify({
-         name: itemName,
+            decorationsName: name,
        }),
      };
-     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`, options)
+     console.log('name', name)
+     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/63b58581b9761f6338902ec9`, options)
        .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
