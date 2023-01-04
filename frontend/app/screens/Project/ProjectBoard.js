@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
-import colors from '../config/colors'
-import user from '../reducers/user'
+import colors from '../../config/colors'
+import user from '../../reducers/user'
+// import { StackActions } from '@react-navigation/native'
 
 const ProjectBoard = ({ navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -12,18 +13,9 @@ const ProjectBoard = ({ navigation }) => {
   const dispatch = useDispatch()
 
   const logout = () => {
-    console.log('logged out')
     dispatch(user.actions.setEmail(null))
     dispatch(user.actions.setAccessToken(null))
   }
-
-  console.log('accesstoken null', accessToken)
-
-  useEffect(() => {
-    if (!accessToken) {
-      navigation.navigate('SignIn')
-    }
-  }, [accessToken])
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -35,8 +27,13 @@ const ProjectBoard = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate('ProjectBoard')}>
             <Text>Project</Text>
           </TouchableOpacity>
+<<<<<<< HEAD:frontend/app/screens/ProjectBoard.js
           <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
             <Text>Brows Categories </Text>
+=======
+          <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
+            <Text>Browse Categories </Text>
+>>>>>>> 5a887c05c5564f6b35ce2596687452362ff2064a:frontend/app/screens/Project/ProjectBoard.js
           </TouchableOpacity>
           <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>

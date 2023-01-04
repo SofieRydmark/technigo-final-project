@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, batch } from 'react-redux'
+// import { StackActions } from '@react-navigation/native'
 import {
   View,
   ScrollView,
@@ -15,8 +16,15 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
-import colors from '../config/colors'
-import user from '../reducers/user'
+import colors from '../../config/colors'
+import user from '../../reducers/user'
+
+// validation of input fields with yup
+import * as Yup from 'yup'
+const ReviewSchema = Yup.object().shape({
+  email: Yup.string().email('Please enter valid email').required('Email is required'),
+  password: Yup.string().min(8, 'Must be min 8 characters').required('Password is required'),
+})
 
 const SignIn = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true)
@@ -31,7 +39,6 @@ const SignIn = ({ navigation }) => {
   // sign ip form function with post sign in url
   const signInSubmit = (values) => {
     setLoginError(null)
-    console.log('everything ok, lets fetch')
     const options = {
       method: 'POST',
       headers: {
@@ -40,7 +47,7 @@ const SignIn = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signIn', options) // registration URL
+    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signIn', options) // sign in URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -51,7 +58,7 @@ const SignIn = ({ navigation }) => {
             dispatch(user.actions.setError(null))
             setLoginError(null)
           })
-          navigation.navigate('ProjectBoard')
+          // navigation.dispatch(StackActions.replace('WhatAreWeDoing'))
         } else {
           batch(() => {
             dispatch(user.actions.setError(data.response))
@@ -81,8 +88,8 @@ const SignIn = ({ navigation }) => {
           </View>
           <Formik
             initialValues={{ email: '', password: '' }}
+            validationSchema={ReviewSchema}
             onSubmit={(values, actions) => {
-              console.log('cred formik', values)
               if (values.email === '' || values.password === '') {
                 return setLoginError('Please fill in all fields')
               } else {
@@ -90,7 +97,7 @@ const SignIn = ({ navigation }) => {
                 actions.resetForm()
               }
             }}>
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
               <View style={styles.form}>
                 <Text style={styles.label}>EMAIL</Text>
                 <TextInput
@@ -100,9 +107,14 @@ const SignIn = ({ navigation }) => {
                   onBlur={handleBlur('email')}
                   value={values.email}
                   required
+                  multiline={false}
+                  autoCapitalize='none'
                   placeholder='hello@email.com'
                   keyboardType='email-address'
                 />
+                {errors.email && touched.email ? (
+                  <Text style={styles.loginError}>{errors.email}</Text>
+                ) : null}
                 <Text style={styles.label}>PASSWORD</Text>
                 <TextInput
                   label='password'
@@ -111,7 +123,9 @@ const SignIn = ({ navigation }) => {
                   onBlur={handleBlur('password')}
                   value={values.password}
                   required
-                  //secureTextEntry={hidePassword === true ? 'true' : 'false'}
+                  multiline={false}
+                  autoCapitalize='none'
+                  secureTextEntry={hidePassword === true ? true : false}
                   placeholder='*******'
                 />
                 <TouchableOpacity onPress={showPassword}>
@@ -121,7 +135,10 @@ const SignIn = ({ navigation }) => {
                     style={styles.eyeIcon}
                   />
                 </TouchableOpacity>
-                {loginError !== null && <Text>{loginError}</Text>}
+                {errors.password && touched.password ? (
+                  <Text style={styles.loginError}>{errors.password}</Text>
+                ) : null}
+                {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
                 <TouchableOpacity onPress={handleSubmit} style={styles.signInButton}>
                   <Text style={styles.buttonText}>Sign in</Text>
                 </TouchableOpacity>
@@ -201,6 +218,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     color: colors.darkGrey,
+  },
+  loginError: {
+    fontSize: 15,
+    color: 'red',
+    marginBottom: 15,
+    marginTop: -15,
   },
   pressable: {
     flex: 1,

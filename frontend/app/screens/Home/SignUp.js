@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, batch } from 'react-redux'
+import { StackActions } from '@react-navigation/native'
 import {
   View,
   ScrollView,
@@ -15,8 +16,18 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
-import user from '../reducers/user'
-import colors from '../config/colors'
+import user from '../../reducers/user'
+import colors from '../../config/colors'
+
+// validation of input fields with yup
+import * as Yup from 'yup'
+const ReviewSchema = Yup.object().shape({
+  email: Yup.string().email('Please enter valid email').required('Email is required'),
+  password: Yup.string().min(8, 'Must be min 8 characters').required('Password is required'),
+  confirmPassword: Yup.string()
+    .min(8, 'Must be min 8 characters')
+    .required('Confirm password is required'),
+})
 
 const SignUp = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true)
@@ -34,7 +45,6 @@ const SignUp = ({ navigation }) => {
       return setLoginError('Passwords do not match')
     }
     setLoginError(null)
-    console.log('everything ok, lets fetch')
     const options = {
       method: 'POST',
       headers: {
@@ -54,7 +64,7 @@ const SignUp = ({ navigation }) => {
             dispatch(user.actions.setError(null))
             setLoginError(null)
           })
-          navigation.navigate('ProjectBoard')
+          navigation.dispatch(StackActions.replace('HomeStack'))
         } else {
           batch(() => {
             dispatch(user.actions.setError(data.response))
@@ -85,8 +95,8 @@ const SignUp = ({ navigation }) => {
           </View>
           <Formik
             initialValues={{ email: '', password: '', confirmPassword: '' }}
+            validationSchema={ReviewSchema}
             onSubmit={(values, actions) => {
-              console.log('cred formik', values)
               if (values.email === '' || values.password === '' || values.confirmPassword === '') {
                 return setLoginError('Please fill in all fields')
               } else {
@@ -94,7 +104,7 @@ const SignUp = ({ navigation }) => {
                 actions.resetForm()
               }
             }}>
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
               <View style={styles.form}>
                 <Text style={styles.label}>EMAIL</Text>
                 <TextInput
@@ -104,9 +114,14 @@ const SignUp = ({ navigation }) => {
                   onBlur={handleBlur('email')}
                   value={values.email}
                   required
+                  multiline={false}
+                  autoCapitalize='none'
                   placeholder='hello@email.com'
                   keyboardType='email-address'
                 />
+                {errors.email && touched.email ? (
+                  <Text style={styles.loginError}>{errors.email}</Text>
+                ) : null}
                 <Text style={styles.label}>PASSWORD</Text>
                 <View styles={styles.passwordInput}>
                   <TextInput
@@ -116,7 +131,9 @@ const SignUp = ({ navigation }) => {
                     onBlur={handleBlur('password')}
                     value={values.password}
                     required
-                    //secureTextEntry={hidePassword === true ? 'true' : 'false'}
+                    multiline={false}
+                    autoCapitalize='none'
+                    secureTextEntry={hidePassword === true ? true : false}
                     placeholder='*******'
                   />
                   <TouchableOpacity onPress={showPassword}>
@@ -126,6 +143,9 @@ const SignUp = ({ navigation }) => {
                       style={styles.eyeIcon}
                     />
                   </TouchableOpacity>
+                  {errors.password && touched.password ? (
+                    <Text style={styles.loginError}>{errors.password}</Text>
+                  ) : null}
                 </View>
                 <Text style={styles.label}>CONFIRM PASSWORD</Text>
                 <View styles={styles.passwordInput}>
@@ -136,7 +156,9 @@ const SignUp = ({ navigation }) => {
                     onBlur={handleBlur('confirmPassword')}
                     value={values.confirmPassword}
                     required
-                    //secureTextEntry={hidePassword === true ? 'true' : 'false'}
+                    multiline={false}
+                    autoCapitalize='none'
+                    secureTextEntry={hidePassword === true ? true : false}
                     placeholder='*******'
                   />
                   <TouchableOpacity onPress={showPassword}>
@@ -146,8 +168,11 @@ const SignUp = ({ navigation }) => {
                       style={styles.eyeIcon}
                     />
                   </TouchableOpacity>
+                  {errors.confirmPassword && touched.confirmPassword ? (
+                    <Text style={styles.loginError}>{errors.confirmPassword}</Text>
+                  ) : null}
                 </View>
-                {loginError !== null && <Text>{loginError}</Text>}
+                {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
                 <TouchableOpacity onPress={handleSubmit} style={styles.signUpButton}>
                   <Text style={styles.buttonText}>Sign Up</Text>
                 </TouchableOpacity>
@@ -223,6 +248,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     color: colors.darkGrey,
+  },
+  loginError: {
+    fontSize: 15,
+    color: 'red',
+    marginBottom: 15,
+    marginTop: -15,
   },
   passwordInput: {
     position: 'relative',
