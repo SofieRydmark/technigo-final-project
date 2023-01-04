@@ -18,7 +18,7 @@ import { Octicons } from '@expo/vector-icons'
 import user from '../../reducers/user'
 import colors from '../../config/colors'
 
-// validation of input fields with yup
+// Validation of input fields with yup
 import * as Yup from 'yup'
 const ReviewSchema = Yup.object().shape({
   email: Yup.string().email('Please enter valid email').required('Email is required'),
@@ -33,12 +33,12 @@ const SignUp = ({ navigation }) => {
   const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
 
-  // toggle see or hide password on input
+  // Toggle see or hide password on input
   const showPassword = () => {
     setHidePassword(!hidePassword)
   }
 
-  // sign up form function with post sign up url
+  // Sign up form function with post sign up url
   const signUpSubmit = (values) => {
     if (values.password !== values.confirmPassword) {
       return setLoginError('Passwords do not match')
@@ -52,7 +52,7 @@ const SignUp = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signUp', options) // registration URL
+    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signUp', options) // sign up URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

@@ -25,7 +25,7 @@ import {
   FindStore,
 } from '../screens'
 
-// Custom stack navigators for the tabs
+// Custom stack navigators for bottom tabs
 const HomeNavigator = () => {
   return (
     <Stack.Navigator
