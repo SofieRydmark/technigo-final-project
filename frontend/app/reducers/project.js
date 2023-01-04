@@ -14,6 +14,7 @@ export const project = createSlice({
     activitiesProjectList:  null, 
     budgetList: null,
     error: null,
+    _id: null, 
   },
   reducers: {
     setProjectName: (store, action) => {
@@ -24,5 +25,9 @@ export const project = createSlice({
         console.log("due_date", action)
         store.due_date = action.payload
     },
+    setProjectId: (store,action) => {
+        console.log('projectId', action)
+        store._id = action.payload
+    }
   },
 })

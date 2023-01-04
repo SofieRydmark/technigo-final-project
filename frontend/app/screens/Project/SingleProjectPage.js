@@ -20,14 +20,20 @@ import {
 
 import colors from '../../config/colors'
 import user from '../../reducers/user'
+/* import { project } from '../../reducers/project' */
 
 const SingleProjectPage = ({ navigation /* projectId */ }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
-  const dispatch = useDispatch()
+
   const [singleProject, setSingleProject] = useState([])
   const userId = useSelector((store) => store.user.userId)
+  const dispatch = useDispatch()
+/*   dispatch(project.actions.setProjectId(project._id))
+  const projectId = useSelector((store) => store.project._id) */
+  
 
-console.log('user', userId)
+/* console.log('user', userId) */
+/* console.log('project', projectId) */
 
   const getSingleProject = () => {
     const options = {
@@ -51,13 +57,75 @@ console.log('user', userId)
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerH1}>Single Project</Text>
-        {singleProject.map((item) =>{
-          return (
-            <View key={item._id}>
-              <Text>{item.name}</Text>
-            </View>
-          )
-        })}
+        {singleProject.map((project) => {
+  return (
+    <View key={project._id}>
+      <Text>{project.due_date}</Text>
+      <Text style={styles.headerH1}>{project.name}</Text>
+
+      <Text>THEME</Text>
+      {project.themeProjectList.map((theme) => {
+        return (
+          <View key={theme._id}>
+            <Text>{theme.themeName}</Text>
+            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+          </View>
+        );
+      })}
+
+      <Text>Activities</Text>
+      {project.activitiesProjectList.map((activity) => {
+        return (
+          <View key={activity._id}>
+            <Text>{activity.activitiesName}</Text>
+            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+          </View>
+        );
+      })}
+
+      <Text>DECORATION</Text>
+      {project.decorationsProjectList.map((decoration) => {
+        return (
+          <View key={decoration._id}>
+            <Text>{decoration.decorationsName}</Text>
+            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+          </View>
+        );
+      })}
+
+      <Text>FOOD</Text>
+      {project.foodProjectList.map((food) => {
+        return (
+          <View key={food._id}>
+            <Text>{food.foodName}</Text>
+            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+          </View>
+        );
+      })}
+
+      <Text>DRINKS</Text>
+      {project.drinksProjectList.map((drinks) => {
+        return (
+          <View key={drinks._id}>
+            <Text>{drinks.drinksName}</Text>
+            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+          </View>
+        );
+      })}
+
+
+      {project.budgetList.map((budget) => {
+        return (
+          <View key={budget._id}>
+            <Text>{budget.activitiesName}</Text>
+            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+          </View>
+        );
+      })}
+
+    </View>
+  );
+})}
       
         <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
