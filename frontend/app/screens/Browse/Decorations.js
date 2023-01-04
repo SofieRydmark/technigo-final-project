@@ -21,7 +21,7 @@ import {
 import colors from '../../config/colors'
 import user from '../../reducers/user'
 
-const Decorations = () => {
+const Decorations = ({route, navigation, userId, projectId}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   /*  const userId = useSelector((store) => store.themeProject.userId)
@@ -30,6 +30,7 @@ const Decorations = () => {
   const dispatch = useDispatch()
   const [allDecorations, setAllDecorations] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const partyType= route.params.partyType
 
   const logout = () => {
     console.log('logged out')
@@ -51,7 +52,7 @@ const Decorations = () => {
         Authorization: accessToken,
       },
     }
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/decorations', options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/decorations/type/${partyType}`, options)
       .then((res) => res.json())
       .then((data) => setAllDecorations(data.response))
       .catch((error) => console.error(error))
@@ -61,44 +62,29 @@ const Decorations = () => {
     getAllDecorations()
   }, [])
 
-  /* const sendObjectToProject = (nameTheme, event) => {
-    event.preventDefault();
-
-    const URLSEND = `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`
-    
-    const options = {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: accessToken,
-			},
-     body: JSON.stringify({
-        name: nameTheme, 
-
-     })
-      
-		};
-    fetch(URLSEND, options)
-    .then(response => response.json())
-    .then(result => {
-      if(result.success) {
-        batch(() => {
-          dispatch(themeProject.actions.setName(result.name));
-          dispatch(themeProject.actions.setUserId(result.userId)); 
-        })
-      }else {
-        batch(() => {
-          dispatch(themeProject.actions.setName(null));
-          
-        })
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
-};
-
- */
+  const sendObjectToProject = (itemName) => {
+    /*  const userId = useSelector((store) => store.user.userId)
+     const projectId = 1  */
+  /*    const userId = useSelector((store) => store.themeProject.userId); */
+     /* const projectId = useSelector((store) => store.themeProject.projectId); */
+   
+     const options = {
+       method: 'PATCH',
+       headers: {
+         'Content-Type': 'application/json',
+         Authorization: accessToken,
+       },
+       body: JSON.stringify({
+         name: itemName,
+       }),
+     };
+     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`, options)
+       .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+   };
+   console.log('decoration send',sendObjectToProject)
+ 
 
   return (
     <SafeAreaView style={styles.background}>

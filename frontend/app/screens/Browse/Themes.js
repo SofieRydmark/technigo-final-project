@@ -20,12 +20,13 @@ import {
 import colors from '../../config/colors'
 import user from '../../reducers/user'
 
-const Themes = () => {
+const Themes = ({userId, projectId, route, navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const dispatch = useDispatch()
   const [allThemes, setAllThemes] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const partyType= route.params.partyType
 
   const logout = () => {
     console.log('logged out')
@@ -47,7 +48,7 @@ const Themes = () => {
         Authorization: accessToken,
       },
     }
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes', options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/type/${partyType}`, options)
       .then((res) => res.json())
       .then((data) => setAllThemes(data.response))
       .catch((error) => console.error(error))

@@ -27,13 +27,10 @@ const ProjectBoard = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate('ProjectBoard')}>
             <Text>Project</Text>
           </TouchableOpacity>
-<<<<<<< HEAD:frontend/app/screens/ProjectBoard.js
           <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
             <Text>Brows Categories </Text>
-=======
-          <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
-            <Text>Browse Categories </Text>
->>>>>>> 5a887c05c5564f6b35ce2596687452362ff2064a:frontend/app/screens/Project/ProjectBoard.js
+         {/*  <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
+            <Text>Browse Categories </Text> */}
           </TouchableOpacity>
           <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>
