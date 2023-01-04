@@ -125,10 +125,10 @@ const styles = StyleSheet.create({
     
   },
   grownupBackground: {
-    backgroundColor: '#ff0000', // Red background
+    backgroundColor: colors.green, // Red background
   },
   kidsBackground: {
-    backgroundColor: '#0000ff', // Blue background
+    backgroundColor: colors.peach, // Blue background
   },
   /* button: { 
     width: '100%',
