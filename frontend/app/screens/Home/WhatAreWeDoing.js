@@ -21,6 +21,9 @@ const WhatAreWeDoing = ({ navigation }) => {
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Browse ideas for a new party</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SingleProject')}>
+            <Text>Single project Project</Text>
+          </TouchableOpacity>
       </View>
     </ScrollView>
   )
