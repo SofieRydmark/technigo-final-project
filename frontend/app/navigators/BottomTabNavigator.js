@@ -6,7 +6,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Tab = createBottomTabNavigator()
 
 // components and screens
-import { Profile, ProjectBoard, BrowsingCategoriesPage, WhatKindOfParty } from '../screens'
+import { Profile, ProjectBoard, WhatAreWeDoing, WhatKindOfParty } from '../screens'
+// import { HomeStack } from '../navigators/AuthStack'
 
 // config
 import colors from '../config/colors'

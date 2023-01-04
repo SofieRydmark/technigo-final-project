@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { StackActions } from '@react-navigation/native'
+// import { StackActions } from '@react-navigation/native'
 
 import colors from '../../config/colors'
 
@@ -12,12 +12,12 @@ const WhatAreWeDoing = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('ProjectBoard'))}
+          onPress={() => navigation.navigate('ProjectBoard')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Go to my projectboard</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.dispatch(StackActions.replace('WhatKindOfParty'))}
+          onPress={() => navigation.navigate('WhatKindOfParty')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Browse ideas for a new party</Text>
         </TouchableOpacity>

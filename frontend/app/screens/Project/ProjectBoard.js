@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import colors from '../../config/colors'
 import user from '../../reducers/user'
-import { StackActions } from '@react-navigation/native'
+// import { StackActions } from '@react-navigation/native'
 
 const ProjectBoard = ({ navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -16,12 +16,6 @@ const ProjectBoard = ({ navigation }) => {
     dispatch(user.actions.setEmail(null))
     dispatch(user.actions.setAccessToken(null))
   }
-
-  useEffect(() => {
-    if (!accessToken) {
-      navigation.dispatch(StackActions.replace('SignIn'))
-    }
-  }, [accessToken])
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -34,7 +28,7 @@ const ProjectBoard = ({ navigation }) => {
             <Text>Project</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
-            <Text>Brows Categories </Text>
+            <Text>Browse Categories </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>
