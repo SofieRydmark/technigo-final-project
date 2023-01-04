@@ -20,7 +20,7 @@ import {
 import colors from '../config/colors'
 import user from '../reducers/user'
 
-const Themes = ()  => {
+const Themes = ({userId, projectId, route, navigation})  => {
     const accessToken = useSelector((store) => store.user.accessToken)
     const email = useSelector((store) => store.user.email)
     const dispatch = useDispatch()
@@ -38,8 +38,9 @@ const Themes = ()  => {
         navigation.navigate('SignIn')
       }
     }, [accessToken])
-
+    const partyType= route.params.partyType
     const getAllThemes = () => {
+    
 		const options = {
 			method: 'GET',
 			headers: {
@@ -47,7 +48,7 @@ const Themes = ()  => {
 				Authorization: accessToken,
 			},
 		};
-		fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes', options)
+		fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/type/${partyType}`, options)
 			.then((res) => res.json())
 			.then((data) => setAllThemes(data.response))
 			.catch((error) => console.error(error));
@@ -56,6 +57,31 @@ const Themes = ()  => {
 	useEffect(() => {
 		getAllThemes();
 	}, []);
+
+  /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
+  const sendObjectToProject = (itemName) => {
+    /*  const userId = useSelector((store) => store.user.userId)
+     const projectId = 1  */
+  /*    const userId = useSelector((store) => store.themeProject.userId); */
+     /* const projectId = useSelector((store) => store.themeProject.projectId); */
+   
+     const options = {
+       method: 'PATCH',
+       headers: {
+         'Content-Type': 'application/json',
+         Authorization: accessToken,
+       },
+       body: JSON.stringify({
+         name: itemName,
+       }),
+     };
+     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/${projectId}`, options)
+       .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+   };
+   console.log('decoration send',sendObjectToProject)
+ 
 
 
     return(
@@ -67,6 +93,7 @@ const Themes = ()  => {
         onChangeText={(text) => setSearchTerm(text)}
         value={searchTerm}
       />
+      
       <FlatList
         data={allThemes
           .filter((theme) => theme.name.toLowerCase().includes(searchTerm.toLowerCase()))}
@@ -79,8 +106,8 @@ const Themes = ()  => {
         )}
         keyExtractor={(item) => item.id}
       />
-        
-        <Text> Hello themes</Text>
+    
+       
        
         <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>

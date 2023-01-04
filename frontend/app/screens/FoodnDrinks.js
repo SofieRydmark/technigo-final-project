@@ -21,7 +21,7 @@ import {
 import colors from '../config/colors'
 import user from '../reducers/user'
 
-const FoodnDrinks = ()  => {
+const FoodnDrinks = ({route, navigation})  => {
 
     const accessToken = useSelector((store) => store.user.accessToken)
     const email = useSelector((store) => store.user.email)
@@ -30,7 +30,8 @@ const FoodnDrinks = ()  => {
     const [allFood, setAllFood ] = useState([])
     const [allDrinks, setAllDrinks] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
-  
+    const partyType= route.params.partyType
+
     const logout = () => {
       console.log('logged out')
       dispatch(user.actions.setEmail(null))
@@ -51,7 +52,7 @@ const FoodnDrinks = ()  => {
 				Authorization: accessToken,
 			},
 		};
-		fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/food', options)
+		fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/food/type/${partyType}`, options)
 			.then((res) => res.json())
 			.then((data) => setAllFood(data.response))
 			.catch((error) => console.error(error));
@@ -71,7 +72,7 @@ const FoodnDrinks = ()  => {
 				Authorization: accessToken,
 			},
 		};
-		fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/drinks', options)
+		fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/drinks/type/${partyType}`, options)
 			.then((res) => res.json())
 			.then((data) => setAllDrinks(data.response))
 			.catch((error) => console.error(error));

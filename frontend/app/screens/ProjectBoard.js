@@ -35,7 +35,7 @@ const ProjectBoard = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate('ProjectBoard')}>
             <Text>Project</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
+          <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
             <Text>Brows Categories </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={logout}>

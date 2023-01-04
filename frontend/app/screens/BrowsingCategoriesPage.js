@@ -19,11 +19,19 @@ import {
 import colors from '../config/colors'
 import user from '../reducers/user'
 
-const BrowsCategoriesPage = ({ navigation }) => {
+const BrowsCategoriesPage = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const dispatch = useDispatch()
-
+  const partyType = route.params.partyType
+  let backgroundStyle
+  if (partyType === 'grownup') {
+    backgroundStyle = styles.grownupBackground
+  } else if (partyType === 'kids') {
+    backgroundStyle = styles.kidsBackground
+  }
+  
+  console.log('choosed',partyType)
   const logout = () => {
     console.log('logged out')
     dispatch(user.actions.setEmail(null))
@@ -43,14 +51,15 @@ const BrowsCategoriesPage = ({ navigation }) => {
   const imageFood = require('../assets/test.jpg')
   const imageDecoration = require('../assets/test1.jpg')
   return(
-    <ScrollView contentContainerStyle={styles.background}>
+   
+    <ScrollView contentContainerStyle={[styles.background, backgroundStyle]}>
     {accessToken && (
     <View style={styles.ContainerStyle}>
         
         <View 
         style={styles.SmallContainer}>
         <TouchableOpacity
-        onPress={() => navigation.navigate('Themes')}
+        onPress={() => navigation.navigate('Themes', {partyType : partyType})}
         title= 'Themes'
         >
       <Image source={imageTheme}
@@ -62,7 +71,7 @@ const BrowsCategoriesPage = ({ navigation }) => {
         <View 
         style={styles.SmallContainer}>
         <TouchableOpacity
-        onPress={() =>navigation.navigate('Decorations')}
+        onPress={() =>navigation.navigate('Decorations', {partyType: partyType})}
         title= "Decorations">
           <Image source={imageActivity}
           style={styles.buttonImage} />
@@ -73,7 +82,7 @@ const BrowsCategoriesPage = ({ navigation }) => {
          <View 
         style={styles.SmallContainer}>
         <TouchableOpacity
-        onPress={() => navigation.navigate('FoodnDrinks')}
+        onPress={() => navigation.navigate('FoodnDrinks', {partyType: partyType})}
         title= "Food and Drinks">
           <Image
           source={imageFood}
@@ -86,7 +95,7 @@ const BrowsCategoriesPage = ({ navigation }) => {
         <View 
         style={styles.SmallContainer}>
         <TouchableOpacity
-        onPress={() => navigation.navigate('Activities')}
+        onPress={() => navigation.navigate('Activities', {partyType: partyType})}
         title= "Activity">
         <Image 
         source={imageActivity}
@@ -111,7 +120,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+   
+    // O
     
+  },
+  grownupBackground: {
+    backgroundColor: '#ff0000', // Red background
+  },
+  kidsBackground: {
+    backgroundColor: '#0000ff', // Blue background
   },
   /* button: { 
     width: '100%',
