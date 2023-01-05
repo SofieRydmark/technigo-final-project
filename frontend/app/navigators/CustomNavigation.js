@@ -166,8 +166,6 @@ const BrowseNavigator = () => {
       <Stack.Screen name='GuestList' component={GuestList} />
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='ChangePassword' component={ChangePassword} />
-      <Stack.Screen name='DeleteUser' component={DeleteUser} />
     </Stack.Navigator>
   )
 }

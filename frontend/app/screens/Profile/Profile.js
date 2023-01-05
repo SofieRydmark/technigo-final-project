@@ -55,7 +55,6 @@ const Profile = () => {
         'Content-Type': 'application/json',
         Authorization: accessToken,
       },
-      body: JSON.stringify({ userId }),
     }
 
     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/admin/delete`, options) // delete user URL
@@ -65,7 +64,6 @@ const Profile = () => {
           batch(() => {
             dispatch(user.actions.setAccessToken(null))
             dispatch(user.actions.setEmail(null))
-            console.log('user deleted', data.response)
           })
         } else {
           ;() => {
@@ -138,7 +136,6 @@ const Profile = () => {
         transparent
         visible={showPasswordModal}
         backdropOpacity={0.3}
-        onBackdropPress={() => setShowPasswordModal(false)}
         animationIn='zoomInDown'
         animationOut='zoomOutUp'
         animationInTiming={600}
@@ -203,7 +200,6 @@ const Profile = () => {
         transparent
         visible={showDeleteModal}
         backdropOpacity={0.3}
-        onBackdropPress={() => setShowDeleteModal(false)}
         animationIn='zoomInDown'
         animationOut='zoomOutUp'
         animationInTiming={600}
