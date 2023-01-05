@@ -18,8 +18,6 @@ import {
   Themes,
   Profile,
   ProjectBoard,
-  ChangePassword,
-  DeleteUser,
   SingleProjectPage,
   GuestList,
   Budget,
@@ -53,8 +51,6 @@ const HomeNavigator = () => {
       <Stack.Screen name='GuestList' component={GuestList} />
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='ChangePassword' component={ChangePassword} />
-      <Stack.Screen name='DeleteUser' component={DeleteUser} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
       <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
@@ -87,8 +83,6 @@ const ProfileNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='ChangePassword' component={ChangePassword} />
-      <Stack.Screen name='DeleteUser' component={DeleteUser} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
       <Stack.Screen name='Budget' component={Budget} />
@@ -136,8 +130,6 @@ const ProjectNavigator = () => {
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='ChangePassword' component={ChangePassword} />
-      <Stack.Screen name='DeleteUser' component={DeleteUser} />
     </Stack.Navigator>
   )
 }
