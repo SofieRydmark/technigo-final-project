@@ -27,6 +27,9 @@ const SingleProjectPage = ({ navigation }) => {
   const [singleProject, setSingleProject] = useState([])
   const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
+  const [showInput, setShowInput] = useState(false);
+  const [name, setName] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
 
   const getSingleProject = () => {
@@ -260,16 +263,113 @@ const SingleProjectPage = ({ navigation }) => {
   console.log('marked as completed',deleteTheme)
 
   }
+   /****************** CHANGE NAME OBJECT PROJECT  ************************* */
+  /*  const changeName = (/* projectId,  name) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        name, 
+
+        
+      }),
+    };
+    /* console.log('id fetch', projectId) 
+    console.log('name fetch', name)
+
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/63b58581b9761f6338902ec9`, options)
+      .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+  console.log('name changed',changeName)
+
+  } */
+
+  const singleProjectChange = ( options) => {
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/63b58581b9761f6338902ec9`, options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+  
+  const changeName = (name) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        name,
+      }),
+    };
+  
+    singleProjectChange( options);
+  };
+  
+  const changeDueDate = (dueDate) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        due_date: dueDate,
+      }),
+    };
+  
+    singleProjectChange( options);
+  };
+
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerH1}>Single Project</Text>
         {singleProject.map((project) => {
-  return (
-    <View key={project._id}>
-      <Text>{project.due_date}</Text>
-      <Text style={styles.headerH1}>{project.name}</Text>
+        return (
+          <View key={project._id}>
+          <Text>{project.due_date}</Text>
+          <Text style={styles.headerH1}>{project.name}</Text>
+          <View>
+    <Button
+      title="Change name"
+      onPress={() => setShowInput(!showInput)}
+    />
+    {showInput && (
+      <View>
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
+          placeholder="Enter new name"
+        />
+        <Button
+          title="Submit"
+          onPress={() => {
+            changeName(name, console.log('onpress', name));
+            setShowInput(false);
+          }}
+        />
+      </View>
+    )}
+    <TextInput
+      onChangeText={(text) => setDueDate(text)}
+      value={dueDate}
+      placeholder='YY-MM-DD'
+    />
+    <Button
+      title="Submit"
+      onPress={() => {
+        changeDueDate(dueDate)
+        setShowInput(false);
+      }}
+    />
+  </View>
 
       <Text>THEME</Text>
       {project.themeProjectList.map((theme) => {
