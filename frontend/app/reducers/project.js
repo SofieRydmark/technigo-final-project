@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+/* import { createSlice } from '@reduxjs/toolkit'
 
 export const project = createSlice({
   name: 'project',
@@ -30,4 +30,4 @@ export const project = createSlice({
         store._id = action.payload
     }
   },
-})
+}) */

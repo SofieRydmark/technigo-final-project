@@ -20,7 +20,7 @@ import {
 
 import colors from '../../config/colors'
 import user from '../../reducers/user'
-import decorationProject from '../../reducers/decorations'
+
 
 const Decorations = ({route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
