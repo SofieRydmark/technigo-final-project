@@ -20,9 +20,31 @@ const ReviewSchema = Yup.object().shape({
   password: Yup.string().min(8, 'Must be min 8 characters').required('Password is required'),
 })
 
-// Lottie animation and icons
+// Lottie animation, avatars and icons
 import LottieView from 'lottie-react-native'
 import { MaterialIcons, AntDesign, Octicons } from '@expo/vector-icons'
+import avatar1 from '../../assets/avatar1.json'
+import avatar2 from '../../assets/avatar2.json'
+import avatar3 from '../../assets/avatar3.json'
+import avatar4 from '../../assets/avatar4.json'
+const avatars = [
+  {
+    id: 1,
+    name: avatar1,
+  },
+  {
+    id: 2,
+    name: avatar2,
+  },
+  {
+    id: 3,
+    name: avatar3,
+  },
+  {
+    id: 4,
+    name: avatar4,
+  },
+]
 
 // Reducer
 import user from '../../reducers/user'
@@ -32,15 +54,22 @@ const Profile = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [hidePassword, setHidePassword] = useState(true)
   const [passwordError, setPasswordError] = useState(null)
+  const [avatarModal, setAvatarModal] = useState(false)
+  const [chosenAvatar, setChosenAvatar] = useState(avatar1)
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const email = useSelector((store) => store.user.email)
   const dispatch = useDispatch()
 
-  // sign out
+  // Sign out
   const logout = () => {
     dispatch(user.actions.setEmail(null))
     dispatch(user.actions.setAccessToken(null))
+  }
+
+  // Change avatar
+  const changeAvatar = () => {
+    setAvatarModal(true)
   }
 
   // Toggle see or hide password on input
@@ -48,6 +77,7 @@ const Profile = () => {
     setHidePassword(!hidePassword)
   }
 
+  // Delete user
   const deleteUserSubmit = () => {
     const options = {
       method: 'DELETE',
@@ -73,6 +103,7 @@ const Profile = () => {
       })
   }
 
+  // Change password
   const changePasswordSubmit = (values) => {
     const options = {
       method: 'PATCH',
@@ -101,7 +132,7 @@ const Profile = () => {
             height: 200,
             backgroundColor: colors.green,
           }}
-          source={require('../../assets/avatar1.json')}
+          source={chosenAvatar}
         />
         <View style={styles.signOutWrapper}>
           <TouchableOpacity style={styles.signOutBtn} onPress={() => logout()}>
@@ -109,7 +140,7 @@ const Profile = () => {
             <MaterialIcons name='logout' size={15} color='black' />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.avatarBtn} onPress={() => {}}>
+        <TouchableOpacity style={styles.avatarBtn} onPress={() => changeAvatar()}>
           <MaterialIcons name='edit' size={20} color='black' />
         </TouchableOpacity>
       </View>
@@ -218,6 +249,41 @@ const Profile = () => {
           </View>
         </View>
       </Modal>
+      <Modal
+        animationType={'slide'}
+        transparent
+        visible={avatarModal}
+        backdropOpacity={0.3}
+        animationIn='zoomInDown'
+        animationOut='zoomOutUp'
+        animationInTiming={600}
+        animationOutTiming={600}
+        backdropTransitionInTiming={600}
+        backdropTransitionOutTiming={600}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity onPress={() => setAvatarModal(false)}>
+              <AntDesign name='close' size={25} color='black' style={styles.close} />
+            </TouchableOpacity>
+            <View style={styles.avatarPicker}>
+              {avatars.map((avatar) => (
+                <TouchableOpacity key={avatar.id} onPress={() => setChosenAvatar(avatar.name)}>
+                  <LottieView
+                    key={avatar.id}
+                    autoPlay
+                    style={{
+                      width: 80,
+                      height: 80,
+                      backgroundColor: 'transparent',
+                    }}
+                    source={avatar.name}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   )
 }
@@ -234,6 +300,9 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: colors.lightGrey,
     borderRadius: 50,
+  },
+  avatarPicker: {
+    flexDirection: 'row',
   },
   background: {
     flex: 1,
