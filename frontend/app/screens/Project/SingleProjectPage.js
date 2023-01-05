@@ -154,6 +154,113 @@ const SingleProjectPage = ({ navigation }) => {
 
   }
 
+   /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
+
+   const deleteDrinks = (drinksId, name) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        drinksName: name,  
+        _id: drinksId,
+      }),
+    };
+    console.log('id', drinksId)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteDrink/${drinksId}`, options)
+      .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+  console.log('marked as completed',deleteFood)
+
+  }
+
+  const deleteFood = (foodId, name) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        foodName: name,  
+        _id: foodId,
+      }),
+    };
+    console.log('id', foodId)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteFood/${foodId}`, options)
+      .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+  console.log('marked as completed',deleteFood)
+
+  }
+
+  const deleteDecoration = (decorationId, name) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        decorationsName: name,  
+        _id: decorationId,
+      }),
+    };
+    console.log('id', decorationId)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteDecoration/${decorationId}`, options)
+      .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+  console.log('marked as completed',deleteDecoration)
+
+  }
+
+  const deleteActivity = (activityId, name) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        activitiesName: name,  
+        _id: activityId,
+      }),
+    };
+    console.log('id', activityId)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteActivity/${activityId}`, options)
+      .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+  console.log('marked as completed',deleteActivity)
+
+  }
+
+  const deleteTheme = (themeId, name) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        themesName: name,  
+        _id: themeId,
+      }),
+    };
+    console.log('id', themeId)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteTheme/${themeId}`, options)
+      .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error));
+  console.log('marked as completed',deleteTheme)
+
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
@@ -171,6 +278,7 @@ const SingleProjectPage = ({ navigation }) => {
             <Text>{theme.themesName}</Text>
             <Text>{theme.isCompleted ? 'Completed' : 'Incomplete'}</Text>
             <Button title='Mark as completed' onPress={() => completedTheme(theme._id, theme.isCompleted)}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteTheme(theme._id, )}> Mark as completed</Button>
           </View>
         );
       })}
@@ -182,6 +290,7 @@ const SingleProjectPage = ({ navigation }) => {
             <Text>{activity.activitiesName}</Text>
             <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text>
             <Button title='Mark as completed' onPress={() => completedActivities(activity._id, activity.isCompleted)}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteActivity(activity._id, )}> Mark as completed</Button>
           </View>
         );
       })}
@@ -193,6 +302,7 @@ const SingleProjectPage = ({ navigation }) => {
             <Text>{decoration.decorationsName}</Text>
             <Text>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
             <Button title='Mark as completed' onPress={() => completedDecorations(decoration._id, decoration.isCompleted)}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteDecoration(decoration._id, )}> Mark as completed</Button>
           </View>
         );
       })}
@@ -204,6 +314,7 @@ const SingleProjectPage = ({ navigation }) => {
             <Text>{food.foodName}</Text>
             <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
             <Button title='Mark as completed' onPress={() => completedFood(food._id, food.isCompleted)}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteFood(food._id, )}> Mark as completed</Button>
           </View>
         );
       })}
@@ -215,6 +326,7 @@ const SingleProjectPage = ({ navigation }) => {
             <Text>{drinks.drinksName}</Text>
             <Text>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
             <Button title='Mark as completed' onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteDrinks(drinks._id, )}> Mark as completed</Button>
           </View>
         );
       })}
