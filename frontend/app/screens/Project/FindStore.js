@@ -1,39 +1,108 @@
-import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  Image,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  FlatList,
+} from 'react-native'
 
+// Geolocation and map packages
 import * as Location from 'expo-location'
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 
+// Config
+import mapStyling from '../../config/mapStyling.json'
 import colors from '../../config/colors'
+import storeList from '../../config/stores.json'
+import findStore from '../../config/findStore.json'
+
+// Icons
+import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 
 const FindStore = () => {
-  const [location, setLocation] = useState(null)
+  const [location, setLocation] = useState({
+    latitude: 59.32944625683492,
+    longitude: 18.07057655623167,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  })
   const [errorMsg, setErrorMsg] = useState(null)
+  const [showModal, setShowModal] = useState(false)
 
-  useEffect(() => {
-    ;(async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied')
-        return
-      }
+  const setMyLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied')
+      return errorMsg
+    }
 
-      let location = await Location.getCurrentPositionAsync({})
-      setLocation(location)
-    })()
-  }, [])
-
-  let text = 'Waiting..'
-  if (errorMsg) {
-    text = errorMsg
-  } else if (location) {
-    text = JSON.stringify(location)
+    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true })
+    setLocation({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    })
   }
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerH1}>Find a store</Text>
-        <Text>{text}</Text>
+        <TouchableOpacity style={styles.locationBtn} onPress={() => setMyLocation()}>
+          <Text style={styles.locationTxt}>Use my current location</Text>
+          <Ionicons name='location-outline' size={30} color='black' />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.mapWrapper}>
+        <MapView
+          style={styles.map}
+          region={location}
+          provider={PROVIDER_GOOGLE}
+          customMapStyle={mapStyling}>
+          <Marker coordinate={location} title='You' pinColor={colors.lightYellow}>
+            <MaterialCommunityIcons name='panda' size={40} color='black' />
+          </Marker>
+          {findStore.map((item) => (
+            <Marker key={item.id} title={item.company} coordinate={item.coordinates}>
+              <Ionicons name='location-outline' size={40} color='black' />
+            </Marker>
+          ))}
+        </MapView>
+
+        <TouchableOpacity style={styles.onlineBtn} onPress={() => setShowModal(true)}>
+          <Text style={styles.onlineTxt}>Want to shop online instead? Here are some tips</Text>
+        </TouchableOpacity>
+        <Modal
+          animationType={'slide'}
+          transparent
+          visible={showModal}
+          backdropOpacity={0.3}
+          animationIn='zoomInDown'
+          animationOut='zoomOutUp'
+          animationInTiming={600}
+          animationOutTiming={600}
+          backdropTransitionInTiming={600}
+          backdropTransitionOutTiming={600}>
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity onPress={() => setShowModal(false)}>
+                <AntDesign name='close' size={25} color='black' style={styles.closeModal} />
+              </TouchableOpacity>
+              <View style={styles.storeList}>
+                {storeList.map((store) => (
+                  <Text key={store.id} style={styles.storeTxt}>
+                    {store.name}
+                  </Text>
+                ))}
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   )
@@ -47,24 +116,77 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
+  closeModal: {
+    top: 0,
+    right: -130,
+  },
   header: {
-    marginBottom: 30,
+    top: -50,
+    padding: 10,
+    marginBottom: 10,
   },
   headerH1: {
-    fontSize: 25,
+    fontSize: 35,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  partyButton: {
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+  mapWrapper: {
+    height: 350,
+    width: 350,
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
+  },
+  locationBtn: {
     width: '100%',
-    height: 70,
+    padding: 5,
+    textAlign: 'center',
+    fontSize: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  locationTxt: {
+    fontSize: 16,
+    textDecorationLine: 'underline',
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width: '90%',
+    padding: 30,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  onlineBtn: {
     borderRadius: 8,
     backgroundColor: colors.peach,
+    width: '80%',
+    padding: 13,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  onlineTxt: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  storeList: {
+    flexDirection: 'column',
+    marginTop: -20,
+  },
+  storeTxt: {
+    fontSize: 20,
+    textTransform: 'uppercase',
   },
 })
 export default FindStore

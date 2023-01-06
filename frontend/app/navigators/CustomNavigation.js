@@ -77,11 +77,6 @@ const ProfileNavigator = () => {
           paddingLeft: 20,
         },
       }}>
-      <Stack.Screen
-        name='WhatAreWeDoing'
-        component={WhatAreWeDoing}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
@@ -113,11 +108,6 @@ const ProjectNavigator = () => {
           paddingLeft: 20,
         },
       }}>
-      <Stack.Screen
-        name='WhatAreWeDoing'
-        component={WhatAreWeDoing}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
       <Stack.Screen name='Budget' component={Budget} />
@@ -149,11 +139,6 @@ const BrowseNavigator = () => {
           paddingLeft: 20,
         },
       }}>
-      <Stack.Screen
-        name='WhatAreWeDoing'
-        component={WhatAreWeDoing}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
       <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
