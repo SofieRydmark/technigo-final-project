@@ -22,7 +22,7 @@ import colors from '../../config/colors'
 import user from '../../reducers/user'
 
 
-const SingleProjectPage = ({ navigation }) => {
+const SingleProjectPage = ({ navigation, route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const [singleProject, setSingleProject] = useState([])
   const userId = useSelector((store) => store.user.userId)
@@ -30,9 +30,11 @@ const SingleProjectPage = ({ navigation }) => {
   const [showInput, setShowInput] = useState(false);
   const [name, setName] = useState('');
   const [dueDate, setDueDate] = useState('');
+  const projectId = route.params.projectId
 
 
   const getSingleProject = () => {
+    console.log(projectId, 'projectId')
     const options = {
       method: 'GET',
       headers: {
@@ -40,7 +42,7 @@ const SingleProjectPage = ({ navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}`, options)
       .then((res) => res.json())
       .then((data) => setSingleProject(data.data))
       .catch((error) => console.error(error))

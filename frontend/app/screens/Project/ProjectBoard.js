@@ -15,6 +15,7 @@ const ProjectBoard = ({ navigation, _id }) => {
   const userId = useSelector((store) => store.user.userId)
   // const project = useSelector((store) => store.project.all)
 
+
   console.log("project", project)
   const [allProjects, setAllProjects] = useState([])
   const [newProject, setNewProject] = useState("")
@@ -76,8 +77,7 @@ const ProjectBoard = ({ navigation, _id }) => {
     //   addNewProject()
     // }, [])
     
-
-    
+ 
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -127,14 +127,16 @@ const ProjectBoard = ({ navigation, _id }) => {
             {allProjects.map((singleProject) => {
               return(
                 <View>
+                  <TouchableOpacity onPress={() => {console.log('project', singleProject._id) ;navigation.navigate('SingleProjectPage', { projectId: singleProject._id, })}}>
                   <Text key={_id} style={styles.item}>{singleProject.name}</Text>
+                  </TouchableOpacity>
                 </View>
               );
             })}
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate('SingleProject', { projectId: project._id })}>
             <Text>Project</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
             <Text>Brows Categories </Text>
          {/*  <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
