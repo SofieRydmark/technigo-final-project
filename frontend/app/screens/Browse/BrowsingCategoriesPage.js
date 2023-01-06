@@ -38,6 +38,8 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
     dispatch(user.actions.setAccessToken(null))
   }
 
+  console.log('accesstoken null', accessToken)
+
   useEffect(() => {
     if (!accessToken) {
       navigation.navigate('SignIn')
@@ -53,9 +55,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
       {accessToken && (
         <View style={styles.ContainerStyle}>
           <View style={styles.SmallContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Themes', { partyType: partyType })}
-              title='Themes'>
+            <TouchableOpacity onPress={() => navigation.navigate('Themes', {partyType : partyType})} title='Themes'>
               <Image source={imageTheme} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Themes</Text>
             </TouchableOpacity>
@@ -63,7 +63,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Decorations', { partyType: partyType })}
+              onPress={() => navigation.navigate('Decorations', {partyType : partyType})}
               title='Decorations'>
               <Image source={imageActivity} style={styles.buttonImage} />
               <Text style={styles.buttonText}> Decorations</Text>
@@ -72,7 +72,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('FoodnDrinks', { partyType: partyType })}
+              onPress={() => navigation.navigate('FoodnDrinks', {partyType : partyType})}
               title='Food and Drinks'>
               <Image source={imageFood} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Food & Drinks </Text>
@@ -80,9 +80,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
           </View>
 
           <View style={styles.SmallContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Activities', { partyType: partyType })}
-              title='Activity'>
+            <TouchableOpacity onPress={() => navigation.navigate('Activities', {partyType : partyType})} title='Activity'>
               <Image source={imageActivity} style={styles.buttonImage} />
               <Text style={styles.buttonText}> Activities</Text>
             </TouchableOpacity>
@@ -101,10 +99,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   grownupBackground: {
-    backgroundColor: colors.green,
+    backgroundColor: colors.green, 
   },
   kidsBackground: {
-    backgroundColor: colors.peach,
+    backgroundColor: colors.peach, 
   },
   /* button: { 
     width: '100%',

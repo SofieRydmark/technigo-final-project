@@ -3,22 +3,13 @@ import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-nati
 
 import colors from '../../config/colors'
 
-const Profile = ({ navigation }) => {
+const Settings = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
-        <Text style={styles.headerH1}>Profile</Text>
-      </View>
-      <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Settings')}
-          style={styles.partyButton}>
-          <Text style={styles.buttonText}>Change password</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Settings')}
-          style={styles.partyButton}>
-          <Text style={styles.buttonText}>Delete account</Text>
+        <Text style={styles.headerH1}>Settings</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.partyButton}>
+          <Text style={styles.buttonText}>Back to profile</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -33,16 +24,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  buttonText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  container: {
-    borderRadius: 30,
-    padding: 25,
-    width: '80%',
-    backgroundColor: colors.white,
-  },
   header: {
     marginBottom: 30,
   },
@@ -50,10 +31,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  pressable: {
-    flex: 1,
-    background: 'transparent',
   },
   partyButton: {
     alignItems: 'center',
@@ -67,4 +44,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
 })
-export default Profile
+export default Settings

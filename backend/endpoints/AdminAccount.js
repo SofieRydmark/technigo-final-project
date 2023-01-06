@@ -6,7 +6,7 @@ const crypto = require('crypto')
 export const deleteUser = async (req, res) => {
   const { userId } = req.params
   try {
-    const user = await User.find({ _id: userId })
+    const user = await User.findOne({ _id: userId })
     if (user) {
       const deleteUser = await User.findOneAndDelete({ _id: userId })
       res.status(200).json({
