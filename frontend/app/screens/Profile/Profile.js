@@ -175,7 +175,12 @@ const Profile = () => {
         backdropTransitionOutTiming={600}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContent}>
-            <Text style={styles.userInfoSubTitle}>New password</Text>
+            <View style={styles.modalHeader}>
+              <Text style={styles.userInfoSubTitle}>New password</Text>
+              <TouchableOpacity onPress={() => setShowPasswordModal(false)}>
+                <AntDesign name='close' size={25} color='black' style={styles.closeModal} />
+              </TouchableOpacity>
+            </View>
             <Formik
               initialValues={{ password: '' }}
               validationSchema={ReviewSchema}
@@ -220,9 +225,6 @@ const Profile = () => {
                 </View>
               )}
             </Formik>
-            <TouchableOpacity onPress={() => setShowPasswordModal(false)}>
-              <AntDesign name='close' size={25} color='black' style={styles.close} />
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -239,7 +241,12 @@ const Profile = () => {
         backdropTransitionOutTiming={600}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContent}>
-            <Text style={styles.userInfoSubTitle}>Are you sure you want to delete user?</Text>
+            <View style={styles.modalHeader}>
+              <Text style={styles.userInfoSubTitle}>Are you sure you want to delete user?</Text>
+              <TouchableOpacity onPress={() => setShowDeleteModal(false)}>
+                <AntDesign name='close' size={25} color='black' style={styles.closeModal2} />
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity onPress={deleteUserSubmit} style={styles.deleteBtn}>
               <Text style={styles.userBtnTxt}>Yes, delete user</Text>
             </TouchableOpacity>
@@ -262,9 +269,6 @@ const Profile = () => {
         backdropTransitionOutTiming={600}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContent}>
-            <TouchableOpacity onPress={() => setAvatarModal(false)}>
-              <AntDesign name='close' size={25} color='black' style={styles.close} />
-            </TouchableOpacity>
             <View style={styles.avatarPicker}>
               {avatars.map((avatar) => (
                 <TouchableOpacity key={avatar.id} onPress={() => setChosenAvatar(avatar.name)}>
@@ -280,6 +284,9 @@ const Profile = () => {
                   />
                 </TouchableOpacity>
               ))}
+              <TouchableOpacity onPress={() => setAvatarModal(false)}>
+                <AntDesign name='close' size={28} color='black' style={styles.closeAvatarModal} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -303,6 +310,8 @@ const styles = StyleSheet.create({
   },
   avatarPicker: {
     flexDirection: 'row',
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   background: {
     flex: 1,
@@ -315,10 +324,17 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.white,
   },
-  close: {
-    position: 'absolute',
-    bottom: 160,
-    right: -160,
+  closeModal: {
+    right: -65,
+    top: -10,
+  },
+  closeModal2: {
+    right: -22,
+    top: -10,
+  },
+  closeAvatarModal: {
+    top: -35,
+    right: 10,
   },
   confirmBtn: {
     borderRadius: 8,
@@ -423,6 +439,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width: '90%',
     borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalHeader: {
+    flexDirection: 'row',
   },
   signOutWrapper: {
     position: 'absolute',
