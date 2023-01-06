@@ -157,6 +157,9 @@ const ProjectBoard = ({ navigation, _id }) => {
           <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
+            <Text>Find store</Text>
+          </TouchableOpacity>
         </>
       )}
     </ScrollView>
