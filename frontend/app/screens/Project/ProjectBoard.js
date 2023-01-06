@@ -22,8 +22,8 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  // const projectId = route.params.projectId
-  // console.log("projectId", projectId)
+  const projectId = req.params
+  console.log("projectId", projectId)
 
   /*--- FINDING PROJECTID USING REDUX--- */
   
@@ -136,7 +136,7 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
               actions.resetForm()
             }
             }}>
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ handleChange, handleSubmit, values }) => (
               <View>
                 <TextInput
                   style={{ height: 40, width: 100 }}
@@ -168,7 +168,6 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
           <View>
             {allProjects.map((singleProject) => {
               return(
-               
                 <>
                 <View>
                   <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
@@ -180,15 +179,10 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
                       <Text>✖️</Text>
                     </TouchableOpacity>
                   </View>
-                  </>
-               
+                  </> 
               );
             })}
           </View>
-          
-          {/* <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}> */}
-            {/* <Text>Project</Text> */}
-          {/* // </TouchableOpacity> */}
           <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
             <Text>Brows Categories </Text>
             {/*  <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
