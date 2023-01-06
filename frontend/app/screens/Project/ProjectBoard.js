@@ -1,26 +1,39 @@
 import {React, useState, useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch} from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity,  FlatList, SafeAreaView, TextInput } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { Formik } from 'formik'
 
 //colors and reducer
 import colors from '../../config/colors'
-import user, { project } from '../../reducers/user'
-import { fetchProjects } from '../../reducers/user'
+import user from '../../reducers/user'
+// import { fetchProjects } from '../../reducers/user' /* needed with thunks */
 
-const ProjectBoard = ({ navigation, _id }) => {
+const ProjectBoard = ({ route,navigation, _id,}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  // const project = useSelector((store) => store.project.all)
+  const projectId = route.params.projectId
+  console.log("projectId", projectId)
 
-  console.log("project", project)
+  /*--- FINDING PROJECTID USING REDUX--- */
+  
+  // const { projectId } = match.params
+
+  // const project = useSelector((store) =>
+  //   store.user.find(project => project.id === projectId)
+  // )
+
+  // if (!project) {
+  //   return (
+  //     console.log("project not found")
+  //   )
+  // }
+  // const projectId = useSelector((store) => store.user.projectId)
+
   const [allProjects, setAllProjects] = useState([])
-  const [newProject, setNewProject] = useState("")
-
   const dispatch = useDispatch()
- console.log("useSelectorProject", allProjects)
+  console.log("useSelectorProject", allProjects)
 
 
   const logout = () => {
@@ -28,12 +41,10 @@ const ProjectBoard = ({ navigation, _id }) => {
     dispatch(user.actions.setAccessToken(null))
   }
 
-    /* Thinks we need on project board:
-  - fetch all projects from DB (GET)
-  - add new project (POST)
+  /* Thinks we need on project board:
   - remove project  (DELETE) */
 
-    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
+  // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
 
   /* --- GET ALL PROJECTS FETCH--*/
   
@@ -62,7 +73,7 @@ const ProjectBoard = ({ navigation, _id }) => {
            Authorization: accessToken,
         },
          body: JSON.stringify({
-          name: values.name,
+          name: values.name,  // values comes from Formik
           due_date: values.due_date
           }),
         }
@@ -72,12 +83,29 @@ const ProjectBoard = ({ navigation, _id }) => {
         .catch((error) => console.log(error))
 
     }
-    // useEffect(()=> {
-    //   addNewProject()
-    // }, [])
+
+    /*--- DELETE PROJECT ---*/
+
+    const deleteProject = (name) => {
+      const options = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: accessToken,
+        },
+        body: JSON.stringify({
+          projectName: name,  
+          _id: projectId,
+        }),
+      };
+      console.log('id', projectId)
+      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`, options)
+        .then((res) => res.json())
+         .then((data) => console.log(data))
+         .catch((error) => console.error(error));
     
 
-    
+    }
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -90,13 +118,13 @@ const ProjectBoard = ({ navigation, _id }) => {
           initialValues={{ name: '', due_date: ''}}
           onSubmit={(values, actions) => {
             if (values.name === '' || values.due_date === '') {
-              return setLoginError('Please fill in all fields') //CHANGE THE MESSAGE
+              return setLoginError('Please fill the name') 
             } else {
               addNewProject(values)
               actions.resetForm()
             }
             }}>
-             {({  handleChange, handleBlur, handleSubmit, values }) => (
+             {({  handleChange, handleSubmit, values }) => (
           <View>
                 <TextInput  style={{ height: 40, width: 100 }}
                 label = 'name'
@@ -126,9 +154,15 @@ const ProjectBoard = ({ navigation, _id }) => {
           <View>
             {allProjects.map((singleProject) => {
               return(
+                <>
                 <View>
                   <Text key={_id} style={styles.item}>{singleProject.name}</Text>
+                  <Text>{singleProject.due_date}</Text>
+                  <TouchableOpacity onPress={() => deleteProject()}>
+                      <Text>✖️</Text>
+                  </TouchableOpacity>
                 </View>
+                </>
               );
             })}
           </View>
@@ -172,5 +206,7 @@ const styles = StyleSheet.create({
     flex: 1,
     background: 'transparent',
   },
-})
+});
+
+
 export default ProjectBoard
