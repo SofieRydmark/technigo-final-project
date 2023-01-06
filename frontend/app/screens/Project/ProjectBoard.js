@@ -1,18 +1,27 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity,  FlatList, SafeAreaView } from 'react-native'
+import { useDispatch} from 'react-redux'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity,  FlatList, SafeAreaView, TextInput } from 'react-native'
+import { Formik } from 'formik'
 
 //colors and reducer
 import colors from '../../config/colors'
-import user from '../../reducers/user'
+import user, { project } from '../../reducers/user'
 import { fetchProjects } from '../../reducers/user'
 
-const ProjectBoard = ({ navigation }) => {
+const ProjectBoard = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
-    const [allProjects, setAllProjects] = useState([])
+  const userId = useSelector((store) => store.user.userId)
+  // const project = useSelector((store) => store.project.all)
+
+  console.log("project", project)
+  const [allProjects, setAllProjects] = useState([])
+  const [newProject, setNewProject] = useState("")
+
   const dispatch = useDispatch()
+ console.log("useSelectorProject", allProjects)
+
 
   const logout = () => {
     dispatch(user.actions.setEmail(null))
@@ -24,108 +33,51 @@ const ProjectBoard = ({ navigation }) => {
   - add new project (POST)
   - remove project  (DELETE) */
 
-  const getAllProject = (/*{name, due_date, userId}*/) => {
-    return (
-      fetchProjects()
-    )
+    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
 
-    // const options = {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: accessToken,
-    //   },
-    //    body: JSON.stringify({ name: name, due_date: due_date }),
-    // }
-    // fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
-    //   .then ((res) => res.json())
-    //   .then((data) => setAllProjects(data.response))
-    //   .catch((error) => console.log(error))
-    //   console.log("data", allProjects)
+  /* --- GET ALL PROJECTS FETCH--*/
+  
+    useEffect (() => {
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: accessToken,
+        },
+      }
+      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
+        .then ((res) => res.json())
+        .then((data) => setAllProjects(data.response))
+        .catch((error) => console.log(error))
+        console.log("data", allProjects)
+    }, [] )
+
+      /* --- ADD NEW PROJECT FETCH  --*/
+    
+    const addNewProject = ( values) => {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+           Authorization: accessToken,
+        },
+         body: JSON.stringify({
+          name: values.name,
+          due_date: values.due_date
+          }),
+        }
+        fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`, options)
+        .then ((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error))
+
     }
+    // useEffect(()=> {
+    //   addNewProject()
+    // }, [])
+    
 
-    // useEffect (() => {
-    //   getAllProject()
-    // }, [] )
-
-  return (
-    <SafeAreaView contentContainerStyle={styles.background}>
-      {accessToken && (
-        <>
-          <View style={styles.header}>
-            <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
-          </View>
-          <View>
-            <FlatList
-              data={projects}
-              renderItem={({ item }) => (
-                <View>
-                  <Text style={styles.item}>{item.name}</Text>
-                  <Text>{item.due_date}</Text>
-            
-          
-               </View>
-          )}
-          keyExtractor={(item) => item._id}
-          />
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
-            <Text>Project</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
-            <Text>Brows Categories </Text>
-         {/*  <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
-            <Text>Browse Categories </Text> */}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={logout}>
-            <Text>Sign out</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </SafeAreaView>
-  )
-}
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: colors.green,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  header: {
-    marginBottom: 30,
-  },
-  headerH1: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  pressable: {
-    flex: 1,
-    background: 'transparent',
-  },
-})
-export default ProjectBoard
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
-
-//colors and reducer
-import colors from '../../config/colors'
-import user from '../../reducers/user'
-
-const ProjectBoard = ({ navigation }) => {
-  const accessToken = useSelector((store) => store.user.accessToken)
-  const email = useSelector((store) => store.user.email)
-  const dispatch = useDispatch()
-
-  const logout = () => {
-    dispatch(user.actions.setEmail(null))
-    dispatch(user.actions.setAccessToken(null))
-  }
+    
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -133,6 +85,52 @@ const ProjectBoard = ({ navigation }) => {
         <>
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
+          </View>
+          <Formik
+          initialValues={{ name: '', due_date: ''}}
+          onSubmit={(values, actions) => {
+            if (values.name === '' || values.due_date === '') {
+              return setLoginError('Please fill in all fields') //CHANGE THE MESSAGE
+            } else {
+              addNewProject(values)
+              actions.resetForm()
+            }
+            }}>
+             {({  handleChange, handleBlur, handleSubmit, values }) => (
+          <View>
+                <TextInput  style={{ height: 40, width: 100 }}
+                label = 'name'
+                onChangeText={handleChange('name')}
+                value={values.name}
+                placeholder={"project name"}
+                required
+                multiline={false}
+                autoCapitalize = 'none'
+            />
+            <TextInput style={{ height: 40, width: 100 }}
+                label = 'due_date'
+                onChangeText={handleChange('due_date')}
+                value={values.due_date}
+                placeholder={"YYYY-MM-DD"}
+                multiline={false}
+                autoCapitalize = 'none'
+            />
+   
+            <TouchableOpacity onPress={handleSubmit}>
+              <Text>add Project</Text>
+            </TouchableOpacity> 
+          </View>
+             )}
+          </Formik>
+
+          <View>
+            {allProjects.map((singleProject) => {
+              return(
+                <View>
+                  <Text key={_id} style={styles.item}>{singleProject.name}</Text>
+                </View>
+              );
+            })}
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
             <Text>Project</Text>
@@ -149,7 +147,10 @@ const ProjectBoard = ({ navigation }) => {
       )}
     </ScrollView>
   )
-}
+          }
+
+
+
 
 const styles = StyleSheet.create({
   background: {

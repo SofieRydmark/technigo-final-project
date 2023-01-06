@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
 const user = createSlice({
   name: 'user',
   initialState: {
-    userId: '',
+    userId: null,
     email: null,
     accessToken: null,
     error: null,
@@ -32,9 +33,10 @@ const user = createSlice({
 export const project = createSlice({
   name: 'project',
   initialState: {
-    name: '',
-    userProject: null,
-    due_date: '',
+    all: {},
+    name: null,
+     //userProject: null,
+     due_date: null
   //   guestList: {},
   //   themeProjectList: {}, 
   //   decorationsProjectList: {}, 
@@ -45,9 +47,14 @@ export const project = createSlice({
   //   error: null,
    },
   reducers: {
-    setProjectName: (store, action) => {
+    setAllProjects: (store, action) => {
+      console.log("setAllProjects", action)
+      store.all = action.payload
+    }, 
+
+    setNewProject: (store, action) => {
         console.log('projectName', action)
-        store.name = action.payload
+        store.newProject = action.payload
     },
     setDueDate: (store, action) => {
         console.log("due_date", action)
@@ -57,49 +64,48 @@ export const project = createSlice({
 },
 )
 
-export const fetchProjects = ({name, due_date, userId}) => {
-  const [allProjects, setAllProjects] = useState([])
-  return({getState}) => {
+export const fetchProjects = (accessToken) => {
+  // const [allProjects, setAllProjects] = useState([])
+  return ({  dispatch, getState, userId }) => {
     const options = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: accessToken,
       },
-       body: JSON.stringify(data)
       }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/63b489f60b16576ee3a8c5f7/project-board/projects`, options)
     .then ((res) => res.json())
-    .then((data) => setAllProjects(data))
+    .then((json) => dispatch(project.actions.setAllProjects(json.response)))
     .catch((error) => console.log(error))
-    console.log("data", data, allProjects)
+    // console.log("data", allProjects)
   }
 
 
 }
-export const addProject = () => {
-  return({getState, dispatch}) => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-       body: JSON.stringify({
-        name: getState().projects.name,
-        due_date: getState().projects.due_date,
-        userId: getState().user.userId
-        }),
-      }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
-    .then ((res) => res.json())
-    .then((data) => dispatch(setAllProjects(data)))
-    .catch((error) => console.log(error))
-    console.log("data", allProjects)
-  }
+// export const addProject = () => {
+//   return({getState, dispatch, userId}) => {
+//     const options = {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//          Authorization: accessToken,
+//       },
+//        body: JSON.stringify({
+//         name: '',
+//         due_date: ''
+//         }),
+//       }
+//     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/63b489f60b16576ee3a8c5f7/project-board/projects/addProject`, options)
+//     .then ((res) => res.json())
+//     .then((json) => dispatch(setNewProject(json.project.)))
+//     .catch((error) => console.log(error))
+//     console.log("data", addProject)
+//   }
 
 
-}
+
+// }
+
 export default user
-
 
