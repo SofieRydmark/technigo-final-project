@@ -15,6 +15,7 @@ import {
   Button,
   Image,
   FlatList,
+  SafeAreaView
 } from 'react-native'
 
 import colors from '../../config/colors'
@@ -30,17 +31,13 @@ const Themes = ({ route, navigation}) => {
   const [themeSelected, setThemeSelected] = useState([]);
   const partyType= route.params.partyType
 
-  const logout = () => {
-    console.log('logged out')
-    dispatch(user.actions.setEmail(null))
-    dispatch(user.actions.setAccessToken(null))
+  let backgroundStyle
+  if (partyType === 'grownup') {
+    backgroundStyle = styles.grownupBackground
+  } else if (partyType === 'kids') {
+    backgroundStyle = styles.kidsBackground
   }
-
-  useEffect(() => {
-    if (!accessToken) {
-      navigation.navigate('SignIn')
-    }
-  }, [accessToken])
+ 
 
   const getAllThemes = () => {
     const options = {
@@ -79,20 +76,21 @@ const Themes = ({ route, navigation}) => {
            themesName: name,
       }),
     };
-    console.log('name', name)
+    
 
     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/63b58581b9761f6338902ec9`, options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
   };
-  console.log('Theme send',sendObjectToProject)
+  
 
-
+  const buttonIcon = require('../../assets/addCircle.png')
 
   return (
-    <>
-      {/* <ScrollView contentContainerStyle={styles.background}> */}
+    <SafeAreaView style={[styles.background, backgroundStyle]}
+    contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={styles.h1}>Themes</Text>
       <TextInput
         style={styles.input}
         placeholder='Search for a theme...'
@@ -100,37 +98,48 @@ const Themes = ({ route, navigation}) => {
         value={searchTerm}
       />
       <FlatList
+        style={styles.flatList} 
         data={allThemes.filter((theme) =>
           theme.name.toLowerCase().includes(searchTerm.toLowerCase())
         )}
         numColumns={2}
+        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
         renderItem={({ item }) => (
           <View style={styles.item}>
             <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
-              <Text>{item.name}</Text>
-              <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
+              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
+                  <View style={styles.addButtonCircle}>
+                    <Image source={buttonIcon} style={styles.addButton} />
+                  </View>
+              </View>
             </TouchableOpacity>
           </View>
         )}
         keyExtractor={(item) => item.id}
       />
 
-      <TouchableOpacity onPress={logout}>
-        <Text>Sign out</Text>
-      </TouchableOpacity>
-      {/*  </ScrollView> */}
-    </>
+    
+    </SafeAreaView>
+
   )
 }
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.green,
-    /*  backgroundColor: allThemes.type === 'grownup' ? colors.green : colors.blue, */
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+  },
+  grownupBackground: {
+    backgroundColor: colors.green,
+  },
+  kidsBackground: {
+    backgroundColor: colors.peach,
   },
   buttonText: {
     fontSize: 20,
@@ -146,6 +155,56 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
+  },
+  flatList: {
+    flex: 0.9,
+    alignSelf: 'center', 
+  }, 
+  h1: {
+    marginTop: 60, 
+    fontSize: 25,
+    fontWeight: 'bold',
+
+  },
+  item: {
+    margin: 10,  
+    width: 110,  
+    height: 110,  
+  },
+  itemNameContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemNameBackground: {
+    backgroundColor: 'white',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+  },
+  itemName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  addButtonCircle: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -10,
+    right: -10,
+    width: 28,
+    height: 28,
+    borderRadius: 16,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addButton: {
+    width: 20,
+    height: 20,
   },
 })
 
