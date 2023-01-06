@@ -1,21 +1,83 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { useDispatch} from 'react-redux'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity,  FlatList, SafeAreaView, TextInput } from 'react-native'
+import { Formik } from 'formik'
 
 //colors and reducer
 import colors from '../../config/colors'
-import user from '../../reducers/user'
+import user, { project } from '../../reducers/user'
+import { fetchProjects } from '../../reducers/user'
 
-const ProjectBoard = ({ navigation }) => {
+const ProjectBoard = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
+  const userId = useSelector((store) => store.user.userId)
+  // const project = useSelector((store) => store.project.all)
+
+  console.log("project", project)
+  const [allProjects, setAllProjects] = useState([])
+  const [newProject, setNewProject] = useState("")
+
   const dispatch = useDispatch()
+ console.log("useSelectorProject", allProjects)
+
 
   const logout = () => {
     dispatch(user.actions.setEmail(null))
     dispatch(user.actions.setAccessToken(null))
   }
+
+    /* Thinks we need on project board:
+  - fetch all projects from DB (GET)
+  - add new project (POST)
+  - remove project  (DELETE) */
+
+    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
+
+  /* --- GET ALL PROJECTS FETCH--*/
+  
+    useEffect (() => {
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: accessToken,
+        },
+      }
+      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
+        .then ((res) => res.json())
+        .then((data) => setAllProjects(data.response))
+        .catch((error) => console.log(error))
+        console.log("data", allProjects)
+    }, [] )
+
+      /* --- ADD NEW PROJECT FETCH  --*/
+    
+    const addNewProject = ( values) => {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+           Authorization: accessToken,
+        },
+         body: JSON.stringify({
+          name: values.name,
+          due_date: values.due_date
+          }),
+        }
+        fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`, options)
+        .then ((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error))
+
+    }
+    // useEffect(()=> {
+    //   addNewProject()
+    // }, [])
+    
+
+    
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -23,6 +85,52 @@ const ProjectBoard = ({ navigation }) => {
         <>
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
+          </View>
+          <Formik
+          initialValues={{ name: '', due_date: ''}}
+          onSubmit={(values, actions) => {
+            if (values.name === '' || values.due_date === '') {
+              return setLoginError('Please fill in all fields') //CHANGE THE MESSAGE
+            } else {
+              addNewProject(values)
+              actions.resetForm()
+            }
+            }}>
+             {({  handleChange, handleBlur, handleSubmit, values }) => (
+          <View>
+                <TextInput  style={{ height: 40, width: 100 }}
+                label = 'name'
+                onChangeText={handleChange('name')}
+                value={values.name}
+                placeholder={"project name"}
+                required
+                multiline={false}
+                autoCapitalize = 'none'
+            />
+            <TextInput style={{ height: 40, width: 100 }}
+                label = 'due_date'
+                onChangeText={handleChange('due_date')}
+                value={values.due_date}
+                placeholder={"YYYY-MM-DD"}
+                multiline={false}
+                autoCapitalize = 'none'
+            />
+   
+            <TouchableOpacity onPress={handleSubmit}>
+              <Text>add Project</Text>
+            </TouchableOpacity> 
+          </View>
+             )}
+          </Formik>
+
+          <View>
+            {allProjects.map((singleProject) => {
+              return(
+                <View>
+                  <Text key={_id} style={styles.item}>{singleProject.name}</Text>
+                </View>
+              );
+            })}
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
             <Text>Project</Text>
@@ -39,7 +147,10 @@ const ProjectBoard = ({ navigation }) => {
       )}
     </ScrollView>
   )
-}
+          }
+
+
+
 
 const styles = StyleSheet.create({
   background: {
