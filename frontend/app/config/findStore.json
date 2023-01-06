@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 59.33402633785655, "longitude": 18.06158493468295 }
+  },
+  {
+    "id": 2,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 59.86481481899923, "longitude": 17.688960452262464 }
+  },
+  {
+    "id": 3,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 58.18206652673789, "longitude": 13.958234887971434 }
+  },
+  {
+    "id": 4,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 57.77523432462495, "longitude": 14.203750437283476 }
+  },
+  {
+    "id": 5,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 56.74413681268724, "longitude": 13.109802728019122 }
+  },
+  {
+    "id": 6,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 56.695908537311574, "longitude": 12.865356929015796 }
+  },
+  {
+    "id": 7,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 56.06636102812706, "longitude": 12.69232226230558 }
+  },
+  {
+    "id": 8,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 55.63000978917891, "longitude": 12.997192865556917 }
+  },
+  {
+    "id": 9,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 55.726025464982264, "longitude": 13.197693352379869 }
+  },
+  {
+    "id": 10,
+    "company": "Buttericks",
+    "coordinates": { "latitude": 56.739476737973, "longitude": 13.109315325763987 }
+  },
+  {
+    "id": 11,
+    "company": "Kalas Kompaniet",
+    "coordinates": { "latitude": 59.445633573891556, "longitude": 18.07146032749579 }
+  },
+  {
+    "id": 12,
+    "company": "Kalas Kompaniet",
+    "coordinates": { "latitude": 59.30990624484458, "longitude": 18.164060770219447 }
+  },
+  {
+    "id": 13,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.33357073595332, "longitude": 18.068347277404545 }
+  },
+  {
+    "id": 14,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.37230431333115, "longitude": 18.002557733231487 }
+  },
+  {
+    "id": 15,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.30817814118594, "longitude": 18.126853846207894 }
+  },
+  {
+    "id": 16,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.31177141631957, "longitude": 18.164482552284735 }
+  },
+  {
+    "id": 17,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.400120644804325, "longitude": 18.03533112239519 }
+  },
+  {
+    "id": 18,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.37242799196618, "longitude": 18.003043264922802 }
+  },
+  {
+    "id": 19,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.27805405057883, "longitude": 17.9081218192709 }
+  },
+  {
+    "id": 20,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.27110809189649, "longitude": 17.91734692140587 }
+  },
+  {
+    "id": 21,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.461112925092664, "longitude": 18.13802107491391 }
+  },
+  {
+    "id": 22,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.521034810848626, "longitude": 17.912617489015442 }
+  },
+  {
+    "id": 23,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.24456925940411, "longitude": 18.093200584932525 }
+  },
+  {
+    "id": 24,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.18191527600655, "longitude": 18.151229057990456 }
+  },
+  {
+    "id": 25,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.19768080026763, "longitude": 17.62820817876718 }
+  },
+  {
+    "id": 26,
+    "company": "Party Land",
+    "coordinates": { "latitude": 59.62932039624708, "longitude": 17.669995361197827 }
+  },
+  {
+    "id": 27,
+    "company": "Party Land",
+    "coordinates": { "latitude": 58.59624690340563, "longitude": 16.188973868302856 }
+  },
+  {
+    "id": 28,
+    "company": "Party Land",
+    "coordinates": { "latitude": 57.71507434756945, "longitude": 11.968929994623048 }
+  },
+  {
+    "id": 29,
+    "company": "Party Land",
+    "coordinates": { "latitude": 57.79372180052551, "longitude": 14.16121236467232 }
+  },
+  {
+    "id": 30,
+    "company": "Party Land",
+    "coordinates": { "latitude": 55.62432195365946, "longitude": 13.010138561204812 }
+  },
+  {
+    "id": 31,
+    "company": "Party Land",
+    "coordinates": { "latitude": 56.10709319438749, "longitude": 12.759604208486744 }
+  },
+  {
+    "id": 32,
+    "company": "Party Land",
+    "coordinates": { "latitude": 60.6610349117385, "longitude": 16.989550303915728 }
+  },
+  {
+    "id": 33,
+    "company": "Ballongverkstan",
+    "coordinates": { "latitude": 59.3490752398784, "longitude": 18.05042367724196 }
+  }
+]

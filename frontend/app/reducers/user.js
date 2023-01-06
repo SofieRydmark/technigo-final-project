@@ -12,19 +12,15 @@ const user = createSlice({
   },
   reducers: {
     setUserId: (store, action) => {
-      console.log('userid', action)
       store.userId = action.payload
     },
     setEmail: (store, action) => {
-      console.log('email', action)
       store.email = action.payload
     },
     setAccessToken: (store, action) => {
-      console.log('accestoken', action)
       store.accessToken = action.payload
     },
     setError: (store, action) => {
-      console.log('error', action)
       store.error = action.payload
     },
     // setProjectId: (store, action) => {
@@ -33,7 +29,6 @@ const user = createSlice({
     // },
   },
 })
-
 
 export const project = createSlice({
   name: 'project',
@@ -46,7 +41,7 @@ export const project = createSlice({
    },
   reducers: {
     setAllProjects: (store, action) => {
-      console.log("setAllProjects", action)
+      console.log('setAllProjects', action)
       store.all = action.payload
     }, 
     // setProjectId: (store, action) => {
@@ -59,8 +54,8 @@ export const project = createSlice({
     //     store.newProject = action.payload
     // },
     setDueDate: (store, action) => {
-        console.log("due_date", action)
-        store.due_date = action.payload
+      console.log('due_date', action)
+      store.due_date = action.payload
     },
   },
 },
@@ -105,8 +100,6 @@ export const project = createSlice({
 //     .catch((error) => console.log(error))
 //     console.log("data", addProject)
 //   }
-
-
 
 // }
 

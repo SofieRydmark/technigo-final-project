@@ -1,7 +1,16 @@
-import {React, useState, useEffect} from 'react'
+import { React, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch} from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { useDispatch } from 'react-redux'
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  SafeAreaView,
+  TextInput,
+} from 'react-native'
 import { Formik } from 'formik'
 
 //colors and reducer
@@ -9,12 +18,12 @@ import colors from '../../config/colors'
 import user from '../../reducers/user'
 // import { fetchProjects } from '../../reducers/user' /* needed with thunks */
 
-const ProjectBoard = ({ route,navigation, _id,}) => {
+const ProjectBoard = ({ params, route,navigation, _id,}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  const projectId = route.params.projectId
-  console.log("projectId", projectId)
+  // const projectId = route.params.projectId
+  // console.log("projectId", projectId)
 
   /*--- FINDING PROJECTID USING REDUX--- */
   
@@ -47,21 +56,24 @@ const ProjectBoard = ({ route,navigation, _id,}) => {
   // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
 
   /* --- GET ALL PROJECTS FETCH--*/
-  
-    useEffect (() => {
-      const options = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: accessToken,
-        },
-      }
-      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
-        .then ((res) => res.json())
-        .then((data) => setAllProjects(data.response))
-        .catch((error) => console.log(error))
-        console.log("data", allProjects)
-    }, [] )
+
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+    }
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`,
+      options
+    )
+      .then((res) => res.json())
+      .then((data) => setAllProjects(data.response))
+      .catch((error) => console.log(error))
+    console.log('data', allProjects)
+  }, [])
 
       /* --- ADD NEW PROJECT FETCH  --*/
     
@@ -124,58 +136,69 @@ const ProjectBoard = ({ route,navigation, _id,}) => {
               actions.resetForm()
             }
             }}>
-             {({  handleChange, handleSubmit, values }) => (
-          <View>
-                <TextInput  style={{ height: 40, width: 100 }}
-                label = 'name'
-                onChangeText={handleChange('name')}
-                value={values.name}
-                placeholder={"project name"}
-                required
-                multiline={false}
-                autoCapitalize = 'none'
-            />
-            <TextInput style={{ height: 40, width: 100 }}
-                label = 'due_date'
-                onChangeText={handleChange('due_date')}
-                value={values.due_date}
-                placeholder={"YYYY-MM-DD"}
-                multiline={false}
-                autoCapitalize = 'none'
-            />
-   
-            <TouchableOpacity onPress={handleSubmit}>
-              <Text>add Project</Text>
-            </TouchableOpacity> 
-          </View>
-             )}
-          </Formik>
+            {({ handleChange, handleBlur, handleSubmit, values }) => (
+              <View>
+                <TextInput
+                  style={{ height: 40, width: 100 }}
+                  label='name'
+                  onChangeText={handleChange('name')}
+                  value={values.name}
+                  placeholder={'project name'}
+                  required
+                  multiline={false}
+                  autoCapitalize='none'
+                />
+                <TextInput
+                  style={{ height: 40, width: 100 }}
+                  label='due_date'
+                  onChangeText={handleChange('due_date')}
+                  value={values.due_date}
+                  placeholder={'YYYY-MM-DD'}
+                  multiline={false}
+                  autoCapitalize='none'
+                />
 
+                <TouchableOpacity onPress={handleSubmit}>
+                  <Text>add Project</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+          
           <View>
             {allProjects.map((singleProject) => {
               return(
+               
                 <>
                 <View>
-                  <Text key={_id} style={styles.item}>{singleProject.name}</Text>
-                  <Text>{singleProject.due_date}</Text>
-                  <TouchableOpacity onPress={() => deleteProject()}>
-                      <Text>✖️</Text>
+                  <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
+                    <Text key={_id} style={styles.item}>{singleProject.name}</Text>
+                    <Text>{singleProject.due_date}</Text>
                   </TouchableOpacity>
-                </View>
-                </>
+                </View><View>
+                    <TouchableOpacity onPress={() => deleteProject()}>
+                      <Text>✖️</Text>
+                    </TouchableOpacity>
+                  </View>
+                  </>
+               
               );
             })}
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
-            <Text>Project</Text>
-          </TouchableOpacity>
+          
+          {/* <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}> */}
+            {/* <Text>Project</Text> */}
+          {/* // </TouchableOpacity> */}
           <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
             <Text>Brows Categories </Text>
-         {/*  <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
+            {/*  <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
             <Text>Browse Categories </Text> */}
           </TouchableOpacity>
           <TouchableOpacity onPress={logout}>
             <Text>Sign out</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
+            <Text>Find store</Text>
           </TouchableOpacity>
         </>
       )}
