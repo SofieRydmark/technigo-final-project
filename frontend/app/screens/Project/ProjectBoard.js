@@ -164,7 +164,10 @@ const ProjectBoard = ({ navigation, _id }) => {
       )}
     </ScrollView>
   )
-}
+          }
+
+
+
 
 const styles = StyleSheet.create({
   background: {

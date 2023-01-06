@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
 const user = createSlice({
   name: 'user',
   initialState: {
@@ -100,3 +101,4 @@ export const fetchProjects = (accessToken) => {
 // }
 
 export default user
+
