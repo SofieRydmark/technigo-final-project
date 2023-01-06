@@ -15,14 +15,17 @@ const WhatAreWeDoing = ({ navigation }) => {
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Go to my projectboard</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('WhatKindOfParty')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Browse ideas for a new party</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ChooseProject')}
+          style={styles.partyButton}>
+          <Text style={styles.buttonText}>Choose your project</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
-            <Text>Single project Project</Text>
-          </TouchableOpacity>
+        
       </View>
     </ScrollView>
   )

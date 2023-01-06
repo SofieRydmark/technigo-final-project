@@ -23,6 +23,7 @@ import {
   Budget,
   FindStore,
 } from '../screens'
+import ChooseProject from '../screens/Browse/ChoosProject'
 
 // Custom stack navigators for bottom tabs
 const HomeNavigator = () => {
@@ -57,6 +58,7 @@ const HomeNavigator = () => {
       <Stack.Screen name='Themes' component={Themes} />
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
+      <Stack.Screen name='ChooseProject' component={ChooseProject} />
     </Stack.Navigator>
   )
 }
@@ -94,6 +96,7 @@ const ProfileNavigator = () => {
       <Stack.Screen name='Themes' component={Themes} />
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
+      <Stack.Screen name='ChooseProject' component={ChooseProject} />
     </Stack.Navigator>
   )
 }

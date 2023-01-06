@@ -66,7 +66,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', drinksId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/completed/drink/${drinksId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/drink/${drinksId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -87,7 +87,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', themeId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/completed/theme/${themeId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/theme/${themeId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -108,7 +108,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', foodId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/completed/food/${foodId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/food/${foodId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -129,7 +129,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', activityId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/completed/activity/${activityId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/activity/${activityId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -151,7 +151,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', decorationId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/completed/decoration/${decorationId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/decoration/${decorationId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -174,7 +174,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', drinksId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteDrink/${drinksId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDrink/${drinksId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -195,7 +195,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', foodId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteFood/${foodId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteFood/${foodId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -216,7 +216,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', decorationId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteDecoration/${decorationId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDecoration/${decorationId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -237,7 +237,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', activityId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteActivity/${activityId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteActivity/${activityId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -258,7 +258,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     };
     console.log('id', themeId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/63b58581b9761f6338902ec9/deleteTheme/${themeId}`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteTheme/${themeId}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
@@ -266,32 +266,9 @@ const SingleProjectPage = ({ navigation, route }) => {
 
   }
    /****************** CHANGE NAME OBJECT PROJECT  ************************* */
-  /*  const changeName = (/* projectId,  name) => {
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        name, 
-
-        
-      }),
-    };
-    /* console.log('id fetch', projectId) 
-    console.log('name fetch', name)
-
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/63b58581b9761f6338902ec9`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('name changed',changeName)
-
-  } */
 
   const singleProjectChange = ( options) => {
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/63b58581b9761f6338902ec9`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/${projectId}`, options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));

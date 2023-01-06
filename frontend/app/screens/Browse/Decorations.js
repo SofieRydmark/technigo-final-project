@@ -30,6 +30,8 @@ const Decorations = ({route, navigation }) => {
   const [allDecorations, setAllDecorations] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const partyType= route.params.partyType
+  const projectId = route.params.projectId
+  console.log('partytype', partyType)
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -55,7 +57,7 @@ const Decorations = ({route, navigation }) => {
   useEffect(() => {
     getAllDecorations()
   }, [])
-
+  console.log('decorations', allDecorations)
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
      const options = {
@@ -69,7 +71,7 @@ const Decorations = ({route, navigation }) => {
        }),
      };
      console.log('name', name)
-     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/63b58581b9761f6338902ec9`, options)
+     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`, options)
        .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));

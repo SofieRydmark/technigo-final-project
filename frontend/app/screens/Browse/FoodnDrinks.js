@@ -28,9 +28,9 @@ const FoodnDrinks = ({route, navigation}) => {
   const [allDrinks, setAllDrinks] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const buttonIcon = require('../../assets/addCircle.png')
-  
-  
+  const projectId = route.params.projectId
   const partyType= route.params.partyType
+
   let backgroundStyle
   if (partyType === 'grownup') {
     backgroundStyle = styles.grownupBackground
@@ -96,7 +96,7 @@ const FoodnDrinks = ({route, navigation}) => {
       }),
     };
     
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addFood/63b58581b9761f6338902ec9`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addFood/${projectId}`, options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
@@ -116,7 +116,7 @@ const FoodnDrinks = ({route, navigation}) => {
       }),
     };
     
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDrinks/63b58581b9761f6338902ec9`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDrinks/${projectId}`, options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
@@ -152,7 +152,7 @@ const FoodnDrinks = ({route, navigation}) => {
         contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
+            <TouchableOpacity onPress={() => sendFoodToProject(item.name)}>
               <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
               <View style={styles.itemNameContainer}>
                 <View style={styles.itemNameBackground}>
@@ -186,7 +186,7 @@ const FoodnDrinks = ({route, navigation}) => {
         contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
+            <TouchableOpacity onPress={() => sendDrinksToProject(item.name)}>
               <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
               <View style={styles.itemNameContainer}>
                 <View style={styles.itemNameBackground}>

@@ -27,6 +27,7 @@ const Activities = ({route, navigation}) => {
   const [allActivities, setAllActivities] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const partyType= route.params.partyType
+  const projectId = route.params.projectId
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -66,7 +67,7 @@ const Activities = ({route, navigation}) => {
       }),
     };
     
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addActivity/63b58581b9761f6338902ec9`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addActivity/${projectId}`, options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
