@@ -6,14 +6,16 @@ import { Formik } from 'formik'
 
 import colors from '../../config/colors'
 
-const ChooseProject = ({ navigation, _id/* , route */ }) => {
+const ChooseProject = ({ navigation, _id}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
-  const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
- /*  const projectId = route.params.projectId */
+ 
 
   const [allProjects, setAllProjects] = useState([])
   const [newProject, setNewProject] = useState("")
+  const [showMap, setShowMap] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  
 
   useEffect (() => {
     const options = {
@@ -27,7 +29,7 @@ const ChooseProject = ({ navigation, _id/* , route */ }) => {
       .then ((res) => res.json())
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
-      console.log("data", allProjects)
+   
   }, [] )
 
     /* --- ADD NEW PROJECT FETCH  --*/
@@ -56,30 +58,32 @@ const ChooseProject = ({ navigation, _id/* , route */ }) => {
         <Text style={styles.headerH1}>Which project do you want to plan ? </Text>
       </View>
       <View style={styles.container}>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'grownup' })}
-          style={styles.partyButton}>
-          <Text style={styles.buttonText}>Grownup party</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'kids' })}
-          style={styles.partyButton}>
-          <Text style={styles.buttonText}>Kids party</Text>
-        </TouchableOpacity> */}
         <View>
-            {allProjects.map((singleProject) => {
-              return(
-                <View>
-                    <Text> Your active projects</Text>
-                  <TouchableOpacity onPress={() => {navigation.navigate('WhatKindOfParty', { projectId: singleProject._id, })}}>
-                  <Text key={_id} style={styles.item}>{singleProject.name}</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View>
-          {/* <Text> CREATE NEW PROJECT</Text>
-          <Formik
+        <TouchableOpacity onPress={() => setShowMap(!showMap)}
+        style={styles.partyButton}>
+        <Text style={styles.buttonText}>Active Projects</Text>
+      </TouchableOpacity>
+      {showMap && (
+        
+    allProjects.map((singleProject) => {
+      return(
+        <View>
+          <TouchableOpacity onPress={() => {navigation.navigate('WhatKindOfParty', { projectId: singleProject._id, })}}>
+            <Text key={_id} style={styles.item}>{singleProject.name}</Text>
+          </TouchableOpacity>
+        </View>
+        );
+      })
+    )}
+      </View>
+          
+        <View>
+      <TouchableOpacity onPress={() => setShowForm(!showForm)}
+      style={styles.partyButton}>
+        <Text style={styles.buttonText}>Create new</Text>
+      </TouchableOpacity>
+      {showForm && (
+        <Formik
           initialValues={{ name: '', due_date: ''}}
           onSubmit={(values, actions) => {
             if (values.name === '' || values.due_date === '') {
@@ -88,10 +92,11 @@ const ChooseProject = ({ navigation, _id/* , route */ }) => {
               addNewProject(values)
               actions.resetForm()
             }
-            }}>
-             {({  handleChange, handleBlur, handleSubmit, values }) => (
-          <View>
-                <TextInput  style={{ height: 40, width: 100 }}
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <View>
+              <TextInput  style={{ height: 40, width: 100 }}
                 label = 'name'
                 onChangeText={handleChange('name')}
                 value={values.name}
@@ -99,22 +104,24 @@ const ChooseProject = ({ navigation, _id/* , route */ }) => {
                 required
                 multiline={false}
                 autoCapitalize = 'none'
-            />
-            <TextInput style={{ height: 40, width: 100 }}
+              />
+              <TextInput style={{ height: 40, width: 100 }}
                 label = 'due_date'
                 onChangeText={handleChange('due_date')}
                 value={values.due_date}
                 placeholder={"YYYY-MM-DD"}
                 multiline={false}
                 autoCapitalize = 'none'
-            />
-   
-            <TouchableOpacity onPress={() => { handleSubmit(); navigation.navigate('WhatKindOfParty', { projectId: projectId}) }}>
+              />
+              <TouchableOpacity onPress={() => { handleSubmit(); navigation.navigate('WhatKindOfParty', { projectId: newProject._id}) }}>
                 <Text>add Project</Text>
-            </TouchableOpacity>
-          </View>
-             )}
-          </Formik> */}
+              </TouchableOpacity>
+            </View>
+          )}
+        </Formik>
+      )}
+    </View>
+
       </View>
     </ScrollView>
   )
