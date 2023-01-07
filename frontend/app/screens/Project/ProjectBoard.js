@@ -12,18 +12,20 @@ import {
   TextInput,
 } from 'react-native'
 import { Formik } from 'formik'
+import { Loading } from '../Home/Loading'
 
 //colors and reducer
 import colors from '../../config/colors'
 import user from '../../reducers/user'
+import { ui } from '../../reducers/ui'
 // import { fetchProjects } from '../../reducers/user' /* needed with thunks */
 
 const ProjectBoard = ({ params, route,navigation, _id,}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  const projectId = req.params
-  console.log("projectId", projectId)
+  // const projectId = route.params.projectId
+  // console.log("projectId", projectId)
 
   /*--- FINDING PROJECTID USING REDUX--- */
   
@@ -58,6 +60,8 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
   /* --- GET ALL PROJECTS FETCH--*/
 
   useEffect(() => {
+
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'GET',
       headers: {
@@ -72,12 +76,14 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
       .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
+      .finally (()=>   dispatch(ui.actions.setLoading(false)))
     console.log('data', allProjects)
   }, [])
 
       /* --- ADD NEW PROJECT FETCH  --*/
     
     const addNewProject = ( values) => {
+      dispatch(ui.actions.setLoading(true))
       const options = {
         method: 'POST',
         headers: {
@@ -93,6 +99,7 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
         .then ((res) => res.json())
         .then((data) => console.log(data))
         .catch((error) => console.log(error))
+        .finally(()=>    dispatch(ui.actions.setLoading(false)))
 
     }
 
