@@ -12,6 +12,9 @@ import {
   TextInput,
 } from 'react-native'
 import { Formik } from 'formik'
+import { useRoute} from '@react-navigation/native'
+
+// import { useParams }  from "react-router-dom"
 
 //colors and reducer
 import colors from '../../config/colors'
@@ -19,12 +22,12 @@ import user from '../../reducers/user'
 
 // import { fetchProjects } from '../../reducers/user' /* needed with thunks */
 
-const ProjectBoard = ({ params, route,navigation, _id,}) => {
+const ProjectBoard = ({navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  // const projectId = req.params
-  // console.log("projectId", projectId)
+  // const { projectId } = useParams(projectId)
+
 
   /*--- FINDING PROJECTID USING REDUX--- */
   
@@ -87,7 +90,8 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
         },
          body: JSON.stringify({
           name: values.name,  // values comes from Formik
-          due_date: values.due_date
+          due_date: values.due_date,
+          _id: projectId
           }),
         }
         fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`, options)
@@ -98,20 +102,24 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
     }
 
     /*--- DELETE PROJECT ---*/
+    const route = useRoute();
+    const projectId = route.params
+     console.log("projectId", projectId)
 
-    const deleteProject = (name) => {
+    const deleteProject = (_id) => {
+
       const options = {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           Authorization: accessToken,
         },
-        body: JSON.stringify({
-          projectName: name,  
-          _id: projectId,
-        }),
+        body: JSON.stringify({ _id: projectId })
+        // body: JSON.stringify({
+        //   projectName: name,  
+        //  _id: projectId
+        // }),
       };
-      console.log('id', projectId)
       fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`, options)
         .then((res) => res.json())
          .then((data) => console.log(data))
@@ -172,13 +180,13 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
               return(
                 <>
                 
-                <View style={styles.listWrapper}>
-                  <TouchableOpacity   onPress={() => navigation.navigate('SingleProjectPage')}>
+                <View key={singleProject._id} style={styles.listWrapper}>
+                  <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
                     <Text  style={styles.row}>{singleProject.due_date}</Text>
-                    <Text key={_id} style={styles.row}>{singleProject.name}</Text>
+                    <Text style={styles.row}>{singleProject.name}</Text>
                   </TouchableOpacity>
-                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject()}>
-                      <Text style={styles.row}>✖️</Text>
+                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject(projectId)}>
+                      <Text style={styles.row}>🗑</Text>
                     </TouchableOpacity>
                 </View>
                   </> 
@@ -278,7 +286,7 @@ const styles = StyleSheet.create({
 
   //delete icon styling 
   trashIcon: {
-    color: colors.darkGrey,
+    color: colors.red,
     zIndex: 10,
     position: 'absolute',
     right: 10,
