@@ -133,6 +133,7 @@ const ProjectNavigator = () => {
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
       <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen name='ChooseProject' component={ChooseProject} />
     </Stack.Navigator>
   )
 }
@@ -169,6 +170,7 @@ const BrowseNavigator = () => {
       <Stack.Screen name='GuestList' component={GuestList} />
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen name='ChooseProject' component={ChooseProject} />
     </Stack.Navigator>
   )
 }

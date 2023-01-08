@@ -23,18 +23,19 @@ import user from '../../reducers/user'
 
 
 const SingleProjectPage = ({ navigation, route }) => {
-  const accessToken = useSelector((store) => store.user.accessToken)
-  const [singleProject, setSingleProject] = useState([])
-  const userId = useSelector((store) => store.user.userId)
-  const dispatch = useDispatch()
+  const accessToken = useSelector((store) => store.user.accessToken);
+  const [singleProject, setSingleProject] = useState([]);
+  const userId = useSelector((store) => store.user.userId);
   const [showInput, setShowInput] = useState(false);
+  const [showDateChange, setShowDateChange] = useState(false);
   const [name, setName] = useState('');
   const [dueDate, setDueDate] = useState('');
   const projectId = route.params.projectId
 
 
-  const getSingleProject = () => {
-    console.log(projectId, 'projectId')
+  const getSingleProject = ( ) => {
+  
+    
     const options = {
       method: 'GET',
       headers: {
@@ -308,17 +309,16 @@ const SingleProjectPage = ({ navigation, route }) => {
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
-        <Text style={styles.headerH1}>Single Project</Text>
         {singleProject.map((project) => {
         return (
           <View key={project._id}>
-          <Text>{project.due_date}</Text>
           <Text style={styles.headerH1}>{project.name}</Text>
+          <Text style={styles.headerH1}>{project.due_date}</Text>
           <View>
-    <Button
-      title="Change name"
-      onPress={() => setShowInput(!showInput)}
-    />
+    <TouchableOpacity onPress={() => setShowInput(!showInput)}
+    style={styles.changeButton}> 
+    <Text>Change name </Text>
+    </TouchableOpacity>
     {showInput && (
       <View>
         <TextInput
@@ -327,90 +327,104 @@ const SingleProjectPage = ({ navigation, route }) => {
           onChangeText={setName}
           placeholder="Enter new name"
         />
-        <Button
-          title="Submit"
+        <TouchableOpacity
+          style={styles.changeButton}
           onPress={() => {
             changeName(name, console.log('onpress', name));
             setShowInput(false);
-          }}
-        />
+            
+          }}>
+            <Text>Submit</Text>
+          </TouchableOpacity>
+        
       </View>
     )}
-    <TextInput
-      onChangeText={(text) => setDueDate(text)}
-      value={dueDate}
-      placeholder='YY-MM-DD'
-    />
-    <Button
-      title="Submit"
-      onPress={() => {
+    <TouchableOpacity onPress={(()=> setShowDateChange(!showDateChange))} 
+    style={styles.changeButton} > 
+          <Text>Change Date</Text>
+    </TouchableOpacity>
+    {showDateChange &&(
+      <View>
+        <TextInput
+        style={styles.input}
+        onChangeText={(text) => setDueDate(text)}
+        value={dueDate}
+        placeholder='YY-MM-DD'
+        />
+        <TouchableOpacity
+        style={styles.changeButton}
+        onPress={() => {
         changeDueDate(dueDate)
-        setShowInput(false);
-      }}
-    />
+        setShowDateChange(false);
+        }}>
+          <Text>Submit</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+   
   </View>
-
-      <Text>THEME</Text>
+  <View style={styles.listWrapper}>
+      <Text style={styles.headerh2}>THEME</Text>
       {project.themeProjectList.map((theme) => {
         return (
-          <View key={theme._id}>
-            <Text>{theme.themesName}</Text>
-            <Text>{theme.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedTheme(theme._id, theme.isCompleted)}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteTheme(theme._id, )}> Mark as completed</Button>
+          <View key={theme._id} style={styles.smallContainer}>
+            <Text style={styles.row}>{theme.themesName}</Text>
+            <Text style={styles.row}>{theme.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+            <Button title='Mark as completed' onPress={() => completedTheme(theme._id, theme.isCompleted)}style={styles.row}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteTheme(theme._id, )} style={styles.row}> Mark as completed</Button>
           </View>
         );
       })}
 
-      <Text>Activities</Text>
+      <Text style={styles.headerh2}>Activities</Text>
       {project.activitiesProjectList.map((activity) => {
         return (
           <View key={activity._id}>
-            <Text>{activity.activitiesName}</Text>
-            <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedActivities(activity._id, activity.isCompleted)}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteActivity(activity._id, )}> Mark as completed</Button>
+            <Text style={styles.row}>{activity.activitiesName}</Text>
+            <Text style={styles.row}>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+            <Button title='Mark as completed' onPress={() => completedActivities(activity._id, activity.isCompleted)} style={styles.row}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteActivity(activity._id, )} style={styles.row}> Mark as completed</Button>
           </View>
         );
       })}
 
-      <Text>DECORATION</Text>
+      <Text style={styles.headerh2}>DECORATION</Text>
       {project.decorationsProjectList.map((decoration) => {
         return (
           <View key={decoration._id}>
             <Text>{decoration.decorationsName}</Text>
             <Text>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedDecorations(decoration._id, decoration.isCompleted)}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteDecoration(decoration._id, )}> Mark as completed</Button>
+            <Button title='Mark as completed' onPress={() => completedDecorations(decoration._id, decoration.isCompleted)} style={styles.row}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteDecoration(decoration._id, )} style={styles.row}> Mark as completed</Button>
           </View>
         );
       })}
 
-      <Text>FOOD</Text>
+      <Text style={styles.headerh2}>FOOD</Text>
       {project.foodProjectList.map((food) => {
         return (
           <View key={food._id}>
             <Text>{food.foodName}</Text>
             <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedFood(food._id, food.isCompleted)}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteFood(food._id, )}> Mark as completed</Button>
+            <Button title='Mark as completed' onPress={() => completedFood(food._id, food.isCompleted)} style={styles.row}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteFood(food._id, )} style={styles.row}> Mark as completed</Button>
           </View>
         );
       })}
 
-      <Text>DRINKS</Text>
+      <Text style={styles.headerh2}>DRINKS</Text>
       {project.drinksProjectList.map((drinks) => {
         return (
           <View key={drinks._id}>
             <Text>{drinks.drinksName}</Text>
             <Text>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteDrinks(drinks._id, )}> Mark as completed</Button>
+            <Button title='Mark as completed' onPress={() => completedDrinks(drinks._id, drinks.isCompleted)} style={styles.row}> Mark as completed</Button>
+            <Button title='DELETE' onPress={() => deleteDrinks(drinks._id, )} style={styles.row}> Mark as completed</Button>
           </View>
         );
       })}
 
-
+{/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
       {project.budgetList.map((budget) => {
         return (
           <View key={budget._id}>
@@ -421,6 +435,7 @@ const SingleProjectPage = ({ navigation, route }) => {
       })}
 
     </View>
+    </View>
   );
 })}
       
@@ -430,6 +445,8 @@ const SingleProjectPage = ({ navigation, route }) => {
           <Text style={styles.buttonText}>Back to projectBoard</Text>
         </TouchableOpacity>
       </View>
+
+      
     </ScrollView>
   )
 }
@@ -440,13 +457,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.green,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
   },
   header: {
-    marginBottom: 30,
+   /*  marginBottom: 30, */
   },
   headerH1: {
     fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  headerh2 : {
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -461,5 +482,46 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
+  changeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    width: '70%',
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  },
+  listWrapper:{
+    flexDirection: 'column',
+    backgroundColor:'#fff',
+    borderRadius: 10,
+    backgroundColor: colors.lightGrey,
+    flexWrap: 'wrap',
+    margin: 2, 
+    paddingLeft: 100, 
+    paddingRight: 100
+   /*  padding: 20, */
+     
+
+  },
+  row: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingBottom: 5,
+    fontSize: 16
+    
+  },
+  input: {
+    borderRadius: 8,
+    textAlign: 'center',
+    padding: 2,
+    width: '70%',
+    backgroundColor: colors.white,
+  }, 
+  smallContainer: {
+    /* flexDirection: 'row', */
+  }
 })
 export default SingleProjectPage

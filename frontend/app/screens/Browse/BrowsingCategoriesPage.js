@@ -23,6 +23,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const dispatch = useDispatch()
   const projectId = route.params.projectId
+  console.log('projectID brows', projectId)
 
   const partyType = route.params.partyType
   let backgroundStyle
