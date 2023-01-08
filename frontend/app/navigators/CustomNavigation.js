@@ -79,11 +79,6 @@ const ProfileNavigator = () => {
           paddingLeft: 20,
         },
       }}>
-      <Stack.Screen
-        name='WhatAreWeDoing'
-        component={WhatAreWeDoing}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
