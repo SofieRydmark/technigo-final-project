@@ -34,24 +34,30 @@ const ChooseProject = ({ navigation, _id}) => {
 
     /* --- ADD NEW PROJECT FETCH  --*/
   
-  const addNewProject = ( values) => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-         Authorization: accessToken,
-      },
-       body: JSON.stringify({
-        name: values.name,
-        due_date: values.due_date
+    const addNewProject = async ( values) => {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: accessToken,
+        },
+        body: JSON.stringify({
+          name: values.name,
+          due_date: values.due_date
         }),
       }
-      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`, options)
-      .then ((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error))
-
-  }
+    
+      try {
+        const res = await fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`, options);
+        const data = await res.json();
+        console.log('newProject', data.response);
+        console.log('id', data.response._id);
+        return data;
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
+    }
   
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -87,14 +93,14 @@ const ChooseProject = ({ navigation, _id}) => {
          <View style={styles.form}>
          <Formik 
          initialValues={{ name: '', due_date: ''}}
-         onSubmit={(values, actions) => {
+        /*  onSubmit={(values, actions) => {
            if (values.name === '' || values.due_date === '') {
              return setLoginError('Please fill the name and due date') 
            } else {
-             addNewProject(values)
+             response = addNewProject(values)
              actions.resetForm()
            }
-           }}>
+           }} */>
            {({ handleChange, handleSubmit, values }) => (
              <View style={styles.input}>
                <TextInput
@@ -117,15 +123,16 @@ const ChooseProject = ({ navigation, _id}) => {
                />
       
                <TouchableOpacity style={styles.addProjectButton} 
-                 onPress={() => { 
+                 onPress={async () => { 
                   if (values.name === '' || values.due_date === '') {
                     return setLoginError('Please fill the name and due date')
                   }
-                  handleSubmit(); 
+                  /* handleSubmit() */; 
                   console.log('newProject', newProject);
-console.log('id',newProject.response._id)
-                  navigation.navigate('WhatKindOfParty', {projectId: newProject.response._id}) 
-                  }}>
+                  const data = await addNewProject(values);
+                  console.log('id Onpress', data.response._id);
+                  navigation.navigate('WhatKindOfParty', {projectId: data.response._id});
+                }}>
                     <Text>NYTT PROJEKT</Text>
                </TouchableOpacity>
              </View>
