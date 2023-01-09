@@ -18,10 +18,14 @@ import {
   SafeAreaView,
 } from 'react-native'
 
+// Assets import
 import colors from 'assets/styling/colors.js'
+import { PARTYTYPE_THEME_URL, THEME_ADD_URL } from 'assets/urls/urls'
+
+// Reducers
 import user from '../../reducers/user'
 
-const Themes = ({ route, navigation }) => {
+const Themes = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
@@ -30,6 +34,7 @@ const Themes = ({ route, navigation }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [themeSelected, setThemeSelected] = useState([])
   const partyType = route.params.partyType
+  const projectId = route.params.projectId
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -46,10 +51,7 @@ const Themes = ({ route, navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/type/${partyType}`,
-      options
-    )
+    fetch(PARTYTYPE_THEME_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllThemes(data.response))
       .catch((error) => console.error(error))
@@ -79,10 +81,7 @@ const Themes = ({ route, navigation }) => {
       }),
     }
 
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/63b58581b9761f6338902ec9`,
-      options
-    )
+    fetch(THEME_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))

@@ -1,15 +1,18 @@
 import { React, useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import { Formik } from 'formik'
 import { useRoute } from '@react-navigation/native'
 
-//colors and reducer
-import colors from 'assets/styling/colors.js'
-import user from '../../reducers/user'
+// Formik
+import { Formik } from 'formik'
 
-// import { fetchProjects } from '../../reducers/user' /* needed with thunks */
+// Assets import
+import colors from 'assets/styling/colors.js'
+import { PROJECTS_URL, PROJECTS_ADD_URL, ONEPROJECT_DELETE_URL } from 'assets/urls/urls'
+
+// Reducers
+import user from '../../reducers/user'
+import { ui } from '../../reducers/ui'
 
 const ProjectBoard = ({ navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -17,16 +20,10 @@ const ProjectBoard = ({ navigation }) => {
   const userId = useSelector((store) => store.user.userId)
   const [allProjects, setAllProjects] = useState([])
   const dispatch = useDispatch()
-  console.log('useSelectorProject', allProjects)
-
-  const logout = () => {
-    dispatch(user.actions.setEmail(null))
-    dispatch(user.actions.setAccessToken(null))
-  }
 
   /* --- GET ALL PROJECTS FETCH--*/
-
   useEffect(() => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'GET',
       headers: {
@@ -34,18 +31,14 @@ const ProjectBoard = ({ navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`,
-      options
-    )
+    fetch(PROJECTS_URL(userId), options)
       .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
-    console.log('data', allProjects)
-  }, [])
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+  }, [allProjects])
 
   /* --- ADD NEW PROJECT FETCH  --*/
-
   const addNewProject = (values) => {
     const options = {
       method: 'POST',
@@ -58,18 +51,15 @@ const ProjectBoard = ({ navigation }) => {
         due_date: values.due_date,
       }),
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`,
-      options
-    )
+    fetch(PROJECTS_ADD_URL(userId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error))
   }
 
   /*--- DELETE PROJECT ---*/
-
   const deleteProject = (projectId) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
       headers: {
@@ -78,13 +68,11 @@ const ProjectBoard = ({ navigation }) => {
       },
       body: JSON.stringify({ _id: projectId }),
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`,
-      options
-    )
+    fetch(ONEPROJECT_DELETE_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
   return (
@@ -145,17 +133,16 @@ const ProjectBoard = ({ navigation }) => {
                         <Text style={styles.row}>{singleProject.due_date}</Text>
                         <Text style={styles.row}>{singleProject.name}</Text>
                       </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.trashIcon}
+                        onPress={() => deleteProject(singleProject._id)}>
+                        <Text style={styles.row}>🗑</Text>
+                      </TouchableOpacity>
                     </View>
                   </>
                 )
               })}
             </View>
-            <TouchableOpacity onPress={logout}>
-              <Text>Sign out</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
-              <Text>Find store</Text>
-            </TouchableOpacity>
           </View>
         </>
       )}
@@ -193,7 +180,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     margin: 2,
   },
-  // sigle item styling
+  // single item styling
   row: {
     paddingRight: 10,
     paddingLeft: 10,

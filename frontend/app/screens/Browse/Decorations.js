@@ -18,7 +18,11 @@ import {
   SafeAreaView,
 } from 'react-native'
 
+// Assets import
 import colors from 'assets/styling/colors.js'
+import { PARTYTYPE_DEC_URL, DECOR_ADD_URL } from 'assets/urls/urls'
+
+// Reducers
 import user from '../../reducers/user'
 
 const Decorations = ({ route, navigation }) => {
@@ -47,10 +51,7 @@ const Decorations = ({ route, navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/decorations/type/${partyType}`,
-      options
-    )
+    fetch(PARTYTYPE_DEC_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllDecorations(data.response))
       .catch((error) => console.error(error))
@@ -73,10 +74,7 @@ const Decorations = ({ route, navigation }) => {
       }),
     }
     console.log('name', name)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`,
-      options
-    )
+    fetch(DECOR_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-
 const user = createSlice({
   name: 'user',
   initialState: {
@@ -36,14 +35,12 @@ export const project = createSlice({
     all: {},
     name: null,
     due_date: null,
-
-
-   },
+  },
   reducers: {
     setAllProjects: (store, action) => {
       console.log('setAllProjects', action)
       store.all = action.payload
-    }, 
+    },
     // setProjectId: (store, action) => {
     //   console.log('projectid', action)
     //   store.projectId = action.payload
@@ -58,50 +55,6 @@ export const project = createSlice({
       store.due_date = action.payload
     },
   },
-},
-)
-// THUNK FETCH IDEA TO WORK IN THE FUTURE WITH
-
-// export const fetchProjects = (accessToken) => {
-//   // const [allProjects, setAllProjects] = useState([])
-//   return ({  dispatch, getState, userId }) => {
-//     const options = {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: accessToken,
-//       },
-//       }
-//     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/63b489f60b16576ee3a8c5f7/project-board/projects`, options)
-//     .then ((res) => res.json())
-//     .then((json) => dispatch(project.actions.setAllProjects(json.response)))
-//     .catch((error) => console.log(error))
-//     // console.log("data", allProjects)
-//   }
-
-
-// }
-// export const addProject = () => {
-//   return({getState, dispatch, userId}) => {
-//     const options = {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//          Authorization: accessToken,
-//       },
-//        body: JSON.stringify({
-//         name: '',
-//         due_date: ''
-//         }),
-//       }
-//     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/63b489f60b16576ee3a8c5f7/project-board/projects/addProject`, options)
-//     .then ((res) => res.json())
-//     .then((json) => dispatch(setNewProject(json.project.)))
-//     .catch((error) => console.log(error))
-//     console.log("data", addProject)
-//   }
-
-// }
+})
 
 export default user
-

@@ -17,7 +17,16 @@ import {
   SafeAreaView,
 } from 'react-native'
 
+// Assets import
 import colors from 'assets/styling/colors.js'
+import {
+  PARTYTYPE_FOOD_URL,
+  PARTYTYPE_DRINK_URL,
+  FOOD_ADD_URL,
+  DRINK_ADD_URL,
+} from 'assets/urls/urls'
+
+// Reducers
 import user from '../../reducers/user'
 
 const FoodnDrinks = ({ route, navigation }) => {
@@ -47,7 +56,7 @@ const FoodnDrinks = ({ route, navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/food/type/${partyType}`, options)
+    fetch(PARTYTYPE_FOOD_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllFood(data.response))
       .catch((error) => console.error(error))
@@ -66,10 +75,7 @@ const FoodnDrinks = ({ route, navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/drinks/type/${partyType}`,
-      options
-    )
+    fetch(PARTYTYPE_DRINK_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllDrinks(data.response))
       .catch((error) => console.error(error))
@@ -99,10 +105,7 @@ const FoodnDrinks = ({ route, navigation }) => {
       }),
     }
 
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addFood/${projectId}`,
-      options
-    )
+    fetch(FOOD_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
@@ -121,10 +124,7 @@ const FoodnDrinks = ({ route, navigation }) => {
       }),
     }
 
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDrinks/${projectId}`,
-      options
-    )
+    fetch(DRINK_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
@@ -144,7 +144,7 @@ const FoodnDrinks = ({ route, navigation }) => {
           <Text style={styles.h1}>Food</Text>
           <TextInput
             style={styles.input}
-            placeholder='Search for a theme...'
+            placeholder='Search for a food...'
             onChangeText={(text) => setSearchTerm(text)}
             value={searchTerm}
           />
@@ -178,7 +178,7 @@ const FoodnDrinks = ({ route, navigation }) => {
           <Text style={styles.h1}>Drinks</Text>
           <TextInput
             style={styles.input}
-            placeholder='Search for a theme...'
+            placeholder='Search for a drink...'
             onChangeText={(text) => setSearchTerm(text)}
             value={searchTerm}
           />

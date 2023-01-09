@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
+// Assets imports
 import colors from 'assets/styling/colors.js'
 
 const WhatAreWeDoing = ({ navigation }) => {

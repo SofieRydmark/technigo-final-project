@@ -15,8 +15,12 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
-import user from '../../reducers/user'
+// Asset imports
 import colors from 'assets/styling/colors.js'
+import { SIGN_UP_URL } from 'assets/urls/urls.js'
+
+// Reducers
+import user from '../../reducers/user'
 
 // Validation of input fields with yup
 import * as Yup from 'yup'
@@ -52,7 +56,7 @@ const SignUp = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signUp', options) // sign up URL
+    fetch(SIGN_UP_URL, options) // sign up URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -217,8 +221,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   headerH1: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 45,
+    fontFamily: 'DMSans_400Regular',
     textAlign: 'center',
   },
   headerH2: {

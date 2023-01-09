@@ -11,9 +11,13 @@ import {
   SafeAreaView,
   TextInput,
 } from 'react-native'
+
+// Formik
 import { Formik } from 'formik'
 
+// Assets import
 import colors from 'assets/styling/colors.js'
+import { PROJECTS_URL, PROJECTS_ADD_URL } from 'assets/urls/urls'
 
 const ChooseProject = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -32,14 +36,11 @@ const ChooseProject = ({ navigation, _id }) => {
         Authorization: accessToken,
       },
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`,
-      options
-    )
+    fetch(PROJECTS_URL(userId), options)
       .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
-  }, [])
+  }, [allProjects])
 
   /* --- ADD NEW PROJECT FETCH  --*/
 
@@ -55,10 +56,7 @@ const ChooseProject = ({ navigation, _id }) => {
         due_date: values.due_date,
       }),
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`,
-      options
-    )
+    fetch(PROJECTS_ADD_URL(userId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error))

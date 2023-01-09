@@ -15,10 +15,14 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
+// Components
 import MainButton from 'components/otherComponents/MainButton'
 
+// Asset imports
 import colors from 'assets/styling/colors.js'
+import { SIGN_IN_URL } from 'assets/urls/urls.js'
 
+// Reducer
 import user from '../../reducers/user'
 
 // Validation of input fields with yup
@@ -49,7 +53,7 @@ const SignIn = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signIn', options) // sign in URL
+    fetch(SIGN_IN_URL, options) // sign in URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -190,8 +194,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   headerH1: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 45,
+    fontFamily: 'DMSans_400Regular',
     textAlign: 'center',
   },
   headerH2: {

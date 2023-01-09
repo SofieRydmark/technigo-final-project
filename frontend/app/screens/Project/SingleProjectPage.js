@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch, batch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   View,
   ScrollView,
@@ -8,18 +8,30 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  Pressable,
-  Platform,
   Button,
   Image,
   FlatList,
   SafeAreaView,
 } from 'react-native'
 
-import colors from 'assets/styling/colors.js'
+// Assets import
+import colors from 'assets/styling/colors'
+
+// Reducers
 import user from '../../reducers/user'
+import { ui } from '../../reducers/ui'
+import {
+  ONEPROJECT_URL,
+  DRINK_COMPLETE_URL,
+  DECOR_COMPLETE_URL,
+  THEME_COMPLETE_URL,
+  ACTIVITY_COMPLETE_URL,
+  DRINK_DELETE_URL,
+  DECOR_DELETE_URL,
+  THEME_DELETE_URL,
+  ACTIVITY_DELETE_URL,
+  ONEPROJECT_CHANGE_URL,
+} from 'assets/urls/urls'
 
 const SingleProjectPage = ({ navigation, route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -30,8 +42,10 @@ const SingleProjectPage = ({ navigation, route }) => {
   const [name, setName] = useState('')
   const [dueDate, setDueDate] = useState('')
   const projectId = route.params.projectId
+  const dispatch = useDispatch()
 
   const getSingleProject = () => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'GET',
       headers: {
@@ -39,21 +53,20 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}`,
-      options
-    )
+    fetch(ONEPROJECT_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => setSingleProject(data.data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
   useEffect(() => {
     getSingleProject()
-  }, [])
+  }, [singleProject])
 
   /****************** TOOGLE OBJECT PROJECT  ************************* */
   const completedDrinks = (drinksId) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'PATCH',
       headers: {
@@ -66,17 +79,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', drinksId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/drink/${drinksId}`,
-      options
-    )
+    fetch(DRINK_COMPLETE_URL(userId, projectId, drinksId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', completedDrinks)
   }
 
   const completedTheme = (themeId) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'PATCH',
       headers: {
@@ -89,17 +101,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', themeId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/theme/${themeId}`,
-      options
-    )
+    fetch(THEME_COMPLETE_URL(userId, projectId, themeId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', completedTheme)
   }
 
   const completedFood = (foodId) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'PATCH',
       headers: {
@@ -112,16 +123,15 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', foodId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/food/${foodId}`,
-      options
-    )
+    fetch(FOOD_COMPLETE_URL(userId, projectId, foodId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', completedFood)
   }
   const completedActivities = (activityId) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'PATCH',
       headers: {
@@ -134,17 +144,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', activityId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/activity/${activityId}`,
-      options
-    )
+    fetch(ACTIVITY_COMPLETE_URL(userId, projectId, activityId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', completedActivities)
   }
 
   const completedDecorations = (decorationId) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'PATCH',
       headers: {
@@ -157,19 +166,18 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', decorationId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/decoration/${decorationId}`,
-      options
-    )
+    fetch(DECOR_COMPLETE_URL(userId, projectId, decorationId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', completedDecorations)
   }
 
   /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
 
   const deleteDrinks = (drinksId, name) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
       headers: {
@@ -182,17 +190,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', drinksId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDrink/${drinksId}`,
-      options
-    )
+    fetch(DRINK_DELETE_URL(userId, projectId, drinksId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', deleteFood)
   }
 
   const deleteFood = (foodId, name) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
       headers: {
@@ -205,17 +212,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', foodId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteFood/${foodId}`,
-      options
-    )
+    fetch(FOOD_DELETE_URL(userId, projectId, foodId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', deleteFood)
   }
 
   const deleteDecoration = (decorationId, name) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
       headers: {
@@ -228,17 +234,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', decorationId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDecoration/${decorationId}`,
-      options
-    )
+    fetch(DECOR_DELETE_URL(userId, projectId, decorationId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', deleteDecoration)
   }
 
   const deleteActivity = (activityId, name) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
       headers: {
@@ -251,17 +256,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', activityId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteActivity/${activityId}`,
-      options
-    )
+    fetch(ACTIVITY_DELETE_URL(userId, projectId, activityId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', deleteActivity)
   }
 
   const deleteTheme = (themeId, name) => {
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
       headers: {
@@ -274,25 +278,22 @@ const SingleProjectPage = ({ navigation, route }) => {
       }),
     }
     console.log('id', themeId)
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteTheme/${themeId}`,
-      options
-    )
+    fetch(THEME_DELETE_URL(userId, projectId, themeId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
     console.log('marked as completed', deleteTheme)
   }
   /****************** CHANGE NAME OBJECT PROJECT  ************************* */
 
   const singleProjectChange = (options) => {
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/${projectId}`,
-      options
-    )
+    dispatch(ui.actions.setLoading(true))
+    fetch(ONEPROJECT_CHANGE_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
   const changeName = (name) => {

@@ -17,7 +17,11 @@ import {
   SafeAreaView,
 } from 'react-native'
 
+// Assets import
 import colors from 'assets/styling/colors.js'
+import { PARTYTYPE_ACT_URL, ACTIVITY_ADD_URL } from 'assets/urls/urls'
+
+// Reducers
 import user from '../../reducers/user'
 
 const Activities = ({ route, navigation }) => {
@@ -44,10 +48,7 @@ const Activities = ({ route, navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/activities/type/${partyType}`,
-      options
-    )
+    fetch(PARTYTYPE_ACT_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllActivities(data.response))
       .catch((error) => console.error(error))
@@ -70,10 +71,7 @@ const Activities = ({ route, navigation }) => {
       }),
     }
 
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addActivity/${projectId}`,
-      options
-    )
+    fetch(ACTIVITY_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
@@ -85,10 +83,10 @@ const Activities = ({ route, navigation }) => {
     <SafeAreaView
       style={[styles.background, backgroundStyle]}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={styles.h1}>Themes</Text>
+      <Text style={styles.h1}>Activities</Text>
       <TextInput
         style={styles.input}
-        placeholder='Search for a Activity...'
+        placeholder='Search for an Activity...'
         onChangeText={(text) => setSearchTerm(text)}
         value={searchTerm}
       />

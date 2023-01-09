@@ -16,7 +16,10 @@ import {
   Image,
 } from 'react-native'
 
+// Assets import
 import colors from 'assets/styling/colors.js'
+
+// Reducers
 import user from '../../reducers/user'
 
 const BrowsCategoriesPage = ({ route, navigation }) => {
