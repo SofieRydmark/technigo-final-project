@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { Formik } from 'formik'
 import { useRoute } from '@react-navigation/native'
@@ -172,6 +171,9 @@ const ProjectBoard = ({ navigation }) => {
                         <Text style={styles.row}>{singleProject.due_date}</Text>
                         <Text style={styles.row}>{singleProject.name}</Text>
                       </TouchableOpacity>
+                      <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject(singleProject._id) }>
+                      <Text style={styles.row}>🗑</Text>
+                    </TouchableOpacity>
                     </View>
                   </>
                 )

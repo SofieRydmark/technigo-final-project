@@ -1,19 +1,122 @@
 import React from 'react'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { Formik } from 'formik'
+
 
 import colors from '../../config/colors'
+import { ui } from '../../reducers/ui'
 
-const GuestList = ({ navigation }) => {
+
+
+const GuestList = ({ navigation, route, _id}) => {
+  const accessToken = useSelector((store) => store.user.accessToken)
+  const projectId = route.params.projectId
+  const [allGuests, setAllGuests] = useState([])
+  const userId = useSelector((store) => store.user.userId)
+  const [loginError, setLoginError] = useState(null)
+  const dispatch = useDispatch()
+  console.log('project id guest', projectId)
+
+  /* --- GET WHOLE GUEST LIST--*/
+
+  // useEffect((projectId) => {
+
+  //   dispatch(ui.actions.setLoading(true))
+  //   const options = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: accessToken,
+  //     },
+  //   }
+  //   fetch(
+  //     `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/${projectId}`,
+  //     options
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => setAllGuests(data.response))
+  //     .catch((error) => console.log(error))
+  //     .finally (()=>   dispatch(ui.actions.setLoading(false)))
+  //   // console.log('data', allProjects)
+  // }, [allGuests])
+
+  const addNewGuest = ({values} ) => {
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        //  Authorization: accessToken,
+      },
+       body: JSON.stringify({
+        guestName: values.guestName,  // values comes from Formik
+        phone: values.phone
+        }),
+      }
+      fetch(`https:party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/63bbe29e04e8e36382589ef7`, options)
+      .then ((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error))
+      .finally(()=> dispatch(ui.actions.setLoading(false)))
+
+
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerH1}>GuestList</Text>
+      </View>
+        {accessToken && (
+        <>
+        <View style={styles.form}>
+            <Formik
+              initialValues={{ guestName: '', phone: '' }}
+              onSubmit={(values, actions) => {
+                if (values.guestName === '' || values.phone === '') {
+                  return setLoginError('Please fill the name')
+                } else {
+                  addNewGuest(values)
+                  actions.resetForm()
+                }
+              }}>
+              {({ handleChange, handleSubmit, values }) => (
+                <View style={styles.input}>
+                  <TextInput
+                    label='guestName'
+                    onChangeText={handleChange('guestName')}
+                    value={values.guestName}
+                    placeholder={'Namn'}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    maxLength={20}
+                  />
+                  <TextInput
+                    label='phone'
+                    onChangeText={handleChange('phone')}
+                    value={values.phone}
+                    placeholder={'Telefonnummer'}
+                    multiline={false}
+                    autoCapitalize='none'
+                  />
+
+                  <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
+                    <Text>NY GÄST</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+          </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Back to projectBoard</Text>
         </TouchableOpacity>
-      </View>
+      </>
+        )}
     </ScrollView>
   )
 }
@@ -23,16 +126,76 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.green,
     alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
+    paddingVertical: 60,
   },
   header: {
     marginBottom: 30,
   },
   headerH1: {
+    margin: 10,
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  pressable: {
+    flex: 1,
+    background: 'transparent',
+  },
+
+  listWrapper: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    backgroundColor: colors.lightGrey,
+    flexWrap: 'wrap',
+    margin: 2,
+  },
+  // sigle item styling
+  row: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingBottom: 5,
+    fontSize: 16,
+  },
+  // maping + formik with white background
+  form: {
+    borderRadius: 10,
+    padding: 25,
+    width: '80%',
+    backgroundColor: colors.white,
+  },
+  // add new guest input + button styling
+  addProjectButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    textAlign: 'center',
+    width: '100%',
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  },
+
+  input: {
+    marginBottom: 10,
+    padding: 25,
+    backgroundColor: colors.lightGrey,
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 12,
+    fontSize: 12,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey,
+  },
+
+  //delete icon styling
+  trashIcon: {
+    color: colors.red,
+    zIndex: 10,
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
   },
   partyButton: {
     alignItems: 'center',

@@ -343,6 +343,9 @@ const SingleProjectPage = ({ navigation, route }) => {
     style={styles.changeButton}> 
     <Text>Change name </Text>
     </TouchableOpacity>
+    <TouchableOpacity onPress={() => {navigation.navigate('GuestList', { projectId: singleProject._id })}}>
+      <Text style={styles.row}>GUEST LIST</Text>
+    </TouchableOpacity>
     {showInput && (
       <View>
         <TextInput
