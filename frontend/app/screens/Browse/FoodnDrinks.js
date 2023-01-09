@@ -23,10 +23,11 @@ import user from '../../reducers/user'
 const FoodnDrinks = ({route, navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
-  const [selectedFetch, setSelectedFetch] = useState('food')
+  const [selectedFetch, setSelectedFetch] = useState('drinks')
   const [allFood, setAllFood] = useState([])
   const [allDrinks, setAllDrinks] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [objectSent, setObjectSent] = useState([]);
   const buttonIcon = require('../../assets/addCircle.png')
   const projectId = route.params.projectId
   const partyType= route.params.partyType
@@ -100,6 +101,7 @@ const FoodnDrinks = ({route, navigation}) => {
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
+      setObjectSent([...objectSent, name]);
   };
   
 
@@ -120,22 +122,23 @@ const FoodnDrinks = ({route, navigation}) => {
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
+      setObjectSent([...objectSent, name]);
   };
  
 
   
   return (
     <SafeAreaView style={[styles.background, backgroundStyle]}>
-      <Button onPress={handleDrinksButton} title='drinks'>
-        Drinks
-      </Button>
-      <Button onPress={handleFoodButton} title='food'>
-        Food
-      </Button>
-      
-
+      <View style={styles.buttonContainer}>
+      <TouchableOpacity onPress={handleDrinksButton} style={styles.partyButton}>
+        <Text>Drinks</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleFoodButton} style={styles.partyButton}>
+        <Text>Food</Text>
+      </TouchableOpacity>
+      </View>
       {selectedFetch === 'food' ? (
-        <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
+        <View>
           <Text style={styles.h1}>Food</Text>
           <TextInput
         style={styles.input}
@@ -158,18 +161,21 @@ const FoodnDrinks = ({route, navigation}) => {
                 <View style={styles.itemNameBackground}>
                   <Text style={styles.itemName}>{item.name}</Text>
                 </View>
-                  <View style={styles.addButtonCircle}>
+                  <View style={[
+                styles.addButtonCircle,
+                objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                ]}>
                     <Image source={buttonIcon} style={styles.addButton} />
                   </View>
               </View>
             </TouchableOpacity>
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
       />
         </View>
       ) : (
-        <View style={{ height: 400, width: 400, alignItems: 'center', justifyContent: 'center' }}>
+        <View >
           <Text style={styles.h1}>Drinks</Text>
           <TextInput
         style={styles.input}
@@ -192,14 +198,17 @@ const FoodnDrinks = ({route, navigation}) => {
                 <View style={styles.itemNameBackground}>
                   <Text style={styles.itemName}>{item.name}</Text>
                 </View>
-                  <View style={styles.addButtonCircle}>
+                  <View style={[
+                styles.addButtonCircle,
+                objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                ]}>
                     <Image source={buttonIcon} style={styles.addButton} />
                   </View>
               </View>
             </TouchableOpacity>
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
       />
         </View>
       )}
@@ -234,14 +243,15 @@ const styles = StyleSheet.create({
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
-  /* flatList: {
+  flatList: {
     flex: 0.9,
     alignSelf: 'center', 
-  }, */ 
+  }, 
   h1: {
-    marginTop: 60, 
+    marginTop: 30, 
     fontSize: 25,
     fontWeight: 'bold',
+    textAlign: 'center'
 
   },
   item: {
@@ -271,10 +281,10 @@ const styles = StyleSheet.create({
   addButtonCircle: {
     position: 'absolute',
     zIndex: 1,
-    top: -10,
-    right: -10,
-    width: 28,
-    height: 28,
+    top: -13,
+    right: -13,
+    width: 25,
+    height: 25,
     borderRadius: 16,
     backgroundColor: 'transparent',
     alignItems: 'center',
@@ -284,6 +294,27 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  partyButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+   /*  marginTop: 10,
+    marginBottom: 10, */
+    width: 50, 
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+    margin: 4
+  }, 
+  buttonContainer: {
+    /* flex: 0.2, */
+    flexDirection: 'row', 
+    flexWrap: 'wrap',
+    justifyContent: 'space-around', 
+    marginTop: 100, 
+
+    
+  }
 })
 
 export default FoodnDrinks

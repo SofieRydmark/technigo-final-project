@@ -34,8 +34,6 @@ const SingleProjectPage = ({ navigation, route }) => {
 
 
   const getSingleProject = ( ) => {
-  
-    
     const options = {
       method: 'GET',
       headers: {
@@ -51,7 +49,7 @@ const SingleProjectPage = ({ navigation, route }) => {
 
   useEffect(() => {
     getSingleProject()
-  }, [/* getSingleProject */])
+  }, [singleProject])
 
    /****************** TOOGLE OBJECT PROJECT  ************************* */
    const completedDrinks = (drinksId) => {
@@ -307,159 +305,197 @@ const SingleProjectPage = ({ navigation, route }) => {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.background}>
-      <View style={styles.header}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+    
         {singleProject.map((project) => {
         return (
-          <View key={project._id}>
-          <Text style={styles.headerH1}>{project.name}</Text>
-          <Text style={styles.headerH1}>{project.due_date}</Text>
-          <View>
-    <TouchableOpacity onPress={() => setShowInput(!showInput)}
-    style={styles.changeButton}> 
-    <Text>Change name </Text>
-    </TouchableOpacity>
-    {showInput && (
-      <View>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={setName}
-          placeholder="Enter new name"
-        />
-        <TouchableOpacity
-          style={styles.changeButton}
-          onPress={() => {
-            changeName(name, console.log('onpress', name));
-            setShowInput(false);
-            
-          }}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
-        
-      </View>
-    )}
-    <TouchableOpacity onPress={(()=> setShowDateChange(!showDateChange))} 
-    style={styles.changeButton} > 
-          <Text>Change Date</Text>
-    </TouchableOpacity>
-    {showDateChange &&(
-      <View>
-        <TextInput
-        style={styles.input}
-        onChangeText={(text) => setDueDate(text)}
-        value={dueDate}
-        placeholder='YY-MM-DD'
-        />
-        <TouchableOpacity
-        style={styles.changeButton}
-        onPress={() => {
-        changeDueDate(dueDate)
-        setShowDateChange(false);
-        }}>
-          <Text>Submit</Text>
-        </TouchableOpacity>
-      </View>
-    )}
-   
-  </View>
-  <View style={styles.listWrapper}>
-      <Text style={styles.headerh2}>THEME</Text>
-      {project.themeProjectList.map((theme) => {
-        return (
-          <View key={theme._id} style={styles.smallContainer}>
-            <Text style={styles.row}>{theme.themesName}</Text>
-            <Text style={styles.row}>{theme.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedTheme(theme._id, theme.isCompleted)}style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteTheme(theme._id, )} style={styles.row}> Mark as completed</Button>
+            <>
+            <View style={styles.headerContainer}>
+            <View style={styles.leftColumn}>
+              <Text style={styles.headerH1}>{project.name}</Text>
+              <Text style={styles.headerH4}>{project.due_date}</Text>
+            </View>
+            <View style={styles.rightColumn}>
+              <TouchableOpacity onPress={() => setShowInput(!showInput)} style={styles.changeButton}>
+                <Text>Change name </Text>
+              </TouchableOpacity>
+              {showInput && (
+                <View>
+                  <TextInput
+                    style={styles.input}
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="Enter new name" />
+                  <TouchableOpacity
+                    style={styles.changeButton}
+                    onPress={() => {
+                      changeName(name, console.log('onpress', name))
+                      setShowInput(false)
+                    } }>
+                    <Text>Submit</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              <TouchableOpacity onPress={() => setShowDateChange(!showDateChange)} style={styles.changeButton}>
+                <Text>Change Date</Text>
+              </TouchableOpacity>
+              {showDateChange && (
+                <View>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => setDueDate(text)}
+                    value={dueDate}
+                    placeholder='YY-MM-DD' />
+                  <TouchableOpacity
+                    style={styles.changeButton}
+                    onPress={() => {
+                      changeDueDate(dueDate)
+                      setShowDateChange(false)
+                    } }>
+                    <Text>Submit</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
           </View>
-        );
-      })}
 
-      <Text style={styles.headerh2}>Activities</Text>
-      {project.activitiesProjectList.map((activity) => {
-        return (
-          <View key={activity._id}>
-            <Text style={styles.row}>{activity.activitiesName}</Text>
-            <Text style={styles.row}>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedActivities(activity._id, activity.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteActivity(activity._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
-
-      <Text style={styles.headerh2}>DECORATION</Text>
-      {project.decorationsProjectList.map((decoration) => {
-        return (
-          <View key={decoration._id}>
-            <Text>{decoration.decorationsName}</Text>
-            <Text>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedDecorations(decoration._id, decoration.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteDecoration(decoration._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
-
-      <Text style={styles.headerh2}>FOOD</Text>
-      {project.foodProjectList.map((food) => {
-        return (
-          <View key={food._id}>
-            <Text>{food.foodName}</Text>
-            <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedFood(food._id, food.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteFood(food._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
-
-      <Text style={styles.headerh2}>DRINKS</Text>
-      {project.drinksProjectList.map((drinks) => {
-        return (
-          <View key={drinks._id}>
-            <Text>{drinks.drinksName}</Text>
-            <Text>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedDrinks(drinks._id, drinks.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteDrinks(drinks._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
-
-{/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
-      {project.budgetList.map((budget) => {
-        return (
-          <View key={budget._id}>
-            <Text>{budget.activitiesName}</Text>
-            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
-          </View>
-        );
-      })}
-
-    </View>
-    </View>
-  );
-})}
-      
-        <TouchableOpacity
+          <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Back to projectBoard</Text>
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
 
+          <View style={styles.listWrapper}>
+              <Text style={styles.headerh2}>THEME</Text>
+              {project.themeProjectList.map((theme) => {
+                return (
+                  <View key={theme._id} style={styles.smallContainer}>
+                    <View styles={styles.leftColumn}>
+                      <Text /* style={styles.row} */>{theme.themesName}</Text>
+                      <Text /* style={styles.row} */>{theme.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                    </View>
+                    <View style={styles.rightColumn}>
+                      <TouchableOpacity title='Mark as completed' onPress={() => completedTheme(theme._id, theme.isCompleted)} style={styles.row}> 
+                      <Text>Mark as completed</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity title='DELETE' onPress={() => deleteTheme(theme._id)} style={styles.row}>
+                         <Text>Delete object</Text>
+                         </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              })}
+
+              <Text style={styles.headerh2}>Activities</Text>
+              {project.activitiesProjectList.map((activity) => {
+                return (
+                  <View key={activity._id} style={styles.smallContainer}>
+                    <View style={styles.leftColumn}>
+                    <Text style={styles.row}>{activity.activitiesName}</Text>
+                    <Text style={styles.row}>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                    </View>
+                    <View style={styles.rightColumn}>
+                    <TouchableOpacity title='Mark as completed' onPress={() => completedActivities(activity._id, activity.isCompleted)} style={styles.row}> 
+                    <Text>Mark as completed</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity title='DELETE' onPress={() => deleteActivity(activity._id)} style={styles.row}>
+                      <Text> Mark as completed</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              })}
+
+              <Text style={styles.headerh2}>DECORATION</Text>
+              {project.decorationsProjectList.map((decoration) => {
+                return (
+                  <View key={decoration._id} style={styles.smallContainer}>
+                    <View styles={styles.leftColumn}>
+                    <Text>{decoration.decorationsName}</Text>
+                    <Text>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                    </View>
+                    <View styles={styles.rightColumn}>
+                    <TouchableOpacity title='Mark as completed' onPress={() => completedDecorations(decoration._id, decoration.isCompleted)} style={styles.row}>
+                      <Text>Mark as completed</Text>
+                       </TouchableOpacity>
+                    <TouchableOpacity title='DELETE' onPress={() => deleteDecoration(decoration._id)} style={styles.row}> 
+                      <Text>DELETE</Text>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              })}
+
+              <Text style={styles.headerh2}>FOOD</Text>
+              {project.foodProjectList.map((food) => {
+                return (
+                  <View key={food._id} style={styles.smallContainer}>
+                    <View style={styles.leftColumn}>
+                    <Text>{food.foodName}</Text>
+                    <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                    </View>
+                    <View style={styles.rightColumn}>
+                    <TouchableOpacity title='Mark as completed' onPress={() => completedFood(food._id, food.isCompleted)} style={styles.row}> 
+                      <Text>Mark as completed</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity title='DELETE' onPress={() => deleteFood(food._id)} style={styles.row}>
+                       <Text>DELETE</Text>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              })}
+
+              <Text style={styles.headerh2}>DRINKS</Text>
+              {project.drinksProjectList.map((drinks) => {
+                return (
+                  <View key={drinks._id} style={styles.smallContainer}>
+                    <View style={styles.leftColumn}>
+                    <Text>{drinks.drinksName}</Text>
+                    <Text>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                    </View>
+                    <View style={styles.rightColumn}>
+                    <TouchableOpacity title='Mark as completed' onPress={() => completedDrinks(drinks._id, drinks.isCompleted)} style={styles.row}>
+                      <Text>Mark as completed</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity title='DELETE' onPress={() => deleteDrinks(drinks._id)} style={styles.row}> 
+                      <Text>DELETE</Text>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              })}
+
+              {/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
+              {project.budgetList.map((budget) => {
+                return (
+                  <View key={budget._id}>
+                    <Text>{budget.activitiesName}</Text>
+                    {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+                  </View>
+                )
+              })}
+
+            </View>
+            </>
+
+  );
+})}
       
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
+  scrollViewContent: {
     backgroundColor: colors.green,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingLeft: 20, 
+    paddingRight: 20,
+    paddingBottom: 500,  
   },
   header: {
-   /*  marginBottom: 30, */
+ 
+   
   },
   headerH1: {
     fontSize: 25,
@@ -468,6 +504,11 @@ const styles = StyleSheet.create({
   },
   headerh2 : {
     fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
+  headerH4: {
+    fontSize: 13,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -481,37 +522,24 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 8,
     backgroundColor: colors.peach,
+  
   },
   changeButton: {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    width: '70%',
-    height: 30,
+   /*  marginTop: 10,
+    marginBottom: 10, */
+    width: 70,
+    height: 20,
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
   listWrapper:{
+    /* backgroundColor: 'white', */
     flexDirection: 'column',
-    backgroundColor:'#fff',
-    borderRadius: 10,
-    backgroundColor: colors.lightGrey,
-    flexWrap: 'wrap',
-    margin: 2, 
-    paddingLeft: 100, 
-    paddingRight: 100
-   /*  padding: 20, */
-     
-
-  },
-  row: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingBottom: 5,
-    fontSize: 16
     
+
   },
   input: {
     borderRadius: 8,
@@ -521,7 +549,37 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   }, 
   smallContainer: {
-    /* flexDirection: 'row', */
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    paddingBottom: 40, 
+    backgroundColor : 'grey',
+    borderRadius: 8
+    
+  }, 
+  headerContainer : {
+    marginTop: 100, 
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    paddingBottom: 40, 
+  }, 
+  leftColumn: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+
+  },
+  rightColumn: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginTop: 10, 
+   
+  },
+  smallContainerLeft: {
+  
+  }, 
+  buttonContainer: {
+    
   }
 })
 export default SingleProjectPage

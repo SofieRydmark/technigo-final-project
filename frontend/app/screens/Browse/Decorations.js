@@ -3,16 +3,10 @@ import { useSelector } from 'react-redux'
 import { useDispatch, batch } from 'react-redux'
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  Pressable,
-  Platform,
-  Button,
   Image,
   FlatList,
   SafeAreaView,
@@ -24,14 +18,14 @@ import user from '../../reducers/user'
 
 const Decorations = ({route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
-  const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  const dispatch = useDispatch()
   const [allDecorations, setAllDecorations] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [objectSent, setObjectSent] = useState([]);
   const partyType= route.params.partyType
   const projectId = route.params.projectId
-  console.log('partytype', partyType)
+  const buttonIcon = require('../../assets/addCircle.png')
+ 
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -57,7 +51,7 @@ const Decorations = ({route, navigation }) => {
   useEffect(() => {
     getAllDecorations()
   }, [])
-  console.log('decorations', allDecorations)
+  
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
      const options = {
@@ -70,19 +64,26 @@ const Decorations = ({route, navigation }) => {
             decorationsName: name,
        }),
      };
-     console.log('name', name)
+
      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`, options)
        .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error));
+       setObjectSent([...objectSent, name]);
    };
-   console.log('decoration send',sendObjectToProject)
- 
-   const buttonIcon = require('../../assets/addCircle.png')
-
+  
+   const filteredDecorations = allDecorations
+   .filter((decorations) => decorations.name.toLowerCase().includes(searchTerm.toLowerCase()))
+   .sort((a, b) => {
+     if (partyType === 'grownup') {
+       return a.type < b.type ? -1 : 1;
+     } else if (partyType === 'kids') {
+       return b.type < a.type ? -1 : 1;
+     }
+   });
   return (
     <SafeAreaView style={[styles.background, backgroundStyle]}
-  contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+    contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
     <Text style={styles.h1}>Decorations</Text>
     <TextInput
       style={styles.input}
@@ -92,10 +93,8 @@ const Decorations = ({route, navigation }) => {
     />
     <FlatList
       style={styles.flatList} 
-      data={allDecorations.filter((theme) =>
-        theme.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )}
-      numColumns={2}
+      data={filteredDecorations}
+      numColumns={filteredDecorations.length === 1 ? 1 : 2}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
       renderItem={({ item }) => (
         <View style={styles.item}>
@@ -105,14 +104,17 @@ const Decorations = ({route, navigation }) => {
               <View style={styles.itemNameBackground}>
                 <Text style={styles.itemName}>{item.name}</Text>
               </View>
-                <View style={styles.addButtonCircle}>
+                <View  style={[
+                styles.addButtonCircle,
+                objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                ]}>
                   <Image source={buttonIcon} style={styles.addButton} />
                 </View>
             </View>
           </TouchableOpacity>
         </View>
       )}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item._id}
     />
   </SafeAreaView>
   )
@@ -185,8 +187,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
     top: -13,
     right: -13,
-    width: 28,
-    height: 28,
+    width: 25,
+    height: 25,
     borderRadius: 16,
     backgroundColor: 'transparent',
     alignItems: 'center',

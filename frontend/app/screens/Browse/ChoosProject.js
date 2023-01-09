@@ -75,11 +75,11 @@ const ChooseProject = ({ navigation, _id}) => {
     )}
       </View>
           
-        <View>
-      <TouchableOpacity onPress={() => setShowForm(!showForm)}
-      style={styles.partyButton}>
-        <Text style={styles.buttonText}>Skapa nytt projekt</Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={() => setShowForm(!showForm)}
+        style={styles.partyButton}>
+          <Text style={styles.buttonText}>Skapa nytt projekt</Text>
+        </TouchableOpacity>
       {showForm && (
          <View style={styles.form}>
          <Formik 

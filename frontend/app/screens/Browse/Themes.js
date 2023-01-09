@@ -23,9 +23,8 @@ import user from '../../reducers/user'
 
 const Themes = ({ route, navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
-  const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  const dispatch = useDispatch()
+  const [objectSent, setObjectSent] = useState([]);
   const [allThemes, setAllThemes] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [themeSelected, setThemeSelected] = useState([]);
@@ -83,6 +82,7 @@ const Themes = ({ route, navigation}) => {
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
+      setObjectSent([...objectSent, name])
   };
   
 
@@ -113,14 +113,17 @@ const Themes = ({ route, navigation}) => {
                 <View style={styles.itemNameBackground}>
                   <Text style={styles.itemName}>{item.name}</Text>
                 </View>
-                  <View style={styles.addButtonCircle}>
+                  <View style={[
+                styles.addButtonCircle,
+                objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                ]}>
                     <Image source={buttonIcon} style={styles.addButton} />
                   </View>
               </View>
             </TouchableOpacity>
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
       />
 
     
@@ -194,10 +197,10 @@ const styles = StyleSheet.create({
   addButtonCircle: {
     position: 'absolute',
     zIndex: 1,
-    top: -10,
-    right: -10,
-    width: 28,
-    height: 28,
+    top: -13,
+    right: -13,
+    width: 25,
+    height: 25,
     borderRadius: 16,
     backgroundColor: 'transparent',
     alignItems: 'center',
