@@ -137,7 +137,7 @@ export { ProjectNavigator }
 const BrowseNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName='WhatKindOfParty'
+      initialRouteName='ChooseProject'
       screenOptions={{
         headerStyle: {
           backgroundColor: 'transparent',
@@ -153,6 +153,7 @@ const BrowseNavigator = () => {
         component={WhatAreWeDoing}
         options={{ headerShown: false }}
       />
+       <Stack.Screen name='ChooseProject' component={ChooseProject} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
       <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
@@ -165,7 +166,7 @@ const BrowseNavigator = () => {
       <Stack.Screen name='GuestList' component={GuestList} />
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='ChooseProject' component={ChooseProject} />
+     
     </Stack.Navigator>
   )
 }
