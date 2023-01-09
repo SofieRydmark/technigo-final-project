@@ -17,6 +17,7 @@ import { Octicons } from '@expo/vector-icons'
 
 import user from '../../reducers/user'
 import colors from '../../config/colors'
+import { ui } from '../../reducers/ui'
 
 // Validation of input fields with yup
 import * as Yup from 'yup'
@@ -40,6 +41,7 @@ const SignUp = ({ navigation }) => {
 
   // Sign up form function with post sign up url
   const signUpSubmit = (values) => {
+    dispatch(ui.actions.setLoading(true))
     if (values.password !== values.confirmPassword) {
       return setLoginError('Passwords do not match')
     }
@@ -73,6 +75,7 @@ const SignUp = ({ navigation }) => {
           })
         }
       })
+      .finally(()=> dispatch(ui.actions.setLoading(false)))
   }
 
   return (

@@ -10,9 +10,11 @@ import BottomTabNavigator from './app/navigators/BottomTabNavigator'
 import { Provider, useSelector } from 'react-redux'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import user from './app/reducers/user'
-
+import { Loading } from './app/screens/Home/Loading'
+import { ui } from './app/reducers/ui'
 const reducer = combineReducers({
   user: user.reducer,
+  ui: ui.reducer,
  
 })
 const store = configureStore({ reducer })
@@ -33,6 +35,7 @@ const App = () => {
     <>
       <StatusBar style='auto' />
       {accessToken === null ? <AuthStack /> : <BottomTabNavigator />}
+      <Loading />
     </>
   )
 }

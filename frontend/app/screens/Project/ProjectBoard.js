@@ -16,6 +16,7 @@ import { useRoute} from '@react-navigation/native'
 //colors and reducer
 import colors from '../../config/colors'
 import user from '../../reducers/user'
+import { ui } from '../../reducers/ui'
 
 // import { fetchProjects } from '../../reducers/user' /* needed with thunks */
 
@@ -23,7 +24,27 @@ const ProjectBoard = ({navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
+
+
+
+  /*--- FINDING PROJECTID USING REDUX--- */
+  
+  // const { projectId } = match.params
+
+  // const project = useSelector((store) =>
+  //   store.user.find(project => project.id === projectId)
+  // )
+
+  // if (!project) {
+  //   return (
+  //     console.log("project not found")
+  //   )
+  // }
+  // const projectId = useSelector((store) => store.user.projectId)
+    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
+
   const [allProjects, setAllProjects] = useState([])
+  const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
   console.log("useSelectorProject", allProjects)
 
@@ -54,8 +75,8 @@ const ProjectBoard = ({navigation}) => {
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
       .finally (()=>   dispatch(ui.actions.setLoading(false)))
-    console.log('data', allProjects)
-  }, [])
+    // console.log('data', allProjects)
+  }, [setAllProjects])
 
       /* --- ADD NEW PROJECT FETCH  --*/
     
@@ -76,7 +97,7 @@ const ProjectBoard = ({navigation}) => {
         .then ((res) => res.json())
         .then((data) => console.log(data))
         .catch((error) => console.log(error))
-        .finally(()=>    dispatch(ui.actions.setLoading(false)))
+        .finally(()=> dispatch(ui.actions.setLoading(false)))
 
     }
 
@@ -84,7 +105,7 @@ const ProjectBoard = ({navigation}) => {
 
 
     const deleteProject = ( projectId) => {
-
+      dispatch(ui.actions.setLoading(true))
       const options = {
         method: 'DELETE',
         headers: {
@@ -97,7 +118,8 @@ const ProjectBoard = ({navigation}) => {
       fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`, options)
         .then((res) => res.json())
          .then((data) => console.log(data))
-         .catch((error) => console.error(error));
+         .catch((error) => console.error(error))
+         .finally(() => dispatch(ui.actions.setLoading(false)))
     
 
     }
@@ -153,6 +175,7 @@ const ProjectBoard = ({navigation}) => {
             {allProjects.map((singleProject) => {
               return(
                 <>
+                
                 <View key={singleProject._id} style={styles.listWrapper}>
                   <TouchableOpacity onPress={() => {navigation.navigate('SingleProjectPage', { projectId: singleProject._id, })}}>
                     <Text  style={styles.row}>{singleProject.due_date}</Text>
@@ -165,14 +188,8 @@ const ProjectBoard = ({navigation}) => {
                   </> 
               );
             })}
-          </View>      
-          <TouchableOpacity onPress={logout}>
-            <Text>Sign out</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
-            <Text>Find store</Text>
-          </TouchableOpacity>
           </View>
+        </View>
         </>
       )}
     </ScrollView>

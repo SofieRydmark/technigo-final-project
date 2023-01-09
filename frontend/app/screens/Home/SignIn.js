@@ -17,6 +17,7 @@ import { Octicons } from '@expo/vector-icons'
 
 import colors from '../../config/colors'
 import user from '../../reducers/user'
+import { ui } from '../../reducers/ui'
 
 // Validation of input fields with yup
 import * as Yup from 'yup'
@@ -37,6 +38,7 @@ const SignIn = ({ navigation }) => {
 
   // Sign up form function with post sign in url
   const signInSubmit = (values) => {
+    dispatch(ui.actions.setLoading(true))
     setLoginError(null)
     const options = {
       method: 'POST',
@@ -64,9 +66,11 @@ const SignIn = ({ navigation }) => {
             dispatch(user.actions.setAccessToken(null))
             dispatch(user.actions.setEmail(null))
             setLoginError(data.response)
-          })
+          }
+          )
         }
       })
+      .finally(() => dispatch(ui.actions.setLoading(false)))
   }
   return (
     <KeyboardAvoidingView
