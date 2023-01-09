@@ -13,6 +13,8 @@ const ChooseProject = ({ navigation, _id}) => {
   const [newProject, setNewProject] = useState("")
   const [showMap, setShowMap] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [loginError, setLoginError] = useState(null)
+  const dispatch = useDispatch()
   
 
   useEffect (() => {
@@ -50,6 +52,7 @@ const ChooseProject = ({ navigation, _id}) => {
       .catch((error) => console.log(error))
 
   }
+  
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
@@ -86,7 +89,7 @@ const ChooseProject = ({ navigation, _id}) => {
          initialValues={{ name: '', due_date: ''}}
          onSubmit={(values, actions) => {
            if (values.name === '' || values.due_date === '') {
-             return setLoginError('Please fill the name') 
+             return setLoginError('Please fill the name and due date') 
            } else {
              addNewProject(values)
              actions.resetForm()
@@ -112,12 +115,17 @@ const ChooseProject = ({ navigation, _id}) => {
                  multiline={false}
                  autoCapitalize='none'
                />
-
+      
                <TouchableOpacity style={styles.addProjectButton} 
-                onPress={() => { 
+                 onPress={() => { 
+                  if (values.name === '' || values.due_date === '') {
+                    return setLoginError('Please fill the name and due date')
+                  }
                   handleSubmit(); 
-                  navigation.navigate('WhatKindOfParty',
-                  {projectId: newProject._id}) }}>
+                  console.log('newProject', newProject);
+console.log('id',newProject.response._id)
+                  navigation.navigate('WhatKindOfParty', {projectId: newProject.response._id}) 
+                  }}>
                     <Text>NYTT PROJEKT</Text>
                </TouchableOpacity>
              </View>
