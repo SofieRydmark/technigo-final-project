@@ -51,8 +51,7 @@ const ProjectBoard = ({navigation}) => {
       .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
-    console.log('data', allProjects)
-  }, [])
+  }, [/* allProjects */])
 
       /* --- ADD NEW PROJECT FETCH  --*/
     

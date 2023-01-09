@@ -169,7 +169,7 @@ const FoodnDrinks = ({route, navigation}) => {
       />
         </View>
       ) : (
-        <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ height: 400, width: 400, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={styles.h1}>Drinks</Text>
           <TextInput
         style={styles.input}
@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
   },
   grownupBackground: {
     backgroundColor: colors.green,
@@ -227,18 +226,18 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.lightGrey,
     marginBottom: 20,
-    marginTop: 50,
+    marginTop: 20,
     borderWidth: 1,
-    padding: 15,
+    padding: 8,
     borderRadius: 12,
-    fontSize: 16,
+    fontSize: 14,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
-  flatList: {
+  /* flatList: {
     flex: 0.9,
     alignSelf: 'center', 
-  }, 
+  }, */ 
   h1: {
     marginTop: 60, 
     fontSize: 25,

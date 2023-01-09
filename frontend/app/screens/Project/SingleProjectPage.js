@@ -51,7 +51,7 @@ const SingleProjectPage = ({ navigation, route }) => {
 
   useEffect(() => {
     getSingleProject()
-  }, [])
+  }, [/* getSingleProject */])
 
    /****************** TOOGLE OBJECT PROJECT  ************************* */
    const completedDrinks = (drinksId) => {

@@ -30,6 +30,7 @@ const Themes = ({ route, navigation}) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [themeSelected, setThemeSelected] = useState([]);
   const partyType= route.params.partyType
+  const projectId = route.params.projectId
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -78,7 +79,7 @@ const Themes = ({ route, navigation}) => {
     };
     
 
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/63b58581b9761f6338902ec9`, options)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/${projectId}`, options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error));

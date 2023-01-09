@@ -23,9 +23,8 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const dispatch = useDispatch()
   const projectId = route.params.projectId
-  console.log('projectID brows', projectId)
-
   const partyType = route.params.partyType
+
   let backgroundStyle
   if (partyType === 'grownup') {
     backgroundStyle = styles.grownupBackground
@@ -58,7 +57,11 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
               onPress={() => navigation.navigate('Themes', { partyType: partyType, projectId:projectId })}
               title='Themes'>
               <Image source={imageTheme} style={styles.buttonImage} />
-              <Text style={styles.buttonText}>Themes</Text>
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                <Text style={styles.itemName}>Themes</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
 
@@ -66,8 +69,12 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
             <TouchableOpacity
               onPress={() => navigation.navigate('Decorations', { partyType: partyType, projectId:projectId})}
               title='Decorations'>
-              <Image source={imageActivity} style={styles.buttonImage} />
-              <Text style={styles.buttonText}> Decorations</Text>
+              <Image source={imageDecoration} style={styles.buttonImage} />
+              <View style={styles.itemNameContainer}>
+              <View style={styles.itemNameBackground}>
+                <Text style={styles.itemName}> Decorations</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
 
@@ -76,7 +83,11 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
               onPress={() => navigation.navigate('FoodnDrinks', { partyType: partyType, projectId:projectId })}
               title='Food and Drinks'>
               <Image source={imageFood} style={styles.buttonImage} />
-              <Text style={styles.buttonText}>Food & Drinks </Text>
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}>Food & Drinks </Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
 
@@ -85,7 +96,11 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
               onPress={() => navigation.navigate('Activities', { partyType: partyType, projectId:projectId })}
               title='Activity'>
               <Image source={imageActivity} style={styles.buttonImage} />
-              <Text style={styles.buttonText}> Activities</Text>
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}> Activities</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -107,31 +122,15 @@ const styles = StyleSheet.create({
   kidsBackground: {
     backgroundColor: colors.peach,
   },
-  /* button: { 
-    width: '100%',
-    height: 200, 
-    alignItems: 'center',
-    justifyContent: 'center',
-  
-  }, */
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-    /* position: 'absolute', */
-    /*   top: 100,
-    left: 65, */
-    /* transform: [{ translateX: -50 }, { translateY: -50 }], */
-  },
   buttonImage: {
-    width: 90,
-    height: 110,
-    left: 15,
+    margin: 10,  
+    width: 130,  
+    height: 130, 
   },
   ContainerStyle: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: 50,
+    padding: 20,
     margin: 30,
     alignContent: 'center',
     justifyContent: 'center',
@@ -141,6 +140,25 @@ const styles = StyleSheet.create({
     margin: 2,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  itemNameContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 0,
+    left: 15,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemNameBackground: {
+    backgroundColor: 'white',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+  },
+  itemName: {
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 })
 
