@@ -7,14 +7,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
-  SafeAreaView,
   TextInput,
 } from 'react-native'
 import { Formik } from 'formik'
 import { useRoute} from '@react-navigation/native'
 
-// import { useParams }  from "react-router-dom"
 
 //colors and reducer
 import colors from '../../config/colors'
@@ -26,7 +23,7 @@ const ProjectBoard = ({navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  // const { projectId } = useParams(projectId)
+
 
 
   /*--- FINDING PROJECTID USING REDUX--- */
@@ -43,6 +40,7 @@ const ProjectBoard = ({navigation}) => {
   //   )
   // }
   // const projectId = useSelector((store) => store.user.projectId)
+    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
 
   const [allProjects, setAllProjects] = useState([])
   const dispatch = useDispatch()
@@ -54,10 +52,6 @@ const ProjectBoard = ({navigation}) => {
     dispatch(user.actions.setAccessToken(null))
   }
 
-  /* Thinks we need on project board:
-  - remove project  (DELETE) */
-
-  // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
 
   /* --- GET ALL PROJECTS FETCH--*/
 
@@ -90,8 +84,7 @@ const ProjectBoard = ({navigation}) => {
         },
          body: JSON.stringify({
           name: values.name,  // values comes from Formik
-          due_date: values.due_date,
-          _id: projectId
+          due_date: values.due_date
           }),
         }
         fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`, options)
@@ -102,11 +95,9 @@ const ProjectBoard = ({navigation}) => {
     }
 
     /*--- DELETE PROJECT ---*/
-    const route = useRoute();
-    const projectId = route.params
-     console.log("projectId", projectId)
 
-    const deleteProject = (_id) => {
+
+    const deleteProject = ( projectId) => {
 
       const options = {
         method: 'DELETE',
@@ -114,11 +105,8 @@ const ProjectBoard = ({navigation}) => {
           'Content-Type': 'application/json',
           Authorization: accessToken,
         },
-        body: JSON.stringify({ _id: projectId })
-        // body: JSON.stringify({
-        //   projectName: name,  
-        //  _id: projectId
-        // }),
+         body: JSON.stringify({ _id: projectId })
+
       };
       fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`, options)
         .then((res) => res.json())
@@ -185,7 +173,7 @@ const ProjectBoard = ({navigation}) => {
                     <Text  style={styles.row}>{singleProject.due_date}</Text>
                     <Text style={styles.row}>{singleProject.name}</Text>
                   </TouchableOpacity>
-                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject(projectId)}>
+                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject(singleProject._id) }>
                       <Text style={styles.row}>🗑</Text>
                     </TouchableOpacity>
                 </View>
@@ -193,15 +181,6 @@ const ProjectBoard = ({navigation}) => {
               );
             })}
           </View>
-          {/* <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
-            <Text>Brows Categories </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={logout}>
-            <Text>Sign out</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
-            <Text>Find store</Text>
-          </TouchableOpacity> */}
         </View>
         </>
       )}
@@ -217,7 +196,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.green,
     alignItems: 'center',
-    // justifyContent: 'center',
     flex: 1,
     paddingVertical: 60
   },
