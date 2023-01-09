@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 
 // Our colors
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 
 // Form handler and validation Yup
 import { Formik } from 'formik'
@@ -23,10 +23,10 @@ const ReviewSchema = Yup.object().shape({
 // Lottie animation, avatars and icons
 import LottieView from 'lottie-react-native'
 import { MaterialIcons, AntDesign, Octicons } from '@expo/vector-icons'
-import avatar1 from '../../assets/avatar1.json'
-import avatar2 from '../../assets/avatar2.json'
-import avatar3 from '../../assets/avatar3.json'
-import avatar4 from '../../assets/avatar4.json'
+import avatar1 from 'assets/lotties/avatar1.json'
+import avatar2 from 'assets/lotties/avatar2.json'
+import avatar3 from 'assets/lotties/avatar3.json'
+import avatar4 from 'assets/lotties/avatar4.json'
 const avatars = [
   {
     id: 1,

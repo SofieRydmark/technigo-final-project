@@ -15,7 +15,10 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
-import colors from '../../config/colors'
+import MainButton from 'components/otherComponents/MainButton'
+
+import colors from 'assets/styling/colors.js'
+
 import user from '../../reducers/user'
 
 // Validation of input fields with yup

@@ -17,19 +17,19 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 import user from '../../reducers/user'
 
-const FoodnDrinks = ({route, navigation}) => {
+const FoodnDrinks = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const [selectedFetch, setSelectedFetch] = useState('food')
   const [allFood, setAllFood] = useState([])
   const [allDrinks, setAllDrinks] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const buttonIcon = require('../../assets/addCircle.png')
+  const buttonIcon = require('assets/images/addCircle.png')
   const projectId = route.params.projectId
-  const partyType= route.params.partyType
+  const partyType = route.params.partyType
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -66,7 +66,10 @@ const FoodnDrinks = ({route, navigation}) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/drinks/type/${partyType}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/drinks/type/${partyType}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => setAllDrinks(data.response))
       .catch((error) => console.error(error))
@@ -83,7 +86,7 @@ const FoodnDrinks = ({route, navigation}) => {
   const handleDrinksButton = () => {
     setSelectedFetch('drinks')
   }
-/****************** SEND FOOD TO SINGLE PROJECT  ************************* */
+  /****************** SEND FOOD TO SINGLE PROJECT  ************************* */
   const sendFoodToProject = (name) => {
     const options = {
       method: 'PATCH',
@@ -92,16 +95,18 @@ const FoodnDrinks = ({route, navigation}) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-           foodName: name,
+        foodName: name,
       }),
-    };
-    
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addFood/${projectId}`, options)
+    }
+
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addFood/${projectId}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((error) => console.error(error));
-  };
-  
+      .catch((error) => console.error(error))
+  }
 
   /****************** SEND DRINKS TO SINGLE PROJECT  ************************* */
   const sendDrinksToProject = (name) => {
@@ -112,18 +117,19 @@ const FoodnDrinks = ({route, navigation}) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-           drinksName: name,
+        drinksName: name,
       }),
-    };
-    
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDrinks/${projectId}`, options)
+    }
+
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDrinks/${projectId}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((error) => console.error(error));
-  };
- 
+      .catch((error) => console.error(error))
+  }
 
-  
   return (
     <SafeAreaView style={[styles.background, backgroundStyle]}>
       <Button onPress={handleDrinksButton} title='drinks'>
@@ -132,75 +138,74 @@ const FoodnDrinks = ({route, navigation}) => {
       <Button onPress={handleFoodButton} title='food'>
         Food
       </Button>
-      
 
       {selectedFetch === 'food' ? (
         <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={styles.h1}>Food</Text>
           <TextInput
-        style={styles.input}
-        placeholder='Search for a theme...'
-        onChangeText={(text) => setSearchTerm(text)}
-        value={searchTerm}
-      />
+            style={styles.input}
+            placeholder='Search for a theme...'
+            onChangeText={(text) => setSearchTerm(text)}
+            value={searchTerm}
+          />
           <FlatList
-        style={styles.flatList} 
-        data={allFood.filter((theme) =>
-          theme.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )}
-        numColumns={2}
-        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <TouchableOpacity onPress={() => sendFoodToProject(item.name)}>
-              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
-              <View style={styles.itemNameContainer}>
-                <View style={styles.itemNameBackground}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                </View>
-                  <View style={styles.addButtonCircle}>
-                    <Image source={buttonIcon} style={styles.addButton} />
+            style={styles.flatList}
+            data={allFood.filter((theme) =>
+              theme.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )}
+            numColumns={2}
+            contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <TouchableOpacity onPress={() => sendFoodToProject(item.name)}>
+                  <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+                  <View style={styles.itemNameContainer}>
+                    <View style={styles.itemNameBackground}>
+                      <Text style={styles.itemName}>{item.name}</Text>
+                    </View>
+                    <View style={styles.addButtonCircle}>
+                      <Image source={buttonIcon} style={styles.addButton} />
+                    </View>
                   </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
+            )}
+            keyExtractor={(item) => item.id}
+          />
         </View>
       ) : (
         <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={styles.h1}>Drinks</Text>
           <TextInput
-        style={styles.input}
-        placeholder='Search for a theme...'
-        onChangeText={(text) => setSearchTerm(text)}
-        value={searchTerm}
-        />
+            style={styles.input}
+            placeholder='Search for a theme...'
+            onChangeText={(text) => setSearchTerm(text)}
+            value={searchTerm}
+          />
           <FlatList
-        style={styles.flatList} 
-        data={allDrinks.filter((theme) =>
-          theme.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )}
-        numColumns={2}
-        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <TouchableOpacity onPress={() => sendDrinksToProject(item.name)}>
-              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
-              <View style={styles.itemNameContainer}>
-                <View style={styles.itemNameBackground}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                </View>
-                  <View style={styles.addButtonCircle}>
-                    <Image source={buttonIcon} style={styles.addButton} />
+            style={styles.flatList}
+            data={allDrinks.filter((theme) =>
+              theme.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )}
+            numColumns={2}
+            contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <TouchableOpacity onPress={() => sendDrinksToProject(item.name)}>
+                  <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+                  <View style={styles.itemNameContainer}>
+                    <View style={styles.itemNameBackground}>
+                      <Text style={styles.itemName}>{item.name}</Text>
+                    </View>
+                    <View style={styles.addButtonCircle}>
+                      <Image source={buttonIcon} style={styles.addButton} />
+                    </View>
                   </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
+            )}
+            keyExtractor={(item) => item.id}
+          />
         </View>
       )}
     </SafeAreaView>
@@ -237,18 +242,17 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flex: 0.9,
-    alignSelf: 'center', 
-  }, 
+    alignSelf: 'center',
+  },
   h1: {
-    marginTop: 60, 
+    marginTop: 60,
     fontSize: 25,
     fontWeight: 'bold',
-
   },
   item: {
-    margin: 10,  
-    width: 110,  
-    height: 110,  
+    margin: 10,
+    width: 110,
+    height: 110,
   },
   itemNameContainer: {
     position: 'absolute',

@@ -15,21 +15,21 @@ import {
   Button,
   Image,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native'
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 import user from '../../reducers/user'
 
-const Themes = ({ route, navigation}) => {
+const Themes = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
   const [allThemes, setAllThemes] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [themeSelected, setThemeSelected] = useState([]);
-  const partyType= route.params.partyType
+  const [themeSelected, setThemeSelected] = useState([])
+  const partyType = route.params.partyType
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -37,7 +37,6 @@ const Themes = ({ route, navigation}) => {
   } else if (partyType === 'kids') {
     backgroundStyle = styles.kidsBackground
   }
- 
 
   const getAllThemes = () => {
     const options = {
@@ -47,7 +46,10 @@ const Themes = ({ route, navigation}) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/type/${partyType}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/type/${partyType}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => setAllThemes(data.response))
       .catch((error) => console.error(error))
@@ -59,12 +61,12 @@ const Themes = ({ route, navigation}) => {
 
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
-    if (themeSelected[name]) {  // check if theme has already been selected
+    if (themeSelected[name]) {
+      // check if theme has already been selected
       // show alert or warning message
-      return;
-
+      return
     }
-    setThemeSelected({ ...themeSelected, [name]: true });  // update themeSelected state
+    setThemeSelected({ ...themeSelected, [name]: true }) // update themeSelected state
 
     const options = {
       method: 'POST',
@@ -73,23 +75,25 @@ const Themes = ({ route, navigation}) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-           themesName: name,
+        themesName: name,
       }),
-    };
-    
+    }
 
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/63b58581b9761f6338902ec9`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/63b58581b9761f6338902ec9`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((error) => console.error(error));
-  };
-  
+      .catch((error) => console.error(error))
+  }
 
-  const buttonIcon = require('../../assets/addCircle.png')
+  const buttonIcon = require('assets/images/addCircle.png')
 
   return (
-    <SafeAreaView style={[styles.background, backgroundStyle]}
-    contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+    <SafeAreaView
+      style={[styles.background, backgroundStyle]}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <Text style={styles.h1}>Themes</Text>
       <TextInput
         style={styles.input}
@@ -98,7 +102,7 @@ const Themes = ({ route, navigation}) => {
         value={searchTerm}
       />
       <FlatList
-        style={styles.flatList} 
+        style={styles.flatList}
         data={allThemes.filter((theme) =>
           theme.name.toLowerCase().includes(searchTerm.toLowerCase())
         )}
@@ -112,19 +116,16 @@ const Themes = ({ route, navigation}) => {
                 <View style={styles.itemNameBackground}>
                   <Text style={styles.itemName}>{item.name}</Text>
                 </View>
-                  <View style={styles.addButtonCircle}>
-                    <Image source={buttonIcon} style={styles.addButton} />
-                  </View>
+                <View style={styles.addButtonCircle}>
+                  <Image source={buttonIcon} style={styles.addButton} />
+                </View>
               </View>
             </TouchableOpacity>
           </View>
         )}
         keyExtractor={(item) => item.id}
       />
-
-    
     </SafeAreaView>
-
   )
 }
 
@@ -158,18 +159,17 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flex: 0.9,
-    alignSelf: 'center', 
-  }, 
+    alignSelf: 'center',
+  },
   h1: {
-    marginTop: 60, 
+    marginTop: 60,
     fontSize: 25,
     fontWeight: 'bold',
-
   },
   item: {
-    margin: 10,  
-    width: 110,  
-    height: 110,  
+    margin: 10,
+    width: 110,
+    height: 110,
   },
   itemNameContainer: {
     position: 'absolute',

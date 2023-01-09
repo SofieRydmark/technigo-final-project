@@ -16,7 +16,7 @@ import {
   Image,
 } from 'react-native'
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 import user from '../../reducers/user'
 
 const BrowsCategoriesPage = ({ route, navigation }) => {
@@ -45,17 +45,19 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
     }
   }, [accessToken])
 
-  const imageTheme = require('../../assets/theme.jpg')
-  const imageActivity = require('../../assets/activity.jpg')
-  const imageFood = require('../../assets/test.jpg')
-  const imageDecoration = require('../../assets/test1.jpg')
+  const imageTheme = require('assets/images/theme.jpg')
+  const imageActivity = require('assets/images/activity.jpg')
+  const imageFood = require('assets/images/test.jpg')
+  const imageDecoration = require('assets/images/test1.jpg')
   return (
     <ScrollView contentContainerStyle={[styles.background, backgroundStyle]}>
       {accessToken && (
         <View style={styles.ContainerStyle}>
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Themes', { partyType: partyType, projectId:projectId })}
+              onPress={() =>
+                navigation.navigate('Themes', { partyType: partyType, projectId: projectId })
+              }
               title='Themes'>
               <Image source={imageTheme} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Themes</Text>
@@ -64,7 +66,9 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Decorations', { partyType: partyType, projectId:projectId})}
+              onPress={() =>
+                navigation.navigate('Decorations', { partyType: partyType, projectId: projectId })
+              }
               title='Decorations'>
               <Image source={imageActivity} style={styles.buttonImage} />
               <Text style={styles.buttonText}> Decorations</Text>
@@ -73,7 +77,9 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('FoodnDrinks', { partyType: partyType, projectId:projectId })}
+              onPress={() =>
+                navigation.navigate('FoodnDrinks', { partyType: partyType, projectId: projectId })
+              }
               title='Food and Drinks'>
               <Image source={imageFood} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Food & Drinks </Text>
@@ -82,7 +88,9 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Activities', { partyType: partyType, projectId:projectId })}
+              onPress={() =>
+                navigation.navigate('Activities', { partyType: partyType, projectId: projectId })
+              }
               title='Activity'>
               <Image source={imageActivity} style={styles.buttonImage} />
               <Text style={styles.buttonText}> Activities</Text>

@@ -6,7 +6,7 @@ import { Formik } from 'formik'
 import { useRoute } from '@react-navigation/native'
 
 //colors and reducer
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 import user from '../../reducers/user'
 
 // import { fetchProjects } from '../../reducers/user' /* needed with thunks */

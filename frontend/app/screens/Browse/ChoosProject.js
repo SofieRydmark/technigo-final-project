@@ -1,23 +1,30 @@
-import {React, useState, useEffect} from 'react'
+import { React, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch} from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity,  FlatList, SafeAreaView, TextInput } from 'react-native'
+import { useDispatch } from 'react-redux'
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  SafeAreaView,
+  TextInput,
+} from 'react-native'
 import { Formik } from 'formik'
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 
-const ChooseProject = ({ navigation, _id}) => {
+const ChooseProject = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
- 
 
   const [allProjects, setAllProjects] = useState([])
-  const [newProject, setNewProject] = useState("")
-  const [showMap, setShowMap] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  
+  const [newProject, setNewProject] = useState('')
+  const [showMap, setShowMap] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
-  useEffect (() => {
+  useEffect(() => {
     const options = {
       method: 'GET',
       headers: {
@@ -25,32 +32,36 @@ const ChooseProject = ({ navigation, _id}) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`, options)
-      .then ((res) => res.json())
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects`,
+      options
+    )
+      .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
-   
-  }, [] )
+  }, [])
 
-    /* --- ADD NEW PROJECT FETCH  --*/
-  
-  const addNewProject = ( values) => {
+  /* --- ADD NEW PROJECT FETCH  --*/
+
+  const addNewProject = (values) => {
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-         Authorization: accessToken,
+        Authorization: accessToken,
       },
-       body: JSON.stringify({
+      body: JSON.stringify({
         name: values.name,
-        due_date: values.due_date
-        }),
-      }
-      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`, options)
-      .then ((res) => res.json())
+        due_date: values.due_date,
+      }),
+    }
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`,
+      options
+    )
+      .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error))
-
   }
   return (
     <ScrollView contentContainerStyle={styles.background}>
@@ -59,69 +70,74 @@ const ChooseProject = ({ navigation, _id}) => {
       </View>
       <View style={styles.container}>
         <View>
-        <TouchableOpacity onPress={() => setShowMap(!showMap)}
-        style={styles.partyButton}>
-        <Text style={styles.buttonText}>Active Projects</Text>
-      </TouchableOpacity>
-      {showMap && (
-        
-    allProjects.map((singleProject) => {
-      return(
-        <View>
-          <TouchableOpacity onPress={() => {navigation.navigate('WhatKindOfParty', { projectId: singleProject._id, })}}>
-            <Text key={_id} style={styles.item}>{singleProject.name}</Text>
+          <TouchableOpacity onPress={() => setShowMap(!showMap)} style={styles.partyButton}>
+            <Text style={styles.buttonText}>Active Projects</Text>
           </TouchableOpacity>
+          {showMap &&
+            allProjects.map((singleProject) => {
+              return (
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('WhatKindOfParty', { projectId: singleProject._id })
+                    }}>
+                    <Text key={_id} style={styles.item}>
+                      {singleProject.name}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            })}
         </View>
-        );
-      })
-    )}
-      </View>
-          
-        <View>
-      <TouchableOpacity onPress={() => setShowForm(!showForm)}
-      style={styles.partyButton}>
-        <Text style={styles.buttonText}>Create new</Text>
-      </TouchableOpacity>
-      {showForm && (
-        <Formik
-          initialValues={{ name: '', due_date: ''}}
-          onSubmit={(values, actions) => {
-            if (values.name === '' || values.due_date === '') {
-              return setLoginError('Please fill in all fields') //CHANGE THE MESSAGE
-            } else {
-              addNewProject(values)
-              actions.resetForm()
-            }
-          }}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <View>
-              <TextInput  style={{ height: 40, width: 100 }}
-                label = 'name'
-                onChangeText={handleChange('name')}
-                value={values.name}
-                placeholder={"project name"}
-                required
-                multiline={false}
-                autoCapitalize = 'none'
-              />
-              <TextInput style={{ height: 40, width: 100 }}
-                label = 'due_date'
-                onChangeText={handleChange('due_date')}
-                value={values.due_date}
-                placeholder={"YYYY-MM-DD"}
-                multiline={false}
-                autoCapitalize = 'none'
-              />
-              <TouchableOpacity onPress={() => { handleSubmit(); navigation.navigate('WhatKindOfParty', { projectId: newProject._id}) }}>
-                <Text>add Project</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
-      )}
-    </View>
 
+        <View>
+          <TouchableOpacity onPress={() => setShowForm(!showForm)} style={styles.partyButton}>
+            <Text style={styles.buttonText}>Create new</Text>
+          </TouchableOpacity>
+          {showForm && (
+            <Formik
+              initialValues={{ name: '', due_date: '' }}
+              onSubmit={(values, actions) => {
+                if (values.name === '' || values.due_date === '') {
+                  return setLoginError('Please fill in all fields') //CHANGE THE MESSAGE
+                } else {
+                  addNewProject(values)
+                  actions.resetForm()
+                }
+              }}>
+              {({ handleChange, handleBlur, handleSubmit, values }) => (
+                <View>
+                  <TextInput
+                    style={{ height: 40, width: 100 }}
+                    label='name'
+                    onChangeText={handleChange('name')}
+                    value={values.name}
+                    placeholder={'project name'}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                  />
+                  <TextInput
+                    style={{ height: 40, width: 100 }}
+                    label='due_date'
+                    onChangeText={handleChange('due_date')}
+                    value={values.due_date}
+                    placeholder={'YYYY-MM-DD'}
+                    multiline={false}
+                    autoCapitalize='none'
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleSubmit()
+                      navigation.navigate('WhatKindOfParty', { projectId: newProject._id })
+                    }}>
+                    <Text>add Project</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+          )}
+        </View>
       </View>
     </ScrollView>
   )

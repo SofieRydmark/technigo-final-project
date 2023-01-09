@@ -18,24 +18,20 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 import user from '../../reducers/user'
 
-
 const SingleProjectPage = ({ navigation, route }) => {
-  const accessToken = useSelector((store) => store.user.accessToken);
-  const [singleProject, setSingleProject] = useState([]);
-  const userId = useSelector((store) => store.user.userId);
-  const [showInput, setShowInput] = useState(false);
-  const [showDateChange, setShowDateChange] = useState(false);
-  const [name, setName] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const accessToken = useSelector((store) => store.user.accessToken)
+  const [singleProject, setSingleProject] = useState([])
+  const userId = useSelector((store) => store.user.userId)
+  const [showInput, setShowInput] = useState(false)
+  const [showDateChange, setShowDateChange] = useState(false)
+  const [name, setName] = useState('')
+  const [dueDate, setDueDate] = useState('')
   const projectId = route.params.projectId
 
-
-  const getSingleProject = ( ) => {
-  
-    
+  const getSingleProject = () => {
     const options = {
       method: 'GET',
       headers: {
@@ -43,7 +39,10 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => setSingleProject(data.data))
       .catch((error) => console.error(error))
@@ -53,8 +52,8 @@ const SingleProjectPage = ({ navigation, route }) => {
     getSingleProject()
   }, [])
 
-   /****************** TOOGLE OBJECT PROJECT  ************************* */
-   const completedDrinks = (drinksId) => {
+  /****************** TOOGLE OBJECT PROJECT  ************************* */
+  const completedDrinks = (drinksId) => {
     const options = {
       method: 'PATCH',
       headers: {
@@ -62,17 +61,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        isCompleted: true, 
+        isCompleted: true,
         _id: drinksId,
       }),
-    };
+    }
     console.log('id', drinksId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/drink/${drinksId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/drink/${drinksId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',completedDrinks)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', completedDrinks)
   }
 
   const completedTheme = (themeId) => {
@@ -83,17 +84,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        isCompleted: true, 
+        isCompleted: true,
         _id: themeId,
       }),
-    };
+    }
     console.log('id', themeId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/theme/${themeId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/theme/${themeId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',completedTheme)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', completedTheme)
   }
 
   const completedFood = (foodId) => {
@@ -104,17 +107,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        isCompleted: true, 
+        isCompleted: true,
         _id: foodId,
       }),
-    };
+    }
     console.log('id', foodId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/food/${foodId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/food/${foodId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',completedFood)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', completedFood)
   }
   const completedActivities = (activityId) => {
     const options = {
@@ -124,18 +129,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        isCompleted: true, 
+        isCompleted: true,
         _id: activityId,
-
       }),
-    };
+    }
     console.log('id', activityId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/activity/${activityId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/activity/${activityId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',completedActivities)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', completedActivities)
   }
 
   const completedDecorations = (decorationId) => {
@@ -146,23 +152,24 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        isCompleted: true, 
+        isCompleted: true,
         _id: decorationId,
-
       }),
-    };
+    }
     console.log('id', decorationId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/decoration/${decorationId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/decoration/${decorationId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',completedDecorations)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', completedDecorations)
   }
 
-   /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
+  /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
 
-   const deleteDrinks = (drinksId, name) => {
+  const deleteDrinks = (drinksId, name) => {
     const options = {
       method: 'DELETE',
       headers: {
@@ -170,17 +177,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        drinksName: name,  
+        drinksName: name,
         _id: drinksId,
       }),
-    };
+    }
     console.log('id', drinksId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDrink/${drinksId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDrink/${drinksId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',deleteFood)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', deleteFood)
   }
 
   const deleteFood = (foodId, name) => {
@@ -191,17 +200,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        foodName: name,  
+        foodName: name,
         _id: foodId,
       }),
-    };
+    }
     console.log('id', foodId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteFood/${foodId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteFood/${foodId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',deleteFood)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', deleteFood)
   }
 
   const deleteDecoration = (decorationId, name) => {
@@ -212,17 +223,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        decorationsName: name,  
+        decorationsName: name,
         _id: decorationId,
       }),
-    };
+    }
     console.log('id', decorationId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDecoration/${decorationId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDecoration/${decorationId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',deleteDecoration)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', deleteDecoration)
   }
 
   const deleteActivity = (activityId, name) => {
@@ -233,17 +246,19 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        activitiesName: name,  
+        activitiesName: name,
         _id: activityId,
       }),
-    };
+    }
     console.log('id', activityId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteActivity/${activityId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteActivity/${activityId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',deleteActivity)
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    console.log('marked as completed', deleteActivity)
   }
 
   const deleteTheme = (themeId, name) => {
@@ -254,27 +269,32 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        themesName: name,  
+        themesName: name,
         _id: themeId,
       }),
-    };
+    }
     console.log('id', themeId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteTheme/${themeId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-  console.log('marked as completed',deleteTheme)
-
-  }
-   /****************** CHANGE NAME OBJECT PROJECT  ************************* */
-
-  const singleProjectChange = ( options) => {
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/${projectId}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteTheme/${themeId}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((error) => console.error(error));
-  };
-  
+      .catch((error) => console.error(error))
+    console.log('marked as completed', deleteTheme)
+  }
+  /****************** CHANGE NAME OBJECT PROJECT  ************************* */
+
+  const singleProjectChange = (options) => {
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/change/${projectId}`,
+      options
+    )
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+  }
+
   const changeName = (name) => {
     const options = {
       method: 'PATCH',
@@ -285,11 +305,11 @@ const SingleProjectPage = ({ navigation, route }) => {
       body: JSON.stringify({
         name,
       }),
-    };
-  
-    singleProjectChange( options);
-  };
-  
+    }
+
+    singleProjectChange(options)
+  }
+
   const changeDueDate = (dueDate) => {
     const options = {
       method: 'PATCH',
@@ -300,153 +320,212 @@ const SingleProjectPage = ({ navigation, route }) => {
       body: JSON.stringify({
         due_date: dueDate,
       }),
-    };
-  
-    singleProjectChange( options);
-  };
+    }
 
+    singleProjectChange(options)
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         {singleProject.map((project) => {
-        return (
-          <View key={project._id}>
-          <Text style={styles.headerH1}>{project.name}</Text>
-          <Text style={styles.headerH1}>{project.due_date}</Text>
-          <View>
-    <TouchableOpacity onPress={() => setShowInput(!showInput)}
-    style={styles.changeButton}> 
-    <Text>Change name </Text>
-    </TouchableOpacity>
-    {showInput && (
-      <View>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={setName}
-          placeholder="Enter new name"
-        />
-        <TouchableOpacity
-          style={styles.changeButton}
-          onPress={() => {
-            changeName(name, console.log('onpress', name));
-            setShowInput(false);
-            
-          }}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
-        
-      </View>
-    )}
-    <TouchableOpacity onPress={(()=> setShowDateChange(!showDateChange))} 
-    style={styles.changeButton} > 
-          <Text>Change Date</Text>
-    </TouchableOpacity>
-    {showDateChange &&(
-      <View>
-        <TextInput
-        style={styles.input}
-        onChangeText={(text) => setDueDate(text)}
-        value={dueDate}
-        placeholder='YY-MM-DD'
-        />
-        <TouchableOpacity
-        style={styles.changeButton}
-        onPress={() => {
-        changeDueDate(dueDate)
-        setShowDateChange(false);
-        }}>
-          <Text>Submit</Text>
-        </TouchableOpacity>
-      </View>
-    )}
-   
-  </View>
-  <View style={styles.listWrapper}>
-      <Text style={styles.headerh2}>THEME</Text>
-      {project.themeProjectList.map((theme) => {
-        return (
-          <View key={theme._id} style={styles.smallContainer}>
-            <Text style={styles.row}>{theme.themesName}</Text>
-            <Text style={styles.row}>{theme.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedTheme(theme._id, theme.isCompleted)}style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteTheme(theme._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
+          return (
+            <View key={project._id}>
+              <Text style={styles.headerH1}>{project.name}</Text>
+              <Text style={styles.headerH1}>{project.due_date}</Text>
+              <View>
+                <TouchableOpacity
+                  onPress={() => setShowInput(!showInput)}
+                  style={styles.changeButton}>
+                  <Text>Change name </Text>
+                </TouchableOpacity>
+                {showInput && (
+                  <View>
+                    <TextInput
+                      style={styles.input}
+                      value={name}
+                      onChangeText={setName}
+                      placeholder='Enter new name'
+                    />
+                    <TouchableOpacity
+                      style={styles.changeButton}
+                      onPress={() => {
+                        changeName(name, console.log('onpress', name))
+                        setShowInput(false)
+                      }}>
+                      <Text>Submit</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                <TouchableOpacity
+                  onPress={() => setShowDateChange(!showDateChange)}
+                  style={styles.changeButton}>
+                  <Text>Change Date</Text>
+                </TouchableOpacity>
+                {showDateChange && (
+                  <View>
+                    <TextInput
+                      style={styles.input}
+                      onChangeText={(text) => setDueDate(text)}
+                      value={dueDate}
+                      placeholder='YY-MM-DD'
+                    />
+                    <TouchableOpacity
+                      style={styles.changeButton}
+                      onPress={() => {
+                        changeDueDate(dueDate)
+                        setShowDateChange(false)
+                      }}>
+                      <Text>Submit</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+              <View style={styles.listWrapper}>
+                <Text style={styles.headerh2}>THEME</Text>
+                {project.themeProjectList.map((theme) => {
+                  return (
+                    <View key={theme._id} style={styles.smallContainer}>
+                      <Text style={styles.row}>{theme.themesName}</Text>
+                      <Text style={styles.row}>
+                        {theme.isCompleted ? 'Completed' : 'Incomplete'}
+                      </Text>
+                      <Button
+                        title='Mark as completed'
+                        onPress={() => completedTheme(theme._id, theme.isCompleted)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                      <Button
+                        title='DELETE'
+                        onPress={() => deleteTheme(theme._id)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                    </View>
+                  )
+                })}
 
-      <Text style={styles.headerh2}>Activities</Text>
-      {project.activitiesProjectList.map((activity) => {
-        return (
-          <View key={activity._id}>
-            <Text style={styles.row}>{activity.activitiesName}</Text>
-            <Text style={styles.row}>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedActivities(activity._id, activity.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteActivity(activity._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
+                <Text style={styles.headerh2}>Activities</Text>
+                {project.activitiesProjectList.map((activity) => {
+                  return (
+                    <View key={activity._id}>
+                      <Text style={styles.row}>{activity.activitiesName}</Text>
+                      <Text style={styles.row}>
+                        {activity.isCompleted ? 'Completed' : 'Incomplete'}
+                      </Text>
+                      <Button
+                        title='Mark as completed'
+                        onPress={() => completedActivities(activity._id, activity.isCompleted)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                      <Button
+                        title='DELETE'
+                        onPress={() => deleteActivity(activity._id)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                    </View>
+                  )
+                })}
 
-      <Text style={styles.headerh2}>DECORATION</Text>
-      {project.decorationsProjectList.map((decoration) => {
-        return (
-          <View key={decoration._id}>
-            <Text>{decoration.decorationsName}</Text>
-            <Text>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedDecorations(decoration._id, decoration.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteDecoration(decoration._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
+                <Text style={styles.headerh2}>DECORATION</Text>
+                {project.decorationsProjectList.map((decoration) => {
+                  return (
+                    <View key={decoration._id}>
+                      <Text>{decoration.decorationsName}</Text>
+                      <Text>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Button
+                        title='Mark as completed'
+                        onPress={() => completedDecorations(decoration._id, decoration.isCompleted)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                      <Button
+                        title='DELETE'
+                        onPress={() => deleteDecoration(decoration._id)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                    </View>
+                  )
+                })}
 
-      <Text style={styles.headerh2}>FOOD</Text>
-      {project.foodProjectList.map((food) => {
-        return (
-          <View key={food._id}>
-            <Text>{food.foodName}</Text>
-            <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedFood(food._id, food.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteFood(food._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
+                <Text style={styles.headerh2}>FOOD</Text>
+                {project.foodProjectList.map((food) => {
+                  return (
+                    <View key={food._id}>
+                      <Text>{food.foodName}</Text>
+                      <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Button
+                        title='Mark as completed'
+                        onPress={() => completedFood(food._id, food.isCompleted)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                      <Button
+                        title='DELETE'
+                        onPress={() => deleteFood(food._id)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                    </View>
+                  )
+                })}
 
-      <Text style={styles.headerh2}>DRINKS</Text>
-      {project.drinksProjectList.map((drinks) => {
-        return (
-          <View key={drinks._id}>
-            <Text>{drinks.drinksName}</Text>
-            <Text>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
-            <Button title='Mark as completed' onPress={() => completedDrinks(drinks._id, drinks.isCompleted)} style={styles.row}> Mark as completed</Button>
-            <Button title='DELETE' onPress={() => deleteDrinks(drinks._id, )} style={styles.row}> Mark as completed</Button>
-          </View>
-        );
-      })}
+                <Text style={styles.headerh2}>DRINKS</Text>
+                {project.drinksProjectList.map((drinks) => {
+                  return (
+                    <View key={drinks._id}>
+                      <Text>{drinks.drinksName}</Text>
+                      <Text>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Button
+                        title='Mark as completed'
+                        onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                      <Button
+                        title='DELETE'
+                        onPress={() => deleteDrinks(drinks._id)}
+                        style={styles.row}>
+                        {' '}
+                        Mark as completed
+                      </Button>
+                    </View>
+                  )
+                })}
 
-{/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
-      {project.budgetList.map((budget) => {
-        return (
-          <View key={budget._id}>
-            <Text>{budget.activitiesName}</Text>
-            {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
-          </View>
-        );
-      })}
+                {/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
+                {project.budgetList.map((budget) => {
+                  return (
+                    <View key={budget._id}>
+                      <Text>{budget.activitiesName}</Text>
+                      {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
+                    </View>
+                  )
+                })}
+              </View>
+            </View>
+          )
+        })}
 
-    </View>
-    </View>
-  );
-})}
-      
         <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Back to projectBoard</Text>
         </TouchableOpacity>
       </View>
-
-      
     </ScrollView>
   )
 }
@@ -459,14 +538,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-   /*  marginBottom: 30, */
+    /*  marginBottom: 30, */
   },
   headerH1: {
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  headerh2 : {
+  headerh2: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -493,25 +572,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
-  listWrapper:{
+  listWrapper: {
     flexDirection: 'column',
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
     borderRadius: 10,
     backgroundColor: colors.lightGrey,
     flexWrap: 'wrap',
-    margin: 2, 
-    paddingLeft: 100, 
-    paddingRight: 100
-   /*  padding: 20, */
-     
-
+    margin: 2,
+    paddingLeft: 100,
+    paddingRight: 100,
+    /*  padding: 20, */
   },
   row: {
     paddingRight: 10,
     paddingLeft: 10,
     paddingBottom: 5,
-    fontSize: 16
-    
+    fontSize: 16,
   },
   input: {
     borderRadius: 8,
@@ -519,9 +595,9 @@ const styles = StyleSheet.create({
     padding: 2,
     width: '70%',
     backgroundColor: colors.white,
-  }, 
+  },
   smallContainer: {
     /* flexDirection: 'row', */
-  }
+  },
 })
 export default SingleProjectPage

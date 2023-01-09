@@ -18,18 +18,17 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 import user from '../../reducers/user'
 
-
-const Decorations = ({route, navigation }) => {
+const Decorations = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
   const [allDecorations, setAllDecorations] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const partyType= route.params.partyType
+  const partyType = route.params.partyType
   const projectId = route.params.projectId
   console.log('partytype', partyType)
 
@@ -48,7 +47,10 @@ const Decorations = ({route, navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/decorations/type/${partyType}`, options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/decorations/type/${partyType}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => setAllDecorations(data.response))
       .catch((error) => console.error(error))
@@ -60,61 +62,65 @@ const Decorations = ({route, navigation }) => {
   console.log('decorations', allDecorations)
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
-     const options = {
-       method: 'PATCH',
-       headers: {
-         'Content-Type': 'application/json',
-         Authorization: accessToken,
-       },
-       body: JSON.stringify({
-            decorationsName: name,
-       }),
-     };
-     console.log('name', name)
-     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`, options)
-       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-   };
-   console.log('decoration send',sendObjectToProject)
- 
-   const buttonIcon = require('../../assets/addCircle.png')
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        decorationsName: name,
+      }),
+    }
+    console.log('name', name)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`,
+      options
+    )
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+  }
+  console.log('decoration send', sendObjectToProject)
+
+  const buttonIcon = require('assets/images/addCircle.png')
 
   return (
-    <SafeAreaView style={[styles.background, backgroundStyle]}
-  contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={styles.h1}>Decorations</Text>
-    <TextInput
-      style={styles.input}
-      placeholder='Search for a decoration...'
-      onChangeText={(text) => setSearchTerm(text)}
-      value={searchTerm}
-    />
-    <FlatList
-      style={styles.flatList} 
-      data={allDecorations.filter((theme) =>
-        theme.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )}
-      numColumns={2}
-      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
-            <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
-            <View style={styles.itemNameContainer}>
-              <View style={styles.itemNameBackground}>
-                <Text style={styles.itemName}>{item.name}</Text>
-              </View>
+    <SafeAreaView
+      style={[styles.background, backgroundStyle]}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={styles.h1}>Decorations</Text>
+      <TextInput
+        style={styles.input}
+        placeholder='Search for a decoration...'
+        onChangeText={(text) => setSearchTerm(text)}
+        value={searchTerm}
+      />
+      <FlatList
+        style={styles.flatList}
+        data={allDecorations.filter((theme) =>
+          theme.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )}
+        numColumns={2}
+        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
+              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
                 <View style={styles.addButtonCircle}>
                   <Image source={buttonIcon} style={styles.addButton} />
                 </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-      keyExtractor={(item) => item.id}
-    />
-  </SafeAreaView>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={(item) => item.id}
+      />
+    </SafeAreaView>
   )
 }
 
@@ -148,18 +154,17 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flex: 0.9,
-    alignSelf: 'center', 
-  }, 
+    alignSelf: 'center',
+  },
   h1: {
-    marginTop: 60, 
+    marginTop: 60,
     fontSize: 25,
     fontWeight: 'bold',
-
   },
   item: {
-    margin: 10,  
-    width: 110,  
-    height: 110,  
+    margin: 10,
+    width: 110,
+    height: 110,
   },
   itemNameContainer: {
     position: 'absolute',
