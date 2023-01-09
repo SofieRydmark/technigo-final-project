@@ -7,25 +7,24 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
-  SafeAreaView,
   TextInput,
 } from 'react-native'
 import { Formik } from 'formik'
-import { Loading } from '../Home/Loading'
+import { useRoute} from '@react-navigation/native'
+
 
 //colors and reducer
 import colors from '../../config/colors'
 import user from '../../reducers/user'
-import { ui } from '../../reducers/ui'
+
 // import { fetchProjects } from '../../reducers/user' /* needed with thunks */
 
-const ProjectBoard = ({ params, route,navigation, _id,}) => {
+const ProjectBoard = ({navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  // const projectId = route.params.projectId
-  // console.log("projectId", projectId)
+
+
 
   /*--- FINDING PROJECTID USING REDUX--- */
   
@@ -41,6 +40,7 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
   //   )
   // }
   // const projectId = useSelector((store) => store.user.projectId)
+    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
 
   const [allProjects, setAllProjects] = useState([])
   const dispatch = useDispatch()
@@ -52,10 +52,6 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
     dispatch(user.actions.setAccessToken(null))
   }
 
-  /* Thinks we need on project board:
-  - remove project  (DELETE) */
-
-  // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
 
   /* --- GET ALL PROJECTS FETCH--*/
 
@@ -105,19 +101,18 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
 
     /*--- DELETE PROJECT ---*/
 
-    const deleteProject = (name) => {
+
+    const deleteProject = ( projectId) => {
+
       const options = {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           Authorization: accessToken,
         },
-        body: JSON.stringify({
-          projectName: name,  
-          _id: projectId,
-        }),
+         body: JSON.stringify({ _id: projectId })
+
       };
-      console.log('id', projectId)
       fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`, options)
         .then((res) => res.json())
          .then((data) => console.log(data))
@@ -130,10 +125,12 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
     <ScrollView contentContainerStyle={styles.background}>
       {accessToken && (
         <>
+
           <View style={styles.header}>
-            <Text style={styles.headerH1}>Hello {email}, this is your projectboard</Text>
+            <Text style={styles.headerH1}>Hej, {email}, välkomna till din projektsida!!</Text>
           </View>
-          <Formik
+          <View style={styles.form}>
+          <Formik 
           initialValues={{ name: '', due_date: ''}}
           onSubmit={(values, actions) => {
             if (values.name === '' || values.due_date === '') {
@@ -144,29 +141,28 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
             }
             }}>
             {({ handleChange, handleSubmit, values }) => (
-              <View>
+              <View style={styles.input}>
                 <TextInput
-                  style={{ height: 40, width: 100 }}
                   label='name'
                   onChangeText={handleChange('name')}
                   value={values.name}
-                  placeholder={'project name'}
+                  placeholder={'Projekt namn'}
                   required
                   multiline={false}
                   autoCapitalize='none'
+                  maxLength={20}
                 />
-                <TextInput
-                  style={{ height: 40, width: 100 }}
+                <TextInput 
                   label='due_date'
                   onChangeText={handleChange('due_date')}
                   value={values.due_date}
-                  placeholder={'YYYY-MM-DD'}
+                  placeholder={'Datum: YYYY-MM-DD'}
                   multiline={false}
                   autoCapitalize='none'
                 />
 
-                <TouchableOpacity onPress={handleSubmit}>
-                  <Text>add Project</Text>
+                <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
+                  <Text>NYTT PROJEKT</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -176,31 +172,21 @@ const ProjectBoard = ({ params, route,navigation, _id,}) => {
             {allProjects.map((singleProject) => {
               return(
                 <>
-                <View>
+                
+                <View key={singleProject._id} style={styles.listWrapper}>
                   <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
-                    <Text key={_id} style={styles.item}>{singleProject.name}</Text>
-                    <Text>{singleProject.due_date}</Text>
+                    <Text  style={styles.row}>{singleProject.due_date}</Text>
+                    <Text style={styles.row}>{singleProject.name}</Text>
                   </TouchableOpacity>
-                </View><View>
-                    <TouchableOpacity onPress={() => deleteProject()}>
-                      <Text>✖️</Text>
+                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject(singleProject._id) }>
+                      <Text style={styles.row}>🗑</Text>
                     </TouchableOpacity>
-                  </View>
+                </View>
                   </> 
               );
             })}
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('WhatKindOfParty')}>
-            <Text>Brows Categories </Text>
-            {/*  <TouchableOpacity onPress={() => navigation.navigate('BrowsingCategoriesPage')}>
-            <Text>Browse Categories </Text> */}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={logout}>
-            <Text>Sign out</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
-            <Text>Find store</Text>
-          </TouchableOpacity>
+        </View>
         </>
       )}
     </ScrollView>
@@ -215,13 +201,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.green,
     alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
+    paddingVertical: 60
   },
   header: {
     marginBottom: 30,
   },
   headerH1: {
+    margin: 10,
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -230,7 +217,67 @@ const styles = StyleSheet.create({
     flex: 1,
     background: 'transparent',
   },
+
+  listWrapper:{
+    flexDirection: 'row',
+    backgroundColor:'#fff',
+    borderRadius: 10,
+    backgroundColor: colors.lightGrey,
+    flexWrap: 'wrap',
+    margin: 2
+
+  },
+  // sigle item styling
+  row: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingBottom: 5,
+    fontSize: 16
+    
+  },
+  // maping + formik with white background 
+  form: {
+    borderRadius: 10,
+    padding: 25,
+    width: '80%',
+    backgroundColor: colors.white,
+  },
+   // add new project input + button styling
+  addProjectButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    textAlign: 'center',
+    width: '100%',
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  },
+
+ 
+  input: {
+    marginBottom: 10,
+    padding: 25,
+    backgroundColor: colors.lightGrey,
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 12,
+    fontSize: 12,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey,
+  },
+
+  //delete icon styling 
+  trashIcon: {
+    color: colors.red,
+    zIndex: 10,
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
+  },
+
 });
+
 
 
 export default ProjectBoard
