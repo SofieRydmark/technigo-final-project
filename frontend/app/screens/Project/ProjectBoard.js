@@ -149,7 +149,7 @@ const ProjectBoard = ({navigation}) => {
               return(
                 <>
                 <View key={singleProject._id} style={styles.listWrapper}>
-                  <TouchableOpacity onPress={() => {console.log('project', singleProject._id) ;navigation.navigate('SingleProjectPage', { projectId: singleProject._id, })}}>
+                  <TouchableOpacity onPress={() => {navigation.navigate('SingleProjectPage', { projectId: singleProject._id, })}}>
                     <Text  style={styles.row}>{singleProject.due_date}</Text>
                     <Text style={styles.row}>{singleProject.name}</Text>
                   </TouchableOpacity>
