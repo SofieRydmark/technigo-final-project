@@ -336,6 +336,10 @@ const SingleProjectPage = ({ navigation, route }) => {
         {singleProject.map((project) => {
         return (
           <View key={project._id}>
+              
+            <TouchableOpacity onPress={() => {navigation.navigate('GuestList', { projectId: project._id })}}>
+                <Text style={styles.row}>GUEST LIST</Text>
+            </TouchableOpacity>
           <Text style={styles.headerH1}>{project.name}</Text>
           <Text style={styles.headerH1}>{project.due_date}</Text>
           <View>
@@ -343,9 +347,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     style={styles.changeButton}> 
     <Text>Change name </Text>
     </TouchableOpacity>
-    <TouchableOpacity onPress={() => {navigation.navigate('GuestList', { projectId: singleProject._id })}}>
-      <Text style={styles.row}>GUEST LIST</Text>
-    </TouchableOpacity>
+ 
     {showInput && (
       <View>
         <TextInput
