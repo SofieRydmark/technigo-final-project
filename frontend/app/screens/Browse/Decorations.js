@@ -21,28 +21,24 @@ import {
 import colors from '../../config/colors'
 import user from '../../reducers/user'
 
-const Decorations = ({route, navigation, userId, projectId}) => {
+
+const Decorations = ({route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
-  /*  const userId = useSelector((store) => store.themeProject.userId)
-    const projectId = useSelector((store) => store.themeProject.projectId)
-    const nameTheme = useSelector((store) => store.themeProject.name) */
+  const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
   const [allDecorations, setAllDecorations] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const partyType= route.params.partyType
+  const projectId = route.params.projectId
+  console.log('partytype', partyType)
 
-  const logout = () => {
-    console.log('logged out')
-    dispatch(user.actions.setEmail(null))
-    dispatch(user.actions.setAccessToken(null))
+  let backgroundStyle
+  if (partyType === 'grownup') {
+    backgroundStyle = styles.grownupBackground
+  } else if (partyType === 'kids') {
+    backgroundStyle = styles.kidsBackground
   }
-
-  useEffect(() => {
-    if (!accessToken) {
-      navigation.navigate('SignIn')
-    }
-  }, [accessToken])
 
   const getAllDecorations = () => {
     const options = {
@@ -61,13 +57,9 @@ const Decorations = ({route, navigation, userId, projectId}) => {
   useEffect(() => {
     getAllDecorations()
   }, [])
-
-  const sendObjectToProject = (itemName) => {
-    /*  const userId = useSelector((store) => store.user.userId)
-     const projectId = 1  */
-  /*    const userId = useSelector((store) => store.themeProject.userId); */
-     /* const projectId = useSelector((store) => store.themeProject.projectId); */
-   
+  console.log('decorations', allDecorations)
+  /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
+  const sendObjectToProject = (name) => {
      const options = {
        method: 'PATCH',
        headers: {
@@ -75,9 +67,10 @@ const Decorations = ({route, navigation, userId, projectId}) => {
          Authorization: accessToken,
        },
        body: JSON.stringify({
-         name: itemName,
+            decorationsName: name,
        }),
      };
+     console.log('name', name)
      fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`, options)
        .then((res) => res.json())
        .then((data) => console.log(data))
@@ -85,47 +78,58 @@ const Decorations = ({route, navigation, userId, projectId}) => {
    };
    console.log('decoration send',sendObjectToProject)
  
+   const buttonIcon = require('../../assets/addCircle.png')
 
   return (
-    <SafeAreaView style={styles.background}>
-      <TextInput
-        style={styles.input}
-        placeholder='Search for a theme...'
-        onChangeText={(text) => setSearchTerm(text)}
-        value={searchTerm}
-      />
-      <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
-        <FlatList
-          data={allDecorations.filter((decoration) =>
-            decoration.name.toLowerCase().includes(searchTerm.toLowerCase())
-          )}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <View style={styles.scrollContainer} key={item.name}>
-              <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
-                <Text>{item.name}</Text>
-                <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
-              </TouchableOpacity>
+    <SafeAreaView style={[styles.background, backgroundStyle]}
+  contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+    <Text style={styles.h1}>Decorations</Text>
+    <TextInput
+      style={styles.input}
+      placeholder='Search for a decoration...'
+      onChangeText={(text) => setSearchTerm(text)}
+      value={searchTerm}
+    />
+    <FlatList
+      style={styles.flatList} 
+      data={allDecorations.filter((theme) =>
+        theme.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )}
+      numColumns={2}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+      renderItem={({ item }) => (
+        <View style={styles.item}>
+          <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
+            <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+            <View style={styles.itemNameContainer}>
+              <View style={styles.itemNameBackground}>
+                <Text style={styles.itemName}>{item.name}</Text>
+              </View>
+                <View style={styles.addButtonCircle}>
+                  <Image source={buttonIcon} style={styles.addButton} />
+                </View>
             </View>
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-
-      <TouchableOpacity onPress={logout}>
-        <Text>Sign out</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+          </TouchableOpacity>
+        </View>
+      )}
+      keyExtractor={(item) => item.id}
+    />
+  </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.green,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+  },
+  grownupBackground: {
+    backgroundColor: colors.green,
+  },
+  kidsBackground: {
+    backgroundColor: colors.peach,
   },
   buttonText: {
     fontSize: 20,
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.lightGrey,
     marginBottom: 20,
-    marginTop: 100,
+    marginTop: 50,
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
@@ -142,10 +146,55 @@ const styles = StyleSheet.create({
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
-  scrollContainer: {
-    padding: 10,
+  flatList: {
+    flex: 0.9,
+    alignSelf: 'center', 
+  }, 
+  h1: {
+    marginTop: 60, 
+    fontSize: 25,
+    fontWeight: 'bold',
+
+  },
+  item: {
+    margin: 10,  
+    width: 110,  
+    height: 110,  
+  },
+  itemNameContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  itemNameBackground: {
+    backgroundColor: 'white',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+  },
+  itemName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  addButtonCircle: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -10,
+    right: -10,
+    width: 28,
+    height: 28,
+    borderRadius: 16,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addButton: {
+    width: 20,
+    height: 20,
   },
 })
 

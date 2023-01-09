@@ -10,8 +10,10 @@ import BottomTabNavigator from './app/navigators/BottomTabNavigator'
 import { Provider, useSelector } from 'react-redux'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import user from './app/reducers/user'
+
 const reducer = combineReducers({
   user: user.reducer,
+ 
 })
 const store = configureStore({ reducer })
 
