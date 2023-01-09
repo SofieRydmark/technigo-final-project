@@ -21,8 +21,9 @@ import user from '../../reducers/user'
 
 const BrowsCategoriesPage = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
-  const email = useSelector((store) => store.user.email)
   const dispatch = useDispatch()
+  const projectId = route.params.projectId
+  console.log('projectID brows', projectId)
 
   const partyType = route.params.partyType
   let backgroundStyle
@@ -54,7 +55,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
         <View style={styles.ContainerStyle}>
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Themes', { partyType: partyType })}
+              onPress={() => navigation.navigate('Themes', { partyType: partyType, projectId:projectId })}
               title='Themes'>
               <Image source={imageTheme} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Themes</Text>
@@ -63,7 +64,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Decorations', { partyType: partyType })}
+              onPress={() => navigation.navigate('Decorations', { partyType: partyType, projectId:projectId})}
               title='Decorations'>
               <Image source={imageActivity} style={styles.buttonImage} />
               <Text style={styles.buttonText}> Decorations</Text>
@@ -72,7 +73,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('FoodnDrinks', { partyType: partyType })}
+              onPress={() => navigation.navigate('FoodnDrinks', { partyType: partyType, projectId:projectId })}
               title='Food and Drinks'>
               <Image source={imageFood} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Food & Drinks </Text>
@@ -81,7 +82,7 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Activities', { partyType: partyType })}
+              onPress={() => navigation.navigate('Activities', { partyType: partyType, projectId:projectId })}
               title='Activity'>
               <Image source={imageActivity} style={styles.buttonImage} />
               <Text style={styles.buttonText}> Activities</Text>

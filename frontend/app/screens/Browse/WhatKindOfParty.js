@@ -4,7 +4,9 @@ import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-nati
 
 import colors from '../../config/colors'
 
-const WhatKindOfParty = ({ navigation }) => {
+const WhatKindOfParty = ({ navigation, route }) => {
+  const projectId = route.params.projectId
+
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
@@ -12,12 +14,12 @@ const WhatKindOfParty = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'grownup' })}
+          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'grownup', projectId:projectId })}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Grownup party</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'kids' })}
+          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'kids', projectId:projectId })}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Kids party</Text>
         </TouchableOpacity>

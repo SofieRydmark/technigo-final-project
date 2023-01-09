@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch, batch } from 'react-redux'
 import {
   View,
   ScrollView,
@@ -23,27 +22,23 @@ import user from '../../reducers/user'
 
 const FoodnDrinks = ({route, navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
-  const email = useSelector((store) => store.user.email)
-  const dispatch = useDispatch()
+  const userId = useSelector((store) => store.user.userId)
   const [selectedFetch, setSelectedFetch] = useState('food')
   const [allFood, setAllFood] = useState([])
   const [allDrinks, setAllDrinks] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  
+  const buttonIcon = require('../../assets/addCircle.png')
+  const projectId = route.params.projectId
+  const partyType= route.params.partyType
 
-  const logout = () => {
-    console.log('logged out')
-    dispatch(user.actions.setEmail(null))
-    dispatch(user.actions.setAccessToken(null))
+  let backgroundStyle
+  if (partyType === 'grownup') {
+    backgroundStyle = styles.grownupBackground
+  } else if (partyType === 'kids') {
+    backgroundStyle = styles.kidsBackground
   }
 
-  useEffect(() => {
-    if (!accessToken) {
-      navigation.navigate('SignIn')
-    }
-  }, [accessToken])
   // FOOD FETCH
-  const partyType= route.params.partyType
   const getAllFood = () => {
     const options = {
       method: 'GET',
@@ -88,53 +83,124 @@ const FoodnDrinks = ({route, navigation}) => {
   const handleDrinksButton = () => {
     setSelectedFetch('drinks')
   }
+/****************** SEND FOOD TO SINGLE PROJECT  ************************* */
+  const sendFoodToProject = (name) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+           foodName: name,
+      }),
+    };
+    
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addFood/${projectId}`, options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+  
 
+  /****************** SEND DRINKS TO SINGLE PROJECT  ************************* */
+  const sendDrinksToProject = (name) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+           drinksName: name,
+      }),
+    };
+    
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDrinks/${projectId}`, options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+ 
+
+  
   return (
-    <SafeAreaView style={styles.background}>
+    <SafeAreaView style={[styles.background, backgroundStyle]}>
       <Button onPress={handleDrinksButton} title='drinks'>
         Drinks
       </Button>
       <Button onPress={handleFoodButton} title='food'>
         Food
       </Button>
-      <TextInput
+      
+
+      {selectedFetch === 'food' ? (
+        <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={styles.h1}>Food</Text>
+          <TextInput
         style={styles.input}
         placeholder='Search for a theme...'
         onChangeText={(text) => setSearchTerm(text)}
         value={searchTerm}
       />
-
-      {selectedFetch === 'food' ? (
-        <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
           <FlatList
-            data={allFood.filter((item) =>
-              item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            )}
-            numColumns={2}
-            renderItem={({ item }) => (
-              <View style={styles.scrollItem}>
-                <Text style={styles.scrollItemText}>{item.name}</Text>
-                <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />
+        style={styles.flatList} 
+        data={allFood.filter((theme) =>
+          theme.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )}
+        numColumns={2}
+        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <TouchableOpacity onPress={() => sendFoodToProject(item.name)}>
+              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
+                  <View style={styles.addButtonCircle}>
+                    <Image source={buttonIcon} style={styles.addButton} />
+                  </View>
               </View>
-            )}
-            keyExtractor={(item) => item.id}
-          />
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={(item) => item.id}
+      />
         </View>
       ) : (
         <View style={{ height: 400, width: 300, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={styles.h1}>Drinks</Text>
+          <TextInput
+        style={styles.input}
+        placeholder='Search for a theme...'
+        onChangeText={(text) => setSearchTerm(text)}
+        value={searchTerm}
+        />
           <FlatList
-            data={allDrinks.filter((item) =>
-              item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            )}
-            numColumns={2}
-            renderItem={({ item }) => (
-              <View style={styles.scrollItem}>
-                <Text style={styles.scrollItemText}>{item.name}</Text>
-                <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />
+        style={styles.flatList} 
+        data={allDrinks.filter((theme) =>
+          theme.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )}
+        numColumns={2}
+        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <TouchableOpacity onPress={() => sendDrinksToProject(item.name)}>
+              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
+                  <View style={styles.addButtonCircle}>
+                    <Image source={buttonIcon} style={styles.addButton} />
+                  </View>
               </View>
-            )}
-            keyExtractor={(item) => item.id}
-          />
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={(item) => item.id}
+      />
         </View>
       )}
     </SafeAreaView>
@@ -144,10 +210,15 @@ const FoodnDrinks = ({route, navigation}) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.green,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+  },
+  grownupBackground: {
+    backgroundColor: colors.green,
+  },
+  kidsBackground: {
+    backgroundColor: colors.peach,
   },
   buttonText: {
     fontSize: 20,
@@ -156,7 +227,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.lightGrey,
     marginBottom: 20,
-    marginTop: 100,
+    marginTop: 50,
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
@@ -164,10 +235,55 @@ const styles = StyleSheet.create({
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
-  scrollContainer: {
-    padding: 10,
+  flatList: {
+    flex: 0.9,
+    alignSelf: 'center', 
+  }, 
+  h1: {
+    marginTop: 60, 
+    fontSize: 25,
+    fontWeight: 'bold',
+
+  },
+  item: {
+    margin: 10,  
+    width: 110,  
+    height: 110,  
+  },
+  itemNameContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  itemNameBackground: {
+    backgroundColor: 'white',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+  },
+  itemName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  addButtonCircle: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -10,
+    right: -10,
+    width: 28,
+    height: 28,
+    borderRadius: 16,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addButton: {
+    width: 20,
+    height: 20,
   },
 })
 

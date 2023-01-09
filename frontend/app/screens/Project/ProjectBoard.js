@@ -23,25 +23,6 @@ const ProjectBoard = ({navigation}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-
-
-
-  /*--- FINDING PROJECTID USING REDUX--- */
-  
-  // const { projectId } = match.params
-
-  // const project = useSelector((store) =>
-  //   store.user.find(project => project.id === projectId)
-  // )
-
-  // if (!project) {
-  //   return (
-  //     console.log("project not found")
-  //   )
-  // }
-  // const projectId = useSelector((store) => store.user.projectId)
-    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
-
   const [allProjects, setAllProjects] = useState([])
   const dispatch = useDispatch()
   console.log("useSelectorProject", allProjects)
@@ -172,9 +153,8 @@ const ProjectBoard = ({navigation}) => {
             {allProjects.map((singleProject) => {
               return(
                 <>
-                
                 <View key={singleProject._id} style={styles.listWrapper}>
-                  <TouchableOpacity onPress={() => navigation.navigate('SingleProjectPage')}>
+                  <TouchableOpacity onPress={() => {navigation.navigate('SingleProjectPage', { projectId: singleProject._id, })}}>
                     <Text  style={styles.row}>{singleProject.due_date}</Text>
                     <Text style={styles.row}>{singleProject.name}</Text>
                   </TouchableOpacity>
@@ -185,8 +165,14 @@ const ProjectBoard = ({navigation}) => {
                   </> 
               );
             })}
+          </View>      
+          <TouchableOpacity onPress={logout}>
+            <Text>Sign out</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
+            <Text>Find store</Text>
+          </TouchableOpacity>
           </View>
-        </View>
         </>
       )}
     </ScrollView>
