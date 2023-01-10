@@ -1,42 +1,55 @@
 import { React, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { Formik } from 'formik'
-import { useRoute} from '@react-navigation/native'
-
+import { useRoute } from '@react-navigation/native'
 
 //colors and reducer
 import colors from '../../config/colors'
 import user from '../../reducers/user'
+import { ui } from '../../reducers/ui'
 
 // import { fetchProjects } from '../../reducers/user' /* needed with thunks */
 
-const ProjectBoard = ({navigation}) => {
+const ProjectBoard = ({ navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
-  const [allProjects, setAllProjects] = useState([])
-  const dispatch = useDispatch()
-  console.log("useSelectorProject", allProjects)
 
+
+
+  /*--- FINDING PROJECTID USING REDUX--- */
+  
+  // const { projectId } = match.params
+
+  // const project = useSelector((store) =>
+  //   store.user.find(project => project.id === projectId)
+  // )
+
+  // if (!project) {
+  //   return (
+  //     console.log("project not found")
+  //   )
+  // }
+  // const projectId = useSelector((store) => store.user.projectId)
+    // dispatch(fetchProjects(accessToken)) // CODE NEEDED WITH THUNKS
+
+  const [allProjects, setAllProjects] = useState([])
+  const [loginError, setLoginError] = useState(null)
+  const dispatch = useDispatch()
+  console.log('useSelectorProject', allProjects)
 
   const logout = () => {
     dispatch(user.actions.setEmail(null))
     dispatch(user.actions.setAccessToken(null))
   }
 
-
   /* --- GET ALL PROJECTS FETCH--*/
 
   useEffect(() => {
+
+    dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'GET',
       headers: {
@@ -51,11 +64,14 @@ const ProjectBoard = ({navigation}) => {
       .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
-  }, [/* allProjects */])
+      .finally (()=>   dispatch(ui.actions.setLoading(false)))
+    // console.log('data', allProjects)
+  }, [setAllProjects])
 
       /* --- ADD NEW PROJECT FETCH  --*/
     
     const addNewProject = ( values) => {
+      dispatch(ui.actions.setLoading(true))
       const options = {
         method: 'POST',
         headers: {
@@ -71,14 +87,15 @@ const ProjectBoard = ({navigation}) => {
         .then ((res) => res.json())
         .then((data) => console.log(data))
         .catch((error) => console.log(error))
+        .finally(()=> dispatch(ui.actions.setLoading(false)))
 
     }
 
-    /*--- DELETE PROJECT ---*/
+  /*--- DELETE PROJECT ---*/
 
 
     const deleteProject = ( projectId) => {
-
+      dispatch(ui.actions.setLoading(true))
       const options = {
         method: 'DELETE',
         headers: {
@@ -91,88 +108,90 @@ const ProjectBoard = ({navigation}) => {
       fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`, options)
         .then((res) => res.json())
          .then((data) => console.log(data))
-         .catch((error) => console.error(error));
+         .catch((error) => console.error(error))
+         .finally(() => dispatch(ui.actions.setLoading(false)))
+    
+
     }
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
       {accessToken && (
         <>
-
           <View style={styles.header}>
             <Text style={styles.headerH1}>Hej, {email}, välkomna till din projektsida!!</Text>
           </View>
           <View style={styles.form}>
-          <Formik 
-          initialValues={{ name: '', due_date: ''}}
-          onSubmit={(values, actions) => {
-            if (values.name === '' || values.due_date === '') {
-              return setLoginError('Please fill the name') 
-            } else {
-              addNewProject(values)
-              actions.resetForm()
-            }
-            }}>
-            {({ handleChange, handleSubmit, values }) => (
-              <View style={styles.input}>
-                <TextInput
-                  label='name'
-                  onChangeText={handleChange('name')}
-                  value={values.name}
-                  placeholder={'Projekt namn'}
-                  required
-                  multiline={false}
-                  autoCapitalize='none'
-                  maxLength={20}
-                />
-                <TextInput 
-                  label='due_date'
-                  onChangeText={handleChange('due_date')}
-                  value={values.due_date}
-                  placeholder={'Datum: YYYY-MM-DD'}
-                  multiline={false}
-                  autoCapitalize='none'
-                />
+            <Formik
+              initialValues={{ name: '', due_date: '' }}
+              onSubmit={(values, actions) => {
+                if (values.name === '' || values.due_date === '') {
+                  return setLoginError('Please fill the name')
+                } else {
+                  addNewProject(values)
+                  actions.resetForm()
+                }
+              }}>
+              {({ handleChange, handleSubmit, values }) => (
+                <View style={styles.input}>
+                  <TextInput
+                    label='name'
+                    onChangeText={handleChange('name')}
+                    value={values.name}
+                    placeholder={'Projekt namn'}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    maxLength={20}
+                  />
+                  <TextInput
+                    label='due_date'
+                    onChangeText={handleChange('due_date')}
+                    value={values.due_date}
+                    placeholder={'Datum: YYYY-MM-DD'}
+                    multiline={false}
+                    autoCapitalize='none'
+                  />
 
-                <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
-                  <Text>NYTT PROJEKT</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-          
-          <View>
-            {allProjects.map((singleProject) => {
-              return(
-                <>
-                <View key={singleProject._id} style={styles.listWrapper}>
-                  <TouchableOpacity onPress={() => {navigation.navigate('SingleProjectPage', { projectId: singleProject._id, })}}>
-                    <Text  style={styles.row}>{singleProject.due_date}</Text>
-                    <Text style={styles.row}>{singleProject.name}</Text>
+                  <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
+                    <Text>NYTT PROJEKT</Text>
                   </TouchableOpacity>
-                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject(singleProject._id) }>
+                </View>
+              )}
+            </Formik>
+
+            <View>
+              {allProjects.map((singleProject) => {
+                return (
+                  <>
+                    <View key={singleProject._id} style={styles.listWrapper}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('SingleProjectPage', { projectId: singleProject._id })
+                        }}>
+                        <Text style={styles.row}>{singleProject.due_date}</Text>
+                        <Text style={styles.row}>{singleProject.name}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.trashIcon} onPress={() => deleteProject(singleProject._id) }>
                       <Text style={styles.row}>🗑</Text>
                     </TouchableOpacity>
-                </View>
-                  </> 
-              );
-            })}
-          </View>      
-          <TouchableOpacity onPress={logout}>
-            <Text>Sign out</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
-            <Text>Find store</Text>
-          </TouchableOpacity>
+                    </View>
+                  </>
+                )
+              })}
+            </View>
+            <TouchableOpacity onPress={logout}>
+              <Text>Sign out</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('FindStore')}>
+              <Text>Find store</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
     </ScrollView>
   )
-          }
-
-
-
+}
 
 const styles = StyleSheet.create({
   background: {
@@ -180,7 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.green,
     alignItems: 'center',
     flex: 1,
-    paddingVertical: 60
+    paddingVertical: 60,
   },
   header: {
     marginBottom: 30,
@@ -196,31 +215,29 @@ const styles = StyleSheet.create({
     background: 'transparent',
   },
 
-  listWrapper:{
+  listWrapper: {
     flexDirection: 'row',
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
     borderRadius: 10,
     backgroundColor: colors.lightGrey,
     flexWrap: 'wrap',
-    margin: 2
-
+    margin: 2,
   },
   // sigle item styling
   row: {
     paddingRight: 10,
     paddingLeft: 10,
     paddingBottom: 5,
-    fontSize: 16
-    
+    fontSize: 16,
   },
-  // maping + formik with white background 
+  // maping + formik with white background
   form: {
     borderRadius: 10,
     padding: 25,
     width: '80%',
     backgroundColor: colors.white,
   },
-   // add new project input + button styling
+  // add new project input + button styling
   addProjectButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -232,7 +249,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
 
- 
   input: {
     marginBottom: 10,
     padding: 25,
@@ -245,7 +261,7 @@ const styles = StyleSheet.create({
     color: colors.darkGrey,
   },
 
-  //delete icon styling 
+  //delete icon styling
   trashIcon: {
     color: colors.red,
     zIndex: 10,
@@ -253,9 +269,6 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 10,
   },
-
-});
-
-
+})
 
 export default ProjectBoard
