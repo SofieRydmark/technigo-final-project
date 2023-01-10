@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch, batch } from 'react-redux'
 import {
   View,
   Text,
@@ -12,20 +11,22 @@ import {
   SafeAreaView,
 } from 'react-native'
 
-import colors from '../../config/colors'
+// Assets import
+import colors from 'assets/styling/colors.js'
+import { PARTYTYPE_DEC_URL, DECOR_ADD_URL } from 'assets/urls/urls'
+
+// Reducers
 import user from '../../reducers/user'
 
-
-const Decorations = ({route, navigation }) => {
+const Decorations = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const [allDecorations, setAllDecorations] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [objectSent, setObjectSent] = useState([]);
-  const partyType= route.params.partyType
+  const [objectSent, setObjectSent] = useState([])
+  const partyType = route.params.partyType
   const projectId = route.params.projectId
-  const buttonIcon = require('../../assets/addCircle.png')
- 
+  const buttonIcon = require('assets/images/addCircle.png')
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -42,7 +43,7 @@ const Decorations = ({route, navigation }) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/decorations/type/${partyType}`, options)
+    fetch(PARTYTYPE_DEC_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllDecorations(data.response))
       .catch((error) => console.error(error))
@@ -51,72 +52,74 @@ const Decorations = ({route, navigation }) => {
   useEffect(() => {
     getAllDecorations()
   }, [])
-  
+
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
-     const options = {
-       method: 'PATCH',
-       headers: {
-         'Content-Type': 'application/json',
-         Authorization: accessToken,
-       },
-       body: JSON.stringify({
-            decorationsName: name,
-       }),
-     };
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        decorationsName: name,
+      }),
+    }
 
-     fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addDecoration/${projectId}`, options)
-       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error));
-       setObjectSent([...objectSent, name]);
-   };
-  
-   const filteredDecorations = allDecorations
-   .filter((decorations) => decorations.name.toLowerCase().includes(searchTerm.toLowerCase()))
-   .sort((a, b) => {
-     if (partyType === 'grownup') {
-       return a.type < b.type ? -1 : 1;
-     } else if (partyType === 'kids') {
-       return b.type < a.type ? -1 : 1;
-     }
-   });
+    fetch(DECOR_ADD_URL(userId, projectId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+    setObjectSent([...objectSent, name])
+  }
+
+  const filteredDecorations = allDecorations
+    .filter((decorations) => decorations.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      if (partyType === 'grownup') {
+        return a.type < b.type ? -1 : 1
+      } else if (partyType === 'kids') {
+        return b.type < a.type ? -1 : 1
+      }
+    })
   return (
-    <SafeAreaView style={[styles.background, backgroundStyle]}
-    contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={styles.h1}>Decorations</Text>
-    <TextInput
-      style={styles.input}
-      placeholder='Search for a decoration...'
-      onChangeText={(text) => setSearchTerm(text)}
-      value={searchTerm}
-    />
-    <FlatList
-      style={styles.flatList} 
-      data={filteredDecorations}
-      numColumns={filteredDecorations.length === 1 ? 1 : 2}
-      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
-            <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
-            <View style={styles.itemNameContainer}>
-              <View style={styles.itemNameBackground}>
-                <Text style={styles.itemName}>{item.name}</Text>
-              </View>
-                <View  style={[
-                styles.addButtonCircle,
-                objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
-                ]}>
+    <SafeAreaView
+      style={[styles.background, backgroundStyle]}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={styles.h1}>Decorations</Text>
+      <TextInput
+        style={styles.input}
+        placeholder='Search for a decoration...'
+        onChangeText={(text) => setSearchTerm(text)}
+        value={searchTerm}
+      />
+      <FlatList
+        style={styles.flatList}
+        data={filteredDecorations}
+        numColumns={filteredDecorations.length === 1 ? 1 : 2}
+        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
+              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
+              <View style={styles.itemNameContainer}>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
+                <View
+                  style={[
+                    styles.addButtonCircle,
+                    objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                  ]}>
                   <Image source={buttonIcon} style={styles.addButton} />
                 </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-      keyExtractor={(item) => item._id}
-    />
-  </SafeAreaView>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={(item) => item._id}
+      />
+    </SafeAreaView>
   )
 }
 
@@ -150,18 +153,17 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flex: 0.9,
-    alignSelf: 'center', 
-  }, 
+    alignSelf: 'center',
+  },
   h1: {
-    marginTop: 60, 
+    marginTop: 60,
     fontSize: 25,
     fontWeight: 'bold',
-
   },
   item: {
-    margin: 10,  
-    width: 110,  
-    height: 110,  
+    margin: 10,
+    width: 110,
+    height: 110,
   },
   itemNameContainer: {
     position: 'absolute',

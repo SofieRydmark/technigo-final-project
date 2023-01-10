@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Our colors
-import colors from '../config/colors'
+import colors from 'assets/styling/colors.js'
 
 // Navigators
 import { createStackNavigator } from '@react-navigation/stack'
@@ -153,7 +153,7 @@ const BrowseNavigator = () => {
         component={WhatAreWeDoing}
         options={{ headerShown: false }}
       />
-       <Stack.Screen name='ChooseProject' component={ChooseProject} />
+      <Stack.Screen name='ChooseProject' component={ChooseProject} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
       <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
@@ -166,7 +166,6 @@ const BrowseNavigator = () => {
       <Stack.Screen name='GuestList' component={GuestList} />
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='Profile' component={Profile} />
-     
     </Stack.Navigator>
   )
 }

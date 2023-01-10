@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
-import colors from '../../config/colors'
+// Assets imports
+import colors from 'assets/styling/colors.js'
 
 const WhatAreWeDoing = ({ navigation }) => {
   return (
@@ -15,17 +16,11 @@ const WhatAreWeDoing = ({ navigation }) => {
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Go to my projectboard</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('WhatKindOfParty')}
-          style={styles.partyButton}>
-          <Text style={styles.buttonText}>Browse ideas for a new party</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => navigation.navigate('ChooseProject')}
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Choose your project</Text>
         </TouchableOpacity>
-        
       </View>
     </ScrollView>
   )

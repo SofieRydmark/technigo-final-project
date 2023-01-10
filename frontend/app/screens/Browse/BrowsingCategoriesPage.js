@@ -1,22 +1,11 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch, batch } from 'react-redux'
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  Pressable,
-  Platform,
-  Button,
-  Image,
-} from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 
-import colors from '../../config/colors'
+// Assets import
+import colors from 'assets/styling/colors.js'
+
+// Reducers
 import user from '../../reducers/user'
 
 const BrowsCategoriesPage = ({ route, navigation }) => {
@@ -44,22 +33,24 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
     }
   }, [accessToken])
 
-  const imageTheme = require('../../assets/theme.jpg')
-  const imageActivity = require('../../assets/activity.jpg')
-  const imageFood = require('../../assets/test.jpg')
-  const imageDecoration = require('../../assets/test1.jpg')
+  const imageTheme = require('assets/images/theme.jpg')
+  const imageActivity = require('assets/images/activity.jpg')
+  const imageFood = require('assets/images/test.jpg')
+  const imageDecoration = require('assets/images/test1.jpg')
   return (
     <ScrollView contentContainerStyle={[styles.background, backgroundStyle]}>
       {accessToken && (
         <View style={styles.ContainerStyle}>
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Themes', { partyType: partyType, projectId:projectId })}
+              onPress={() =>
+                navigation.navigate('Themes', { partyType: partyType, projectId: projectId })
+              }
               title='Themes'>
               <Image source={imageTheme} style={styles.buttonImage} />
               <View style={styles.itemNameContainer}>
                 <View style={styles.itemNameBackground}>
-                <Text style={styles.itemName}>Themes</Text>
+                  <Text style={styles.itemName}>Themes</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -67,12 +58,14 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Decorations', { partyType: partyType, projectId:projectId})}
+              onPress={() =>
+                navigation.navigate('Decorations', { partyType: partyType, projectId: projectId })
+              }
               title='Decorations'>
               <Image source={imageDecoration} style={styles.buttonImage} />
               <View style={styles.itemNameContainer}>
-              <View style={styles.itemNameBackground}>
-                <Text style={styles.itemName}> Decorations</Text>
+                <View style={styles.itemNameBackground}>
+                  <Text style={styles.itemName}> Decorations</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -80,7 +73,9 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('FoodnDrinks', { partyType: partyType, projectId:projectId })}
+              onPress={() =>
+                navigation.navigate('FoodnDrinks', { partyType: partyType, projectId: projectId })
+              }
               title='Food and Drinks'>
               <Image source={imageFood} style={styles.buttonImage} />
               <View style={styles.itemNameContainer}>
@@ -93,7 +88,9 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
           <View style={styles.SmallContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Activities', { partyType: partyType, projectId:projectId })}
+              onPress={() =>
+                navigation.navigate('Activities', { partyType: partyType, projectId: projectId })
+              }
               title='Activity'>
               <Image source={imageActivity} style={styles.buttonImage} />
               <View style={styles.itemNameContainer}>
@@ -123,9 +120,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
   buttonImage: {
-    margin: 10,  
-    width: 130,  
-    height: 130, 
+    margin: 10,
+    width: 130,
+    height: 130,
   },
   ContainerStyle: {
     flexDirection: 'row',

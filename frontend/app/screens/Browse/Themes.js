@@ -1,35 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useDispatch, batch } from 'react-redux'
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  Pressable,
-  Platform,
-  Button,
   Image,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native'
 
-import colors from '../../config/colors'
+// Assets import
+import colors from 'assets/styling/colors.js'
+import { PARTYTYPE_THEME_URL, THEME_ADD_URL } from 'assets/urls/urls'
+
+// Reducers
 import user from '../../reducers/user'
 
-const Themes = ({ route, navigation}) => {
+const Themes = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
-  const [objectSent, setObjectSent] = useState([]);
+  const [objectSent, setObjectSent] = useState([])
   const [allThemes, setAllThemes] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [themeSelected, setThemeSelected] = useState([]);
-  const partyType= route.params.partyType
+  const [themeSelected, setThemeSelected] = useState([])
+  const partyType = route.params.partyType
   const projectId = route.params.projectId
+  const buttonIcon = require('assets/images/addCircle.png')
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -37,7 +35,6 @@ const Themes = ({ route, navigation}) => {
   } else if (partyType === 'kids') {
     backgroundStyle = styles.kidsBackground
   }
- 
 
   const getAllThemes = () => {
     const options = {
@@ -47,7 +44,7 @@ const Themes = ({ route, navigation}) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/type/${partyType}`, options)
+    fetch(PARTYTYPE_THEME_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllThemes(data.response))
       .catch((error) => console.error(error))
@@ -59,12 +56,12 @@ const Themes = ({ route, navigation}) => {
 
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
-    if (themeSelected[name]) {  // check if theme has already been selected
+    if (themeSelected[name]) {
+      // check if theme has already been selected
       // show alert or warning message
-      return;
-
+      return
     }
-    setThemeSelected({ ...themeSelected, [name]: true });  // update themeSelected state
+    setThemeSelected({ ...themeSelected, [name]: true }) // update themeSelected state
 
     const options = {
       method: 'POST',
@@ -73,24 +70,21 @@ const Themes = ({ route, navigation}) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-           themesName: name,
+        themesName: name,
       }),
-    };
-    
+    }
 
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addTheme/${projectId}`, options)
+    fetch(THEME_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((error) => console.error(error));
-      setObjectSent([...objectSent, name])
-  };
-  
-
-  const buttonIcon = require('../../assets/addCircle.png')
+      .catch((error) => console.error(error))
+    setObjectSent([...objectSent, name])
+  }
 
   return (
-    <SafeAreaView style={[styles.background, backgroundStyle]}
-    contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+    <SafeAreaView
+      style={[styles.background, backgroundStyle]}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <Text style={styles.h1}>Themes</Text>
       <TextInput
         style={styles.input}
@@ -99,7 +93,7 @@ const Themes = ({ route, navigation}) => {
         value={searchTerm}
       />
       <FlatList
-        style={styles.flatList} 
+        style={styles.flatList}
         data={allThemes.filter((theme) =>
           theme.name.toLowerCase().includes(searchTerm.toLowerCase())
         )}
@@ -113,22 +107,20 @@ const Themes = ({ route, navigation}) => {
                 <View style={styles.itemNameBackground}>
                   <Text style={styles.itemName}>{item.name}</Text>
                 </View>
-                  <View style={[
-                styles.addButtonCircle,
-                objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
-                ]}>
-                    <Image source={buttonIcon} style={styles.addButton} />
-                  </View>
+                <View
+                  style={[
+                    styles.addButtonCircle,
+                    objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                  ]}>
+                  <Image source={buttonIcon} style={styles.addButton} />
+                </View>
               </View>
             </TouchableOpacity>
           </View>
         )}
         keyExtractor={(item) => item._id}
       />
-
-    
     </SafeAreaView>
-
   )
 }
 
@@ -162,18 +154,17 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flex: 0.9,
-    alignSelf: 'center', 
-  }, 
+    alignSelf: 'center',
+  },
   h1: {
-    marginTop: 60, 
+    marginTop: 60,
     fontSize: 25,
     fontWeight: 'bold',
-
   },
   item: {
-    margin: 10,  
-    width: 110,  
-    height: 110,  
+    margin: 10,
+    width: 110,
+    height: 110,
   },
   itemNameContainer: {
     position: 'absolute',
