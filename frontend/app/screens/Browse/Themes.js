@@ -13,7 +13,9 @@ import {
 
 // Assets import
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
 import { PARTYTYPE_THEME_URL, THEME_ADD_URL } from 'assets/urls/urls'
+import { AntDesign, Ionicons } from '@expo/vector-icons'
 
 // Reducers
 import user from '../../reducers/user'
@@ -21,13 +23,13 @@ import user from '../../reducers/user'
 const Themes = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
-  const [objectSent, setObjectSent] = useState([])
+  const [objectSent, setObjectSent] = useState('')
   const [allThemes, setAllThemes] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [page, setPage] = useState(1)
   const [themeSelected, setThemeSelected] = useState([])
   const partyType = route.params.partyType
   const projectId = route.params.projectId
-  const buttonIcon = require('assets/images/addCircle.png')
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -36,7 +38,7 @@ const Themes = ({ route }) => {
     backgroundStyle = styles.kidsBackground
   }
 
-  const getAllThemes = () => {
+  useEffect(() => {
     const options = {
       method: 'GET',
       headers: {
@@ -44,21 +46,33 @@ const Themes = ({ route }) => {
         Authorization: accessToken,
       },
     }
-    fetch(PARTYTYPE_THEME_URL(partyType), options)
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/${page}/type/${partyType}`,
+      options
+    )
       .then((res) => res.json())
       .then((data) => setAllThemes(data.response))
+      .then(setPage(page))
       .catch((error) => console.error(error))
+  }, [page])
+
+  const nextPage = () => {
+    if (page === 13) {
+      return
+    }
+    setPage(page + 1)
   }
 
-  useEffect(() => {
-    getAllThemes()
-  }, [])
+  const prevPage = () => {
+    if (page === 1) {
+      return
+    }
+    setPage(page - 1)
+  }
 
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
     if (themeSelected[name]) {
-      // check if theme has already been selected
-      // show alert or warning message
       return
     }
     setThemeSelected({ ...themeSelected, [name]: true }) // update themeSelected state
@@ -85,41 +99,54 @@ const Themes = ({ route }) => {
     <SafeAreaView
       style={[styles.background, backgroundStyle]}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={styles.h1}>Themes</Text>
-      <TextInput
-        style={styles.input}
-        placeholder='Search for a theme...'
-        onChangeText={(text) => setSearchTerm(text)}
-        value={searchTerm}
-      />
-      <FlatList
-        style={styles.flatList}
-        data={allThemes.filter((theme) =>
-          theme.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )}
-        numColumns={2}
-        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
-              <Image source={{ uri: item.image }} style={{ width: 110, height: 110 }} />
-              <View style={styles.itemNameContainer}>
-                <View style={styles.itemNameBackground}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                </View>
+      <View style={styles.container}>
+        <Text style={styles.h1}>Themes</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Search for a theme...'
+          onChangeText={(text) => setSearchTerm(text)}
+          value={searchTerm}
+        />
+        <View style={styles.arrows}>
+          <TouchableOpacity onPress={prevPage}>
+            <AntDesign name='leftcircle' size={24} color='black' />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={nextPage}>
+            <AntDesign name='rightcircle' size={24} color='black' />
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          style={styles.flatList}
+          data={allThemes.filter((theme) =>
+            theme.name.toLowerCase().includes(searchTerm.toLowerCase())
+          )}
+          numColumns={2}
+          contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+          renderItem={({ item }) => (
+            <View style={styles.item}>
+              <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={[
+                    styles.image,
+                    objectSent.includes(item.name)
+                      ? { borderColor: colors.peach, opacity: 0.5 }
+                      : { borderColor: 'none' },
+                  ]}
+                />
                 <View
                   style={[
-                    styles.addButtonCircle,
-                    objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                    styles.itemNameContainer,
+                    objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                   ]}>
-                  <Image source={buttonIcon} style={styles.addButton} />
+                  <Text style={styles.itemName}>{item.name}</Text>
                 </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={(item) => item._id}
-      />
+              </TouchableOpacity>
+            </View>
+          )}
+          keyExtractor={(item) => item.name}
+        />
+      </View>
     </SafeAreaView>
   )
 }
@@ -127,9 +154,10 @@ const Themes = ({ route }) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+  },
+  container: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
   },
   grownupBackground: {
     backgroundColor: colors.green,
@@ -141,65 +169,57 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  arrows: {
+    flexDirection: 'row',
+    margin: 20,
+  },
   input: {
     backgroundColor: colors.lightGrey,
-    marginBottom: 20,
-    marginTop: 50,
+    width: '80%',
     borderWidth: 1,
     padding: 15,
-    borderRadius: 12,
+    borderRadius: 8,
     fontSize: 16,
+    fontFamily: fonts.text,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
   flatList: {
-    flex: 0.9,
-    alignSelf: 'center',
+    width: '90%',
+    height: '100%',
   },
   h1: {
-    marginTop: 60,
-    fontSize: 25,
-    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 50,
+    fontFamily: fonts.titles,
+    fontSize: 30,
   },
   item: {
-    margin: 10,
-    width: 110,
-    height: 110,
+    width: '50%',
+    marginBottom: -60,
+    padding: 4,
   },
   itemNameContainer: {
-    position: 'absolute',
-    zIndex: 1,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
+    borderRadius: 8,
+    zIndex: 99,
+    top: '-50%',
     justifyContent: 'center',
-  },
-  itemNameBackground: {
-    backgroundColor: 'white',
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    height: 70,
+    width: '80%',
+    alignSelf: 'center',
   },
   itemName: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: fonts.titles,
   },
-  addButtonCircle: {
-    position: 'absolute',
-    zIndex: 1,
-    top: -13,
-    right: -13,
-    width: 25,
-    height: 25,
-    borderRadius: 16,
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addButton: {
-    width: 20,
-    height: 20,
+  image: {
+    width: '100%',
+    height: 120,
+    alignSelf: 'center',
+    borderRadius: 8,
+    borderWidth: 2,
   },
 })
 
