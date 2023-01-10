@@ -21,29 +21,7 @@ const GuestList = ({ navigation, route}) => {
   console.log('project id guest', projectId)
   const project = route.params.project
 
-  /* --- GET WHOLE GUEST LIST--*/
-
-  // useEffect((projectId) => {
-
-  //   dispatch(ui.actions.setLoading(true))
-  //   const options = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: accessToken,
-  //     },
-  //   }
-  //   fetch(
-  //     `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/${projectId}`,
-  //     options
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => setAllGuests(data.response))
-  //     .catch((error) => console.log(error))
-  //     .finally (()=>   dispatch(ui.actions.setLoading(false)))
-  //   // console.log('data', allProjects)
-  // }, [allGuests])
-
+// ********* ADD NEW GUEST FETCH ******* // 
   const addNewGuest = (values) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -63,6 +41,27 @@ const GuestList = ({ navigation, route}) => {
       .catch((error) => console.log(error))
       .finally(()=> dispatch(ui.actions.setLoading(false)))
 
+
+  }
+
+  // ********* DELETE GUEST FROM THE LIST ******* //
+  const deleteGuest = ( guestId) => {
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+       body: JSON.stringify({ _id:guestId })
+
+    };
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteGuest/${guestId}`, options)
+      .then((res) => res.json())
+       .then((data) => console.log(data))
+       .catch((error) => console.error(error))
+       .finally(() => dispatch(ui.actions.setLoading(false)))
+  
 
   }
 
@@ -114,12 +113,22 @@ const GuestList = ({ navigation, route}) => {
             <View>
               {project.guestList.map((guest) => {
                 return(
+                  <>
                   <View key={guest._id}>
                     <Text>{guest.guestName}</Text>
                     <Text>{guest.phone}</Text>
                   </View>
+                  <View>
+                    <TouchableOpacity onPress={() => deleteGuest(guest._id)}>
+                      <Text style={styles.row}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+
+
+                  </>
                 )
               })}
+
             </View>
           </View>
         <TouchableOpacity
