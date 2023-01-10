@@ -7,6 +7,7 @@ import { Formik } from 'formik'
 
 import colors from '../../config/colors'
 import { ui } from '../../reducers/ui'
+import SingleProjectPage from './SingleProjectPage'
 
 
 
@@ -18,6 +19,7 @@ const GuestList = ({ navigation, route}) => {
   const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
   console.log('project id guest', projectId)
+  const project = route.params.project
 
   /* --- GET WHOLE GUEST LIST--*/
 
@@ -109,6 +111,16 @@ const GuestList = ({ navigation, route}) => {
                 </View>
               )}
             </Formik>
+            <View>
+              {project.guestList.map((guest) => {
+                return(
+                  <View key={guest._id}>
+                    <Text>{guest.guestName}</Text>
+                    <Text>{guest.phone}</Text>
+                  </View>
+                )
+              })}
+            </View>
           </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}

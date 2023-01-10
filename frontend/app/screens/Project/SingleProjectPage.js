@@ -337,7 +337,7 @@ const SingleProjectPage = ({ navigation, route }) => {
         return (
           <View key={project._id}>
               
-            <TouchableOpacity onPress={() => {navigation.navigate('GuestList', { projectId: project._id })}}>
+            <TouchableOpacity onPress={() => {navigation.navigate('GuestList', { project: project, projectId: project._id })}}>
                 <Text style={styles.row}>GUEST LIST</Text>
             </TouchableOpacity>
           <Text style={styles.headerH1}>{project.name}</Text>
@@ -452,6 +452,8 @@ const SingleProjectPage = ({ navigation, route }) => {
           </View>
         );
       })}
+
+      
 
 {/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
       {project.budgetList.map((budget) => {
