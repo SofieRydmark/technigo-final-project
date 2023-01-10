@@ -8,6 +8,7 @@ import { Formik } from 'formik'
 import { ui } from '../../reducers/ui'
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
+import { ADD_BUDGET_URL, DELET_BUDGET_OBJECT_URL } from '../../assets/urls/urls'
 
 const Budget = ({ navigation, route, getSingleProject }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -33,7 +34,7 @@ const Budget = ({ navigation, route, getSingleProject }) => {
         itemPrice : itemPrice
         }),
       }
-      fetch(`https:party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/addItem`, options)
+      fetch(ADD_BUDGET_URL(userId, projectId), options)
       .then ((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error))
@@ -50,9 +51,8 @@ const Budget = ({ navigation, route, getSingleProject }) => {
         Authorization: accessToken,
       },
        body: JSON.stringify({ _id: itemId })
-
     };
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteItem/${itemId}`, options)
+    fetch(DELET_BUDGET_OBJECT_URL(userId, projectId, itemId), options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error))
@@ -76,18 +76,18 @@ const Budget = ({ navigation, route, getSingleProject }) => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
+            value={itemName}
+            onChangeText={setItemName}
+            placeholder='Enter item name'
+            required
+          />
+
+          <TextInput
+            style={styles.input}
             keyboardType={'numeric'}
             value={itemPrice}
             onChangeText={setItemPrice}
             placeholder='Enter price'
-            required
-            />
-        
-            <TextInput
-            style={styles.input}
-            value={itemName}
-            onChangeText={setItemName}
-            placeholder='Enter item name'
             required
             />
           </View>  

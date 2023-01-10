@@ -62,3 +62,10 @@ export const THEME_ADD_URL = (userId, projectId) =>
   `${BASE_URL}/${userId}/project-board/projects/addTheme/${projectId}`
 export const DECOR_ADD_URL = (userId, projectId) =>
   `${BASE_URL}/${userId}/project-board/projects/addDecoration/${projectId}`
+
+  // Budget 
+  export const ADD_BUDGET_URL = (userId, projectId) => 
+  `${BASE_URL}/${userId}/project-board/projects/${projectId}/addItem`
+
+  export const DELET_BUDGET_OBJECT_URL = (userId, projectId, itemId) => 
+  `${BASE_URL}/${userId}/project-board/projects/${projectId}/deleteItem/${itemId}`
