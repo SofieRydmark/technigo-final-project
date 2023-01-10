@@ -26,7 +26,7 @@ const Decorations = ({ route }) => {
   const [objectSent, setObjectSent] = useState([])
   const partyType = route.params.partyType
   const projectId = route.params.projectId
-  const buttonIcon = require('assets/addCircle.png')
+  const buttonIcon = require('assets/images/addCircle.png')
 
   let backgroundStyle
   if (partyType === 'grownup') {
