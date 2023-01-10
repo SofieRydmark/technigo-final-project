@@ -329,7 +329,6 @@ const SingleProjectPage = ({ navigation, route }) => {
     singleProjectChange( options);
   };
 
-
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
     
@@ -385,6 +384,8 @@ const SingleProjectPage = ({ navigation, route }) => {
             </View>
           </View>
 
+          <Button title='Brows categories 'onPress={() => navigation.navigate('WhatKindOfParty',{projectId: project._id}) } />
+          
           <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
           style={styles.partyButton}>
@@ -492,7 +493,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                 )
               })}
 
-              {/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
+              
               {project.budgetList.map((budget) => {
                 return (
                   <View key={budget._id}>
@@ -507,7 +508,7 @@ const SingleProjectPage = ({ navigation, route }) => {
 
   );
 })}
-      
+        
     </ScrollView>
   )
 }
