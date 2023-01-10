@@ -8,10 +8,6 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  Pressable,
-  Platform,
   Button,
   Image,
   FlatList,
@@ -56,7 +52,7 @@ const SingleProjectPage = ({ navigation, route }) => {
   }, [singleProject])
 
    /****************** TOOGLE OBJECT PROJECT  ************************* */
-   const completedDrinks = (drinksId) => {
+   const completed = (endpoint, id) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'PATCH',
@@ -66,115 +62,36 @@ const SingleProjectPage = ({ navigation, route }) => {
       },
       body: JSON.stringify({
         isCompleted: true, 
-        _id: drinksId,
+        _id: id,
       }),
     };
-    console.log('id', drinksId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/drink/${drinksId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)))
-  console.log('marked as completed',completedDrinks)
-
-  }
-
-  const completedTheme = (themeId) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        isCompleted: true, 
-        _id: themeId,
-      }),
-    };
-    console.log('id', themeId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/theme/${themeId}`, options)
+  
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/${endpoint}/${id}`, options)
       .then((res) => res.json())
        .then((data) => console.log(data))
        .catch((error) => console.error(error))
        .finally(() => dispatch(ui.actions.setLoading(false)));
-  console.log('marked as completed',completedTheme)
-
+      console.log(`marked as completed ${endpoint}`);
+  };
+  
+  const completedDrinks = (drinksId) => {
+    completed("drink", drinksId);
   }
-
+  const completedTheme = (themeId) => {
+    completed("theme", themeId);
+  }
   const completedFood = (foodId) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        isCompleted: true, 
-        _id: foodId,
-      }),
-    };
-    console.log('id', foodId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/food/${foodId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)))
-  console.log('marked as completed',completedFood)
-
+    completed("food", foodId);
+  }
+  const completedDecorations = (decorationId) => {
+    completed("decoration", decorationId);
   }
   const completedActivities = (activityId) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        isCompleted: true, 
-        _id: activityId,
-
-      }),
-    };
-    console.log('id', activityId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/activity/${activityId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)));
-  console.log('marked as completed',completedActivities)
-
+    completed("activity", activityId);
   }
-
-  const completedDecorations = (decorationId) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        isCompleted: true, 
-        _id: decorationId,
-
-      }),
-    };
-    console.log('id', decorationId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/decoration/${decorationId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)))
-  console.log('marked as completed',completedDecorations)
-
-  }
-
    /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
 
-   const deleteDrinks = (drinksId, name) => {
+   const deleteObject = (endpoint, id, name, bodyKey = `${endpoint}Name`) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
@@ -183,112 +100,38 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        drinksName: name,  
-        _id: drinksId,
+        [bodyKey]: name,  
+        _id: id,
       }),
     };
-    console.log('id', drinksId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDrink/${drinksId}`, options)
+    console.log('id', id)
+    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/delete${endpoint}/${id}`, options)
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)))
-  console.log('marked as completed',deleteFood)
-
-  }
-
-  const deleteFood = (foodId, name) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        foodName: name,  
-        _id: foodId,
-      }),
-    };
-    console.log('id', foodId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteFood/${foodId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)))
-  console.log('marked as completed',deleteFood)
-
-  }
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)));
+    console.log(`marked as deleted ${endpoint}`);
+  };
+  
   const deleteDecoration = (decorationId, name) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        decorationsName: name,  
-        _id: decorationId,
-      }),
-    };
-    console.log('id', decorationId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteDecoration/${decorationId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)))
-  console.log('marked as completed',deleteDecoration)
-
-  }
-
-  const deleteActivity = (activityId, name) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        activitiesName: name,  
-        _id: activityId,
-      }),
-    };
-    console.log('id', activityId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteActivity/${activityId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)));
-  console.log('marked as completed',deleteActivity)
-
-  }
+    deleteObject("Decoration", decorationId, name, "decorationsName");
+  };
 
   const deleteTheme = (themeId, name) => {
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-      body: JSON.stringify({
-        themesName: name,  
-        _id: themeId,
-      }),
-    };
-    console.log('id', themeId)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteTheme/${themeId}`, options)
-      .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)));
-  console.log('marked as completed',deleteTheme)
+    deleteObject("Theme", themeId, name, "themesName");
+  };
 
-  }
-   /****************** CHANGE NAME OBJECT PROJECT  ************************* */
+  const deleteFood = (foodId, name) => {
+    deleteObject("Food", foodId, name, "foodName");
+  };
+
+  const deleteDrinks = (drinksId, name) => {
+    deleteObject("Drink", drinksId, name, "drinksName");
+  };
+  const deleteActivity = (activityId, name) => {
+    deleteObject("Activity", activityId, name, "activitiesName");
+  };
+   /****************** CHANGE NAME AND DUE DATE OBJECT PROJECT  ************************* */
 
   const singleProjectChange = ( options) => {
     dispatch(ui.actions.setLoading(true))
@@ -385,7 +228,7 @@ const SingleProjectPage = ({ navigation, route }) => {
           </View>
 
           <Button title='Brows categories 'onPress={() => navigation.navigate('WhatKindOfParty',{projectId: project._id}) } />
-          
+
           <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
           style={styles.partyButton}>
