@@ -2,13 +2,15 @@ const Food = require('../models/Food')
 
 /* --------- FOOD GET  ----------- */
 export const foodCategory = async (req, res) => {
-  const page = parseInt(req.params.page)
-  const limit = parseInt(req.params.limit) + 1
+  const resultsPerPage = 6
+  let page = req.params.page >= 1 ? req.params.page : 1
+  page = page - 1
 
   try {
     const foodCollection = await Food.find()
-      .skip(page * limit)
-      .limit(limit)
+      .sort({ name: 'asc' })
+      .limit(resultsPerPage)
+      .skip(resultsPerPage * page)
     res.status(200).json({
       response: foodCollection,
       success: true,
@@ -22,13 +24,15 @@ export const foodCategory = async (req, res) => {
 }
 
 export const foodType = async (req, res) => {
-  const page = parseInt(req.params.page)
-  const limit = parseInt(req.params.limit) + 1
+  const resultsPerPage = 6
+  let page = req.params.page >= 1 ? req.params.page : 1
+  page = page - 1
 
   try {
     const typeOf = await Food.find({ type: req.params.type })
-      .skip(page * limit)
-      .limit(limit)
+      .sort({ name: 'asc' })
+      .limit(resultsPerPage)
+      .skip(resultsPerPage * page)
     if (!typeOf) {
       res.status(400).json({
         response: 'not found',
