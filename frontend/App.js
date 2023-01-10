@@ -60,7 +60,6 @@ const App = () => {
     <>
       <StatusBar style='auto' />
       {accessToken === null ? <AuthStack /> : <BottomTabNavigator />}
-      <Loading />
     </>
   )
 }

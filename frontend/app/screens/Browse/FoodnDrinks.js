@@ -23,7 +23,7 @@ import {
 // Reducers
 import user from '../../reducers/user'
 
-const FoodnDrinks = ({ route, navigation }) => {
+const FoodnDrinks = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const [selectedFetch, setSelectedFetch] = useState('drinks')

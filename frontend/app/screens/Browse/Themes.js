@@ -27,6 +27,7 @@ const Themes = ({ route }) => {
   const [themeSelected, setThemeSelected] = useState([])
   const partyType = route.params.partyType
   const projectId = route.params.projectId
+  const buttonIcon = require('assets/images/addCircle.png')
 
   let backgroundStyle
   if (partyType === 'grownup') {
@@ -79,8 +80,6 @@ const Themes = ({ route }) => {
       .catch((error) => console.error(error))
     setObjectSent([...objectSent, name])
   }
-
-  const buttonIcon = require('assets/images/addCircle.png')
 
   return (
     <SafeAreaView
