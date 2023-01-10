@@ -10,7 +10,7 @@ import { ui } from '../../reducers/ui'
 
 
 
-const GuestList = ({ navigation, route, _id}) => {
+const GuestList = ({ navigation, route}) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const projectId = route.params.projectId
   const [allGuests, setAllGuests] = useState([])
@@ -42,20 +42,20 @@ const GuestList = ({ navigation, route, _id}) => {
   //   // console.log('data', allProjects)
   // }, [allGuests])
 
-  const addNewGuest = ({values} ) => {
+  const addNewGuest = (values) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        //  Authorization: accessToken,
+         Authorization: accessToken,
       },
        body: JSON.stringify({
         guestName: values.guestName,  // values comes from Formik
         phone: values.phone
         }),
       }
-      fetch(`https:party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/63bbe29e04e8e36382589ef7`, options)
+      fetch(`https:party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/${projectId}`, options)
       .then ((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error))
