@@ -186,13 +186,18 @@ const SingleProjectPage = ({ navigation, route }) => {
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       {singleProject.map((project) => {
         return (
-          <>
+          <View key= {project._id}>
             <View style={styles.headerContainer}>
               <View style={styles.leftColumn}>
                     
             <TouchableOpacity onPress={() => {navigation.navigate('GuestList', { project: project, projectId: project._id })}}>
                 <Text style={styles.row}>GUEST LIST</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => {navigation.navigate('Budget', { project: project, projectId: project._id })}}>
+                <Text style={styles.row}>BUDGET</Text>
+            </TouchableOpacity>
+
           <Text style={styles.headerH1}>{project.name}</Text>
                 <Text style={styles.headerH4}>{project.due_date}</Text>
               </View>
@@ -400,7 +405,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                 )
               })}
             </View>
-          </>
+          </View>
         )
       })}
     </ScrollView>
