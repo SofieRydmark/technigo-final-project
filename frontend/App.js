@@ -8,6 +8,7 @@ import BottomTabNavigator from './app/navigators/BottomTabNavigator'
 // Fonts and splashscreen config
 import * as SplashScreen from 'expo-splash-screen'
 import { useFonts, DMSans_400Regular } from '@expo-google-fonts/dm-sans'
+import { Poppins_300Light, Poppins_700Bold, Poppins_400Regular } from '@expo-google-fonts/poppins'
 
 // Provider and reducers
 import { Provider, useSelector } from 'react-redux'
@@ -36,6 +37,10 @@ const App = () => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
+    LeagueSpartan: require('assets/customFonts/LeagueSpartan-Bold.otf'),
+    Poppins_300Light,
+    Poppins_400Regular,
+    Poppins_700Bold,
   })
 
   useEffect(() => {

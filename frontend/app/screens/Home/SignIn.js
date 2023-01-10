@@ -20,6 +20,7 @@ import MainButton from 'components/otherComponents/MainButton'
 
 // Asset imports
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
 import { SIGN_IN_URL } from 'assets/urls/urls.js'
 
 // Reducer
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   eyeIcon: {
     color: colors.darkGrey,
@@ -187,23 +188,25 @@ const styles = StyleSheet.create({
   forgotPassword: {
     marginTop: 20,
     fontSize: 16,
-    color: colors.darkGrey,
+    fontFamily: fonts.text,
+    color: colors.black,
     textAlign: 'center',
   },
   header: {
     marginBottom: 30,
   },
   headerH1: {
-    fontSize: 45,
-    fontFamily: 'DMSans_400Regular',
+    fontSize: 35,
+    fontFamily: fonts.titles,
     textAlign: 'center',
   },
   headerH2: {
     fontSize: 16,
+    fontFamily: fonts.text,
     textAlign: 'center',
   },
   here: {
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   keyboard: {
     flex: 1,
@@ -217,12 +220,14 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     fontSize: 16,
+    fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
   label: {
     fontSize: 15,
     color: colors.darkGrey,
+    fontFamily: fonts.text,
   },
   loginError: {
     fontSize: 15,

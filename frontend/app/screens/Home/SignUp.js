@@ -17,6 +17,7 @@ import { Octicons } from '@expo/vector-icons'
 
 // Asset imports
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
 import { SIGN_UP_URL } from 'assets/urls/urls.js'
 
 // Reducers
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   eyeIcon: {
     color: colors.darkGrey,
@@ -212,25 +213,21 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: colors.white,
   },
-  forgotPassword: {
-    marginTop: 20,
-    fontSize: 16,
-    textAlign: 'center',
-  },
   header: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   headerH1: {
-    fontSize: 45,
-    fontFamily: 'DMSans_400Regular',
+    fontSize: 30,
+    fontFamily: fonts.titles,
     textAlign: 'center',
   },
   headerH2: {
     fontSize: 16,
+    fontFamily: fonts.text,
     textAlign: 'center',
   },
   here: {
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   keyboard: {
     flex: 1,
@@ -244,11 +241,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     fontSize: 16,
+    fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
   label: {
     fontSize: 15,
+    fontFamily: fonts.text,
     color: colors.darkGrey,
   },
   loginError: {
