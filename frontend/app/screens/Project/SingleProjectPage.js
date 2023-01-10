@@ -61,8 +61,8 @@ const SingleProjectPage = ({ navigation, route }) => {
     getSingleProject()
   }, [singleProject])
 
-   /****************** TOOGLE OBJECT PROJECT  ************************* */
-  const completed = (endpoint, id) => {
+  /****************** TOOGLE OBJECT PROJECT  ************************* */
+  const completedDrinks = (drinksId) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'PATCH',
@@ -71,37 +71,109 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        isCompleted: true, 
-        _id: id,
+        isCompleted: true,
+        _id: drinksId,
       }),
-    };
-  
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/${endpoint}/${id}`, options)
+    }
+    console.log('id', drinksId)
+    fetch(DRINK_COMPLETE_URL(userId, projectId, drinksId), options)
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)));
-      console.log(`marked as completed ${endpoint}`);
-  };
-  
-  const completedDrinks = (drinksId) => {
-    completed("drink", drinksId);
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', completedDrinks)
   }
+
   const completedTheme = (themeId) => {
-    completed("theme", themeId);
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        isCompleted: true,
+        _id: themeId,
+      }),
+    }
+    console.log('id', themeId)
+    fetch(THEME_COMPLETE_URL(userId, projectId, themeId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', completedTheme)
   }
+
   const completedFood = (foodId) => {
-    completed("food", foodId);
-  }
-  const completedDecorations = (decorationId) => {
-    completed("decoration", decorationId);
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        isCompleted: true,
+        _id: foodId,
+      }),
+    }
+    console.log('id', foodId)
+    fetch(FOOD_COMPLETE_URL(userId, projectId, foodId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', completedFood)
   }
   const completedActivities = (activityId) => {
-    completed("activity", activityId);
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        isCompleted: true,
+        _id: activityId,
+      }),
+    }
+    console.log('id', activityId)
+    fetch(ACTIVITY_COMPLETE_URL(userId, projectId, activityId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', completedActivities)
   }
-   /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
 
-   const deleteObject = (endpoint, id, name, bodyKey = `${endpoint}Name`) => {
+  const completedDecorations = (decorationId) => {
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        isCompleted: true,
+        _id: decorationId,
+      }),
+    }
+    console.log('id', decorationId)
+    fetch(DECOR_COMPLETE_URL(userId, projectId, decorationId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', completedDecorations)
+  }
+
+  /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
+
+  const deleteDrinks = (drinksId, name) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
@@ -110,38 +182,106 @@ const SingleProjectPage = ({ navigation, route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        [bodyKey]: name,  
-        _id: id,
+        drinksName: name,
+        _id: drinksId,
       }),
-    };
-    console.log('id', id)
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/delete${endpoint}/${id}`, options)
+    }
+    console.log('id', drinksId)
+    fetch(DRINK_DELETE_URL(userId, projectId, drinksId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
-      .finally(() => dispatch(ui.actions.setLoading(false)));
-    console.log(`marked as deleted ${endpoint}`);
-  };
-  
-  const deleteDecoration = (decorationId, name) => {
-    deleteObject("Decoration", decorationId, name, "decorationsName");
-  };
-
-  const deleteTheme = (themeId, name) => {
-    deleteObject("Theme", themeId, name, "themesName");
-  };
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', deleteFood)
+  }
 
   const deleteFood = (foodId, name) => {
-    deleteObject("Food", foodId, name, "foodName");
-  };
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        foodName: name,
+        _id: foodId,
+      }),
+    }
+    console.log('id', foodId)
+    fetch(FOOD_DELETE_URL(userId, projectId, foodId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', deleteFood)
+  }
 
-  const deleteDrinks = (drinksId, name) => {
-    deleteObject("Drink", drinksId, name, "drinksName");
-  };
+  const deleteDecoration = (decorationId, name) => {
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        decorationsName: name,
+        _id: decorationId,
+      }),
+    }
+    console.log('id', decorationId)
+    fetch(DECOR_DELETE_URL(userId, projectId, decorationId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', deleteDecoration)
+  }
+
   const deleteActivity = (activityId, name) => {
-    deleteObject("Activity", activityId, name, "activitiesName");
-  };
-  
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        activitiesName: name,
+        _id: activityId,
+      }),
+    }
+    console.log('id', activityId)
+    fetch(ACTIVITY_DELETE_URL(userId, projectId, activityId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', deleteActivity)
+  }
+
+  const deleteTheme = (themeId, name) => {
+    dispatch(ui.actions.setLoading(true))
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        themesName: name,
+        _id: themeId,
+      }),
+    }
+    console.log('id', themeId)
+    fetch(THEME_DELETE_URL(userId, projectId, themeId), options)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+    console.log('marked as completed', deleteTheme)
+  }
   /****************** CHANGE NAME OBJECT PROJECT  ************************* */
 
   const singleProjectChange = (options) => {
@@ -178,8 +318,9 @@ const SingleProjectPage = ({ navigation, route }) => {
       body: JSON.stringify({
         due_date: dueDate,
       }),
-    };
-    singleProjectChange( options);
+    }
+
+    singleProjectChange(options)
   }
 
   return (
@@ -253,61 +394,59 @@ const SingleProjectPage = ({ navigation, route }) => {
               <Text style={styles.buttonText}>Back to projectBoard</Text>
             </TouchableOpacity>
 
-            <Button title='Brows categories 'onPress={() => navigation.navigate('WhatKindOfParty',{projectId: project._id}) } />
-
-            <View style={styles.listWrapper}>
+            <View>
               <Text style={styles.headerh2}>THEME</Text>
               {project.themeProjectList.map((theme) => {
                 return (
-                  <View key={theme._id} style={styles.smallContainer}>
+                  <View key={theme._id} style={styles.listWrapper}/* style={styles.smallContainer}*/ >
                     <View styles={styles.leftColumn}>
-                      <Text /* style={styles.row} */>{theme.themesName}</Text>
-                      <Text /* style={styles.row} */>
+                      <Text style={styles.row}>{theme.themesName}</Text>
+                      <Text style={styles.row}>
                         {theme.isCompleted ? 'Completed' : 'Incomplete'}
                       </Text>
                     </View>
-                    <View style={styles.rightColumn}>
+                    {/* <View style={styles.rightColumn}> */}
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedTheme(theme._id, theme.isCompleted)}
-                        style={styles.row}>
+                        style={styles.complete}>
                         <Text>Mark as completed</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
                         onPress={() => deleteTheme(theme._id)}
-                        style={styles.row}>
+                        style={styles.delete}>
                         <Text>Delete object</Text>
                       </TouchableOpacity>
-                    </View>
+                    {/* </View> */}
                   </View>
                 )
               })}
 
-              <Text style={styles.headerh2}>Activities</Text>
+              <Text style={styles.headerh2}>ACTIVITIES</Text>
               {project.activitiesProjectList.map((activity) => {
                 return (
-                  <View key={activity._id} style={styles.smallContainer}>
+                  <View key={activity._id} style={styles.listWrapper} /* style={styles.smallContainer} */>
                     <View style={styles.leftColumn}>
                       <Text style={styles.row}>{activity.activitiesName}</Text>
                       <Text style={styles.row}>
                         {activity.isCompleted ? 'Completed' : 'Incomplete'}
                       </Text>
                     </View>
-                    <View style={styles.rightColumn}>
+                    {/* <View /* style={styles.rightColumn}> */}
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedActivities(activity._id, activity.isCompleted)}
-                        style={styles.row}>
-                        <Text>Mark as completed</Text>
+                        style={styles.complete}>
+                        <Text>✅</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
                         onPress={() => deleteActivity(activity._id)}
-                        style={styles.row}>
-                        <Text> Mark as completed</Text>
+                        style={styles.delete}>
+                        <Text>🗑</Text>
                       </TouchableOpacity>
-                    </View>
+                    {/* </View> */}
                   </View>
                 )
               })}
@@ -315,25 +454,25 @@ const SingleProjectPage = ({ navigation, route }) => {
               <Text style={styles.headerh2}>DECORATION</Text>
               {project.decorationsProjectList.map((decoration) => {
                 return (
-                  <View key={decoration._id} style={styles.smallContainer}>
+                  <View key={decoration._id} style={styles.listWrapper}>
                     <View styles={styles.leftColumn}>
-                      <Text>{decoration.decorationsName}</Text>
-                      <Text>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Text style={styles.row}>{decoration.decorationsName}</Text>
+                      <Text style={styles.row}>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
                     </View>
-                    <View styles={styles.rightColumn}>
+                    {/* <View styles={styles.rightColumn}> */}
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedDecorations(decoration._id, decoration.isCompleted)}
-                        style={styles.row}>
-                        <Text>Mark as completed</Text>
+                        style={styles.complete}>
+                        <Text>✅</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
                         onPress={() => deleteDecoration(decoration._id)}
-                        style={styles.row}>
-                        <Text>DELETE</Text>
+                        style={styles.delete}>
+                        <Text>🗑</Text>
                       </TouchableOpacity>
-                    </View>
+                    {/* </View> */}
                   </View>
                 )
               })}
@@ -341,23 +480,23 @@ const SingleProjectPage = ({ navigation, route }) => {
               <Text style={styles.headerh2}>FOOD</Text>
               {project.foodProjectList.map((food) => {
                 return (
-                  <View key={food._id} style={styles.smallContainer}>
+                  <View key={food._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
-                      <Text>{food.foodName}</Text>
+                      <Text style={styles.row}>{food.foodName}</Text>
                       <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedFood(food._id, food.isCompleted)}
-                        style={styles.row}>
-                        <Text>Mark as completed</Text>
+                        style={styles.complete}>
+                        <Text>✅</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
                         onPress={() => deleteFood(food._id)}
-                        style={styles.row}>
-                        <Text>DELETE</Text>
+                        style={styles.delete}>
+                        <Text>🗑</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -367,30 +506,30 @@ const SingleProjectPage = ({ navigation, route }) => {
               <Text style={styles.headerh2}>DRINKS</Text>
               {project.drinksProjectList.map((drinks) => {
                 return (
-                  <View key={drinks._id} style={styles.smallContainer}>
+                  <View key={drinks._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
-                      <Text>{drinks.drinksName}</Text>
-                      <Text>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Text style={styles.row}>{drinks.drinksName}</Text>
+                      <Text style={styles.row}>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}
-                        style={styles.row}>
-                        <Text>Mark as completed</Text>
+                        style={styles.complete}>
+                        <Text>✅</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
                         onPress={() => deleteDrinks(drinks._id)}
-                        style={styles.row}>
-                        <Text>DELETE</Text>
+                        style={styles.delete}>
+                        <Text>🗑</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                 )
               })}
 
-              
+              {/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
               {project.budgetList.map((budget) => {
                 return (
                   <View key={budget._id}>
@@ -407,14 +546,19 @@ const SingleProjectPage = ({ navigation, route }) => {
   )
 }
 
-
-
 const styles = StyleSheet.create({
   scrollViewContent: {
     backgroundColor: colors.green,
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 500,
+  },
+  background: {
+    flex: 1,
+    backgroundColor: colors.green,
+    alignItems: 'center',
+    flex: 1,
+    paddingVertical: 60,
   },
   headerH1: {
     fontSize: 25,
@@ -437,8 +581,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 10,
-    width: '100%',
-    height: 70,
+    width: '30%',
+    height: 50,
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
@@ -453,8 +597,42 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
   listWrapper: {
-    flexDirection: 'column',
+    // flexDirection: 'column',
+    // flexDirection:'row',
+    justifyContent: 'center',
+    backgroundColor: colors.green,
+    borderRadius: 10,
+    backgroundColor: colors.lightGrey,
+    flexWrap: 'wrap',
+    margin: 2,
   },
+  // single item styling
+  row: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingBottom: 5,
+    fontSize: 16,
+    // backgroundColor: colors.lightGrey,
+    
+  },
+
+  complete: {
+    fontSize: 16,
+    // backgroundColor: colors.lightGrey,
+    color: colors.red,
+    zIndex: 10,
+    position: 'absolute',
+    right: 10,
+    bottom: 30,
+  },
+  delete: {
+    // backgroundColor: colors.lightGrey,
+    zIndex: 10,
+    position: 'absolute',
+    right: 10,
+    bottom: 2,
+  },
+
   input: {
     borderRadius: 8,
     textAlign: 'center',
@@ -462,13 +640,13 @@ const styles = StyleSheet.create({
     width: '70%',
     backgroundColor: colors.white,
   },
-  smallContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingBottom: 40,
-    backgroundColor: 'grey',
-    borderRadius: 8,
-  },
+  // smallContainer: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   paddingBottom: 40,
+  //   backgroundColor: 'grey',
+  //   borderRadius: 8,
+  // },
   headerContainer: {
     marginTop: 100,
     flexDirection: 'row',
@@ -480,11 +658,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
-  rightColumn: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    marginTop: 10,
-  },
+  // rightColumn: {
+  //   // flexDirection: 'column',
+  //   indexZ: 1,
+  //   // alignItems: 'flex-end',
+  //   justifyContent: 'center',
+  //   // marginTop: 10,
+  //   paddingLeft: 30
+  // },
 })
 export default SingleProjectPage
