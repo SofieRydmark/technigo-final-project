@@ -7,9 +7,9 @@ import { Formik } from 'formik'
 
 import { ui } from '../../reducers/ui'
 import colors from 'assets/styling/colors.js'
-import { project } from '../../reducers/user'
+import fonts from 'assets/styling/fonts.js'
 
-const Budget = ({ navigation, route }) => {
+const Budget = ({ navigation, route, getSingleProject }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const dispatch= useDispatch()
@@ -17,9 +17,10 @@ const Budget = ({ navigation, route }) => {
   const projectId = route.params.projectId
   const [itemName, setItemName] = useState('')
   const [itemPrice, setItemPrice] = useState('')
+  const [singleProject, setSingleProject] = useState([])
+  const totalSum = project.budgetList.reduce((sum, budget) => sum + budget.itemPrice, 0);
 
-
-  const createNew = ( itemName ) => {
+  const createNew = ( ) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'POST',
@@ -28,7 +29,7 @@ const Budget = ({ navigation, route }) => {
          Authorization: accessToken,
       },
        body: JSON.stringify({
-        itemName: itemName,  // values comes from Formik
+        itemName: itemName,
         itemPrice : itemPrice
         }),
       }
@@ -56,60 +57,78 @@ const Budget = ({ navigation, route }) => {
        .then((data) => console.log(data))
        .catch((error) => console.error(error))
        .finally(() => dispatch(ui.actions.setLoading(false)))
-  
-
   }
-
 /*   useEffect(() => {
     getSingleProject()
-  }, [singleProject]) */
+  }, []) */
+ 
   return (
     <ScrollView contentContainerStyle={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.headerH1}>Budget</Text>
-        <TextInput
-          style={styles.input}
-          value={itemPrice}
-          onChangeText={setItemPrice}
-          placeholder='Enter price'
-          />
-      
+      <View style={styles.wrapper}>
+        <View style={styles.headerContainer}>
+        <Text style={styles.headerH1}>BUDGET</Text>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('SingleProjectPage', {projectId: project._id })}
+        style={styles.partyButton}>
+        <Text style={styles.buttonText}>Back to overview</Text>
+        </TouchableOpacity>
+        </View>
+        <View style={styles.inputContainer}>
           <TextInput
-          style={styles.input}
-          value={itemName}
-          onChangeText={setItemName}
-          placeholder='Enter item name'
-          />
-          <TouchableOpacity
-          style={styles.changeButton}
-          onPress={() => {
-          createNew(itemName,itemPrice, console.log('onpress', itemName, itemPrice))
-                        /* setShowInput(false) */
-          }}> 
-          <Text>Submit</Text>
-          </TouchableOpacity>
-                    
+            style={styles.input}
+            keyboardType={'numeric'}
+            value={itemPrice}
+            onChangeText={setItemPrice}
+            placeholder='Enter price'
+            required
+            />
+        
+            <TextInput
+            style={styles.input}
+            value={itemName}
+            onChangeText={setItemName}
+            placeholder='Enter item name'
+            required
+            />
+          </View>  
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+            style={styles.changeButton}
+            onPress={() => {
+            createNew(itemName,itemPrice)
+            }}> 
+            <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+
         {project.budgetList.map((budget) => {
           return(
-            <View key={budget._id}>
-            <Text>{budget.itemName}</Text>
-            <Text>{budget.itemPrice}</Text>
-
-            <TouchableOpacity
-              title='DELETE'
-              onPress={() => deleteItem(budget._id)}
-              style={styles.row}>
-                <Text>Delete</Text>
-              </TouchableOpacity>
-
+            <View key={budget._id} style={styles.budgetContainer}>
+              <View style={styles.leftColumn}>
+                <Text style={styles.text}>{budget.itemName}</Text>
+              </View>
+                <View style={styles.rightColumn}>
+                  <TouchableOpacity
+                    title='DELETE'
+                    onPress={() => deleteItem(budget._id)}
+                    style={styles.deleteButton}>
+                    <Text >🗑</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.text}>{budget.itemPrice} KR</Text>
+                </View>
             </View>
           )
         })}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ProjectBoard')}
-          style={styles.partyButton}>
-          <Text style={styles.buttonText}>Back to projectBoard</Text>
-        </TouchableOpacity>
+         
+        <View style={styles.budgetContainer}>
+          <View style={styles.leftColumn}>
+            <Text style={styles.text}>Total</Text>
+          </View>
+          <View style={styles.rightColumn}>
+            <Text style={styles.text}>{totalSum} KR</Text>
+          </View>
+        </View>
       </View>
     </ScrollView>
   )
@@ -117,30 +136,99 @@ const Budget = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
     backgroundColor: colors.green,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 500,
+    flexDirection: 'column', 
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
+    justifyContent:'center', 
   },
-  header: {
+
+  wrapper: {
     marginBottom: 30,
+    marginTop: 20, 
   },
   headerH1: {
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: fonts.titles,
+    marginTop: 10, 
   },
   partyButton: {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    marginTop: 10,
     marginBottom: 10,
-    width: '100%',
-    height: 70,
+    width: '50%',
+    height: 40,
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
+  inputContainer: {
+    marginTop: 40, 
+    flexDirection: 'row', 
+    justifyContent: 'space-around', 
+  }, 
+  input: {
+    marginBottom: 10,
+    backgroundColor: colors.lightGrey,
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 12,
+    fontSize: 12,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey, 
+    width: '45%', 
+    fontFamily: fonts.input
+  },
+  buttonContainer: {
+    marginTop: 10, 
+    alignItems: 'center',
+    justifyContent:'center'
+  }, 
+  changeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    width: 110,
+    height: 45,
+    borderRadius: 12,
+    backgroundColor: colors.peach,
+  },
+  budgetContainer: {
+    flexDirection: 'row', 
+    marginTop: 20, 
+    padding: 10, 
+    backgroundColor: colors.lightGrey, 
+    borderRadius: 12, 
+  }, 
+  leftColumn: {
+    flex: 1, 
+    alignItems: 'flex-start', 
+  }, 
+  rightColumn: {
+    flex: 1, 
+    alignItems: 'flex-end',
+    flexDirection: 'row-reverse',
+  },
+  deleteButton: {
+    marginLeft: 10, 
+  }, 
+  headerContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    marginTop: 100, 
+    textAlign: 'center'
+  }, 
+  buttonText: {
+    fontFamily: fonts.button
+  }, 
+  text: {
+    fontFamily: fonts.text
+  }
+
+  
 })
 export default Budget
