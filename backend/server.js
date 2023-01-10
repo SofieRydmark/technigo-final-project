@@ -69,30 +69,28 @@ app.patch('/:userId/admin/change', authenticateUser, changePassword)
 // ************ CATEGORY ENDPOINTS GET  *************** //
 
 // ************ THEMES *************** //
-app.get('/themes', authenticateUser, ThemesCategory)
-app.get('/themes/:id', authenticateUser, ThemesId)
-app.get('/themes/type/:type', authenticateUser, ThemesType)
+app.get('/themes/:page/:limit', authenticateUser, ThemesCategory)
+app.get('/themes/type/:type/:page/:limit', authenticateUser, ThemesType)
 
 // ************ DECORATIONS *************** //
-app.get('/decorations', authenticateUser, decorationsCategory)
-app.get('/decorations/type/:type', authenticateUser, decorationsType)
+app.get('/decorations/:page/:limit', authenticateUser, decorationsCategory)
+app.get('/decorations/type/:type/:page/:limit', authenticateUser, decorationsType)
 
 // ************ DRINKS *************** //
-app.get('/drinks', authenticateUser, drinksCategory)
-app.get('/drinks/type/:type', authenticateUser, drinksType)
+app.get('/drinks/:page/:limit', authenticateUser, drinksCategory)
+app.get('/drinks/type/:type/:page/:limit', authenticateUser, drinksType)
 
 // ************ FOOD *************** //
-app.get('/food', authenticateUser, foodCategory)
-app.get('/food/type/:type', authenticateUser, foodType)
+app.get('/food/:page/:limit', authenticateUser, foodCategory)
+app.get('/food/type/:type/:page/:limit', authenticateUser, foodType)
 
 // ************ ACTIVITIES *************** //
-app.get('/activities', authenticateUser, activityCategory)
-app.get('/activities/type/:type', authenticateUser, activityType)
+app.get('/activities/:page/:limit', authenticateUser, activityCategory)
+app.get('/activities/type/:type/:page/:limit', authenticateUser, activityType)
 
 // ************ PROJECT ENDPOINTS *************** //
 
 // ************ PROJECT BOARD AND SINGLE PROJECT GET*************** //
-app.get('/:userId/project-board', authenticateUser, ProjectBoard)
 app.get('/:userId/project-board/projects', authenticateUser, allProjects)
 app.get('/:userId/project-board/projects/:projectId', authenticateUser, SingleProjectId)
 
