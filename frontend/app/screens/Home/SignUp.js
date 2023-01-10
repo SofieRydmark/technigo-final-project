@@ -15,9 +15,13 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
+// Asset imports
+import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
+import { SIGN_UP_URL } from 'assets/urls/urls.js'
+
+// Reducers
 import user from '../../reducers/user'
-import colors from '../../config/colors'
-import { ui } from '../../reducers/ui'
 
 // Validation of input fields with yup
 import * as Yup from 'yup'
@@ -54,7 +58,7 @@ const SignUp = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signUp', options) // sign up URL
+    fetch(SIGN_UP_URL, options) // sign up URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -75,7 +79,7 @@ const SignUp = ({ navigation }) => {
           })
         }
       })
-      .finally(()=> dispatch(ui.actions.setLoading(false)))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
   return (
@@ -196,7 +200,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   eyeIcon: {
     color: colors.darkGrey,
@@ -211,25 +215,21 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: colors.white,
   },
-  forgotPassword: {
-    marginTop: 20,
-    fontSize: 16,
-    textAlign: 'center',
-  },
   header: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   headerH1: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontFamily: fonts.titles,
     textAlign: 'center',
   },
   headerH2: {
     fontSize: 16,
+    fontFamily: fonts.text,
     textAlign: 'center',
   },
   here: {
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   keyboard: {
     flex: 1,
@@ -243,11 +243,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     fontSize: 16,
+    fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
   label: {
     fontSize: 15,
+    fontFamily: fonts.text,
     color: colors.darkGrey,
   },
   loginError: {

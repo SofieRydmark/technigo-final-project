@@ -15,7 +15,15 @@ import {
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
-import colors from '../../config/colors'
+// Components
+import MainButton from 'components/otherComponents/MainButton'
+
+// Asset imports
+import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
+import { SIGN_IN_URL } from 'assets/urls/urls.js'
+
+// Reducer
 import user from '../../reducers/user'
 import { ui } from '../../reducers/ui'
 
@@ -48,7 +56,7 @@ const SignIn = ({ navigation }) => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     }
 
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/signIn', options) // sign in URL
+    fetch(SIGN_IN_URL, options) // sign in URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -166,7 +174,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   eyeIcon: {
     color: colors.darkGrey,
@@ -184,23 +192,25 @@ const styles = StyleSheet.create({
   forgotPassword: {
     marginTop: 20,
     fontSize: 16,
-    color: colors.darkGrey,
+    fontFamily: fonts.text,
+    color: colors.black,
     textAlign: 'center',
   },
   header: {
     marginBottom: 30,
   },
   headerH1: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 35,
+    fontFamily: fonts.titles,
     textAlign: 'center',
   },
   headerH2: {
     fontSize: 16,
+    fontFamily: fonts.text,
     textAlign: 'center',
   },
   here: {
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   keyboard: {
     flex: 1,
@@ -214,12 +224,14 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     fontSize: 16,
+    fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
   label: {
     fontSize: 15,
     color: colors.darkGrey,
+    fontFamily: fonts.text,
   },
   loginError: {
     fontSize: 15,

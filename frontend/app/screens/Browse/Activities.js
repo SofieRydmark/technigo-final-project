@@ -2,31 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  Pressable,
-  Platform,
-  Button,
   Image,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native'
 
-import colors from '../../config/colors'
+// Assets import
+import colors from 'assets/styling/colors.js'
+import { PARTYTYPE_ACT_URL, ACTIVITY_ADD_URL } from 'assets/urls/urls'
+
+// Reducers
 import user from '../../reducers/user'
 
-const Activities = ({route, navigation}) => {
+const Activities = ({ route, navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
-  const email = useSelector((store) => store.user.email)
   const userId = useSelector((store) => store.user.userId)
   const [allActivities, setAllActivities] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const partyType= route.params.partyType
+  const [objectSent, setObjectSent] = useState([])
+  const partyType = route.params.partyType
   const projectId = route.params.projectId
 
   let backgroundStyle
@@ -44,7 +42,7 @@ const Activities = ({route, navigation}) => {
         Authorization: accessToken,
       },
     }
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/activities/type/${partyType}`, options)
+    fetch(PARTYTYPE_ACT_URL(partyType), options)
       .then((res) => res.json())
       .then((data) => setAllActivities(data.response))
       .catch((error) => console.error(error))
@@ -63,31 +61,32 @@ const Activities = ({route, navigation}) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-           activitiesName: name,
+        activitiesName: name,
       }),
-    };
-    
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addActivity/${projectId}`, options)
+    }
+
+    fetch(ACTIVITY_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((error) => console.error(error));
-  };
+      .catch((error) => console.error(error))
+    setObjectSent([...objectSent, name])
+  }
 
-
-  const buttonIcon = require('../../assets/addCircle.png')
+  const buttonIcon = require('assets/images/addCircle.png')
 
   return (
-    <SafeAreaView style={[styles.background, backgroundStyle]}
-    contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={styles.h1}>Themes</Text>
+    <SafeAreaView
+      style={[styles.background, backgroundStyle]}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={styles.h1}>Activities</Text>
       <TextInput
         style={styles.input}
-        placeholder='Search for a Activity...'
+        placeholder='Search for an Activity...'
         onChangeText={(text) => setSearchTerm(text)}
         value={searchTerm}
       />
       <FlatList
-        style={styles.flatList} 
+        style={styles.flatList}
         data={allActivities.filter((theme) =>
           theme.name.toLowerCase().includes(searchTerm.toLowerCase())
         )}
@@ -101,19 +100,20 @@ const Activities = ({route, navigation}) => {
                 <View style={styles.itemNameBackground}>
                   <Text style={styles.itemName}>{item.name}</Text>
                 </View>
-                  <View style={styles.addButtonCircle}>
-                    <Image source={buttonIcon} style={styles.addButton} />
-                  </View>
+                <View
+                  style={[
+                    styles.addButtonCircle,
+                    objectSent.includes(item.name) ? { backgroundColor: colors.peach } : null,
+                  ]}>
+                  <Image source={buttonIcon} style={styles.addButton} />
+                </View>
               </View>
             </TouchableOpacity>
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
       />
-
-    
     </SafeAreaView>
-
   )
 }
 
@@ -147,18 +147,17 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flex: 0.9,
-    alignSelf: 'center', 
-  }, 
+    alignSelf: 'center',
+  },
   h1: {
-    marginTop: 60, 
+    marginTop: 60,
     fontSize: 25,
     fontWeight: 'bold',
-
   },
   item: {
-    margin: 10,  
-    width: 110,  
-    height: 110,  
+    margin: 10,
+    width: 110,
+    height: 110,
   },
   itemNameContainer: {
     position: 'absolute',
@@ -182,10 +181,10 @@ const styles = StyleSheet.create({
   addButtonCircle: {
     position: 'absolute',
     zIndex: 1,
-    top: -10,
-    right: -10,
-    width: 28,
-    height: 28,
+    top: -13,
+    right: -13,
+    width: 25,
+    height: 25,
     borderRadius: 16,
     backgroundColor: 'transparent',
     alignItems: 'center',

@@ -15,7 +15,7 @@ import {
 } from './CustomNavigation'
 
 // Our colors
-import colors from '../config/colors'
+import colors from 'assets/styling/colors.js'
 
 // Icons
 import { MaterialCommunityIcons } from '@expo/vector-icons'
