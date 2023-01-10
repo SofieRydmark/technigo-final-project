@@ -5,7 +5,7 @@ import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 
 import { Formik } from 'formik'
 
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 import { ui } from '../../reducers/ui'
 import SingleProjectPage from './SingleProjectPage'
 
