@@ -114,16 +114,15 @@ const GuestList = ({ navigation, route}) => {
               {project.guestList.map((guest) => {
                 return(
                   <>
-                  <View key={guest._id}>
-                    <Text>{guest.guestName}</Text>
-                    <Text>{guest.phone}</Text>
+                  <View style={styles.listWrapper} key={guest._id}>
+                    <Text style={styles.row}>{guest.guestName}</Text>
+                    <Text style={styles.row}>{guest.phone}</Text>
                   </View>
                   <View>
-                    <TouchableOpacity onPress={() => deleteGuest(guest._id)}>
-                      <Text style={styles.row}>Delete</Text>
+                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteGuest(guest._id)}>
+                      <Text style={styles.row}>🗑</Text>
                     </TouchableOpacity>
                   </View>
-
 
                   </>
                 )
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
     textAlign: 'center',
-    width: '100%',
+    width: '50%',
     height: 30,
     borderRadius: 8,
     backgroundColor: colors.peach,
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     position: 'absolute',
     right: 10,
-    bottom: 10,
+    bottom: 1,
   },
   partyButton: {
     alignItems: 'center',
