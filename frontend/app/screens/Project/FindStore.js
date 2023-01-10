@@ -15,10 +15,10 @@ import * as Location from 'expo-location'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 
 // Config
-import mapStyling from '../../config/mapStyling.json'
-import colors from '../../config/colors'
-import storeList from '../../config/stores.json'
-import findStore from '../../config/findStore.json'
+import mapStyling from 'assets/jsonData/mapStyling.json'
+import colors from 'assets/styling/colors.js'
+import storeList from 'assets/jsonData/stores.json'
+import findStore from 'assets/jsonData/findStore.json'
 
 // Icons
 import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'

@@ -1,8 +1,7 @@
 import React from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
-// import { StackActions } from '@react-navigation/native'
 
-import colors from '../../config/colors'
+import colors from 'assets/styling/colors.js'
 
 const WhatKindOfParty = ({ navigation, route }) => {
   const projectId = route.params.projectId
@@ -14,12 +13,22 @@ const WhatKindOfParty = ({ navigation, route }) => {
       </View>
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'grownup', projectId:projectId })}
+          onPress={() =>
+            navigation.navigate('BrowsingCategoriesPage', {
+              partyType: 'grownup',
+              projectId: projectId,
+            })
+          }
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Grownup party</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BrowsingCategoriesPage', { partyType: 'kids', projectId:projectId })}
+          onPress={() =>
+            navigation.navigate('BrowsingCategoriesPage', {
+              partyType: 'kids',
+              projectId: projectId,
+            })
+          }
           style={styles.partyButton}>
           <Text style={styles.buttonText}>Kids party</Text>
         </TouchableOpacity>

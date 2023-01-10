@@ -10,8 +10,9 @@ import {
   TextInput,
 } from 'react-native'
 
-// Our colors
-import colors from '../../config/colors'
+// Assets import
+import colors from 'assets/styling/colors.js'
+import { ADMIN_DELETE_URL, ADMIN_PASSWORD_URL } from 'assets/urls/urls.js'
 
 // Form handler and validation Yup
 import { Formik } from 'formik'
@@ -23,10 +24,10 @@ const ReviewSchema = Yup.object().shape({
 // Lottie animation, avatars and icons
 import LottieView from 'lottie-react-native'
 import { MaterialIcons, AntDesign, Octicons } from '@expo/vector-icons'
-import avatar1 from '../../assets/avatar1.json'
-import avatar2 from '../../assets/avatar2.json'
-import avatar3 from '../../assets/avatar3.json'
-import avatar4 from '../../assets/avatar4.json'
+import avatar1 from 'assets/lotties/avatar1.json'
+import avatar2 from 'assets/lotties/avatar2.json'
+import avatar3 from 'assets/lotties/avatar3.json'
+import avatar4 from 'assets/lotties/avatar4.json'
 const avatars = [
   {
     id: 1,
@@ -87,7 +88,7 @@ const Profile = () => {
       },
     }
 
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/admin/delete`, options) // delete user URL
+    fetch(ADMIN_DELETE_URL(userId), options) // delete user URL
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -114,7 +115,7 @@ const Profile = () => {
       body: JSON.stringify({ password: values.password }),
     }
 
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/admin/change`, options) // change password URL
+    fetch(ADMIN_PASSWORD_URL(userId), options) // change password URL
       .then((res) => res.json())
       .then((data) => setPasswordError(data.response))
       .catch((error) => console.error(error))
