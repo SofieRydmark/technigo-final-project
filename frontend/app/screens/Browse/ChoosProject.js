@@ -33,7 +33,6 @@ const ChooseProject = ({ navigation, _id}) => {
   }, [] )
 
     /* --- ADD NEW PROJECT FETCH  --*/
-  
     const addNewProject = async ( values) => {
       const options = {
         method: 'POST',
