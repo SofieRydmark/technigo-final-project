@@ -5,7 +5,7 @@ import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Modal, FlatList }
 import * as Location from 'expo-location'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 
-// Config
+// Assets import
 import mapStyling from 'assets/jsonData/mapStyling.json'
 import colors from 'assets/styling/colors.js'
 import storeList from 'assets/jsonData/stores.json'
@@ -141,9 +141,8 @@ const styles = StyleSheet.create({
   },
   headerH1: {
     fontSize: 35,
-    fontWeight: 'bold',
-    textAlign: 'center',
     fontFamily: fonts.titles,
+    textAlign: 'center',
   },
   map: {
     width: '100%',
