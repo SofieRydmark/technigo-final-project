@@ -123,8 +123,10 @@ const ProjectBoard = ({ navigation }) => {
             <Formik
               initialValues={{ name: '', due_date: '' }}
               onSubmit={(values, actions) => {
-                if (values.name === '' || values.due_date === '') {
-                  return setLoginError('Please fill the name')
+                if (values.name === '') {
+                  setLoginError('Please fill out the name')
+                } else if(values.due_date === '') {
+                  setLoginError('Please fill the date')
                 } else {
                   addNewProject(values)
                   actions.resetForm()
@@ -143,7 +145,8 @@ const ProjectBoard = ({ navigation }) => {
                     maxLength={20}
                     style={styles.inputText}
                   />
-        
+                  {loginError && <Text style={styles.errorText}>{loginError}</Text>}
+
                     <Modal visible={calendarVisible} animationType={'slide'}>
                     <View style={styles.calendar}>
                       <CalendarPicker
@@ -162,7 +165,7 @@ const ProjectBoard = ({ navigation }) => {
                     <TouchableOpacity onPress={() => {
                       setCalendarVisible(true);
                       }}>
-                        <Text style={styles.inputText}>{values.due_date ? values.due_date : "YYYY-MM-DD"}</Text>
+                        <Text style={values.due_date ? styles.chosenDateText : styles.defaultDateText}>{values.due_date ? values.due_date : "YYYY-MM-DD"}</Text>
                     </TouchableOpacity>
 
                   <TouchableOpacity style={[styles.addProjectButton, styles.boxShadow]} onPress={handleSubmit}>
@@ -336,6 +339,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     fontFamily: fonts.button, 
+  }, 
+  defaultDateText: {
+    fontFamily: fonts.input, 
+    fontWeight: 'bold'
+  }, 
+  chosenDateText: {
+    fontFamily: fonts.input
+  }, 
+  errorText: {
+    fontFamily: fonts.text, 
+    color: 'red'
   }
 })
 

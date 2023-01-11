@@ -129,6 +129,7 @@ const ChooseProject = ({ navigation, _id }) => {
                       maxLength={20}
                       style={styles.inputName}
                     />
+                    
                      <Modal visible={calendarVisible} animationType={'slide'}>
                     <View style={styles.calendar}>
                       <CalendarPicker
@@ -143,7 +144,7 @@ const ChooseProject = ({ navigation, _id }) => {
                       </TouchableOpacity>
                     </View>
                     </Modal>
-                     
+                    {loginError && <Text style={styles.errorText}>{loginError}</Text>}
                     <TouchableOpacity onPress={() => {
                       setCalendarVisible(true);
                       }}>
@@ -292,6 +293,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     fontFamily: fonts.button, 
+  },
+  errorText: {
+    fontFamily: fonts.text, 
+    color: 'red'
   }
 })
 export default ChooseProject
