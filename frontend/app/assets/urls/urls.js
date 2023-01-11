@@ -46,15 +46,15 @@ export const DECOR_DELETE_URL = (userId, projectId, decorationId) =>
 
 // Browsing
 export const PARTYTYPE_ACT_URL = (partyType, page) =>
-  `${BASE_URL}/activities/type/${partyType}/${page}/5`
+  `${BASE_URL}/activities/${page}/type/${partyType}`
 export const PARTYTYPE_FOOD_URL = (partyType, page) =>
-  `${BASE_URL}/food/type/${partyType}/${page}/5`
+  `${BASE_URL}/food/${page}/type/${partyType}`
 export const PARTYTYPE_DRINK_URL = (partyType, page) =>
-  `${BASE_URL}/drinks/type/${partyType}/${page}/5`
+  `${BASE_URL}/drinks/${page}/type/${partyType}`
 export const PARTYTYPE_DEC_URL = (partyType, page) =>
-  `${BASE_URL}/decorations/type/${partyType}/${page}/5`
+  `${BASE_URL}/decorations/${page}/type/${partyType}`
 export const PARTYTYPE_THEME_URL = (partyType, page) =>
-  `${BASE_URL}/themes/type/${partyType}/${page}/5`
+  `${BASE_URL}/themes/${page}/type/${partyType}`
 
 // Add category
 export const ACTIVITY_ADD_URL = (userId, projectId) =>
@@ -67,3 +67,10 @@ export const THEME_ADD_URL = (userId, projectId) =>
   `${BASE_URL}/${userId}/project-board/projects/addTheme/${projectId}`
 export const DECOR_ADD_URL = (userId, projectId) =>
   `${BASE_URL}/${userId}/project-board/projects/addDecoration/${projectId}`
+
+  // Budget 
+  export const ADD_BUDGET_URL = (userId, projectId) => 
+  `${BASE_URL}/${userId}/project-board/projects/${projectId}/addItem`
+
+  export const DELET_BUDGET_OBJECT_URL = (userId, projectId, itemId) => 
+  `${BASE_URL}/${userId}/project-board/projects/${projectId}/deleteItem/${itemId}`

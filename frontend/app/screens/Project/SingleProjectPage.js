@@ -330,8 +330,9 @@ const SingleProjectPage = ({ navigation, route }) => {
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       {singleProject.map((project) => {
         return (
-          <>
-            <View style={styles.headerContainer} >
+        <>  
+          <View key= {project._id}>
+            <View style={styles.headerContainer}>
               <View style={styles.leftColumn}>
                     
           <Text style={styles.headerH1}>{project.name}</Text>
@@ -386,7 +387,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                   </View>
                 )}
               </View>
-              {/* </View> header container */}
             </View>
           <View style={styles.whiteWrapper}>
             <View style={styles.guestBudgetButton}>
@@ -408,14 +408,13 @@ const SingleProjectPage = ({ navigation, route }) => {
               <Text style={styles.headerh2}>THEME</Text>
               {project.themeProjectList.map((theme) => {
                 return (
-                  <View key={theme._id} style={styles.listWrapper}/* style={styles.smallContainer}*/ >
+                  <View key={theme._id} style={styles.listWrapper}>
                     <View styles={styles.leftColumn}>
                       <Text style={[styles.row, styles.text]}>{theme.themesName}</Text>
                       {/* <Text style={[styles.row, styles.text]}>
                         {theme.isCompleted ? 'Completed' : 'Incomplete'}
                       </Text> */}
                     </View>
-                    {/* <View style={styles.rightColumn}> */}
                       {/* <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedTheme(theme._id, theme.isCompleted)}
@@ -428,7 +427,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                         style={styles.delete}>
                         <Text>🗑</Text>
                       </TouchableOpacity>
-                    {/* </View> */}
                   </View>
                 )
               })}
@@ -443,7 +441,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                         {/* {activity.isCompleted ? '✔️' : '✖️'} */}
                       </Text>
                     </View>
-                    {/* <View /* style={styles.rightColumn}> */}
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedActivities(activity._id, activity.isCompleted)}
@@ -456,7 +453,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                         style={styles.delete}>
                         <Text>🗑</Text>
                       </TouchableOpacity>
-                    {/* </View> */}
                   </View>
                 )
               })}
@@ -470,7 +466,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                       <Text style={[styles.row, styles.text]}>{ /* {decoration.isCompleted ? '✔️' : '✖️'} */}</Text>
 
                     </View>
-                    {/* <View styles={styles.rightColumn}> */}
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedDecorations(decoration._id, decoration.isCompleted)}
@@ -483,7 +478,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                         style={styles.delete}>
                         <Text>🗑</Text>
                       </TouchableOpacity>
-                    {/* </View> */}
                   </View>
                 )
               })}
@@ -494,9 +488,8 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <View key={food._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
                       <Text style={[styles.row, styles.text]}>{food.foodName}</Text>
-                      {/* <Text>{food.isCompleted ? '✔️' : '✖️'}</Text> */}
+                      <Text style={[styles.row, styles.text]}>{/*{food.isCompleted ? '✔️' : '✖️'}*/}</Text>
                     </View>
-                    <View style={styles.rightColumn}>
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedFood(food._id, food.isCompleted)}
@@ -510,7 +503,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                         <Text>🗑</Text>
                       </TouchableOpacity>
                     </View>
-                  </View>
                 )
               })}
 
@@ -520,9 +512,8 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <View key={drinks._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
                       <Text style={styles.row}>{drinks.drinksName}</Text>
-                      <Text style={styles.row}>{/*{drinks.isCompleted ? '✅' : '🟩'}*/}</Text>
+                      <Text style={[styles.row, styles.text]}>{/*{drinks.isCompleted ? '✅' : '🟩'}*/}</Text>
                     </View>
-                    <View style={styles.rightColumn}>
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}
@@ -535,7 +526,6 @@ const SingleProjectPage = ({ navigation, route }) => {
                         style={styles.delete}>
                         <Text>🗑</Text>
                       </TouchableOpacity>
-                    </View>
                   </View>
                 )
               })}
@@ -553,6 +543,7 @@ const SingleProjectPage = ({ navigation, route }) => {
               })}
               </View> 
             </View>
+           </View> 
           </>
         )
       })}

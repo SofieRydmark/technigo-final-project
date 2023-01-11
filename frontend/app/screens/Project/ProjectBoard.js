@@ -1,17 +1,20 @@
 import { React, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'react-native'
+import CalendarPicker from 'react-native-calendar-picker';
 
 // Formik
 import { Formik } from 'formik'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
 import { PROJECTS_URL, PROJECTS_ADD_URL, ONEPROJECT_DELETE_URL } from 'assets/urls/urls'
 
 // Reducers
 import user from '../../reducers/user'
 import { ui } from '../../reducers/ui'
+
 
 const ProjectBoard = ({ navigation }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -20,6 +23,8 @@ const ProjectBoard = ({ navigation }) => {
   const [allProjects, setAllProjects] = useState([])
   const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
+  const [calendarVisible, setCalendarVisible] = useState(false);
+ 
 
   /* --- GET ALL PROJECTS FETCH--*/
   useEffect(() => {
@@ -37,7 +42,7 @@ const ProjectBoard = ({ navigation }) => {
       .catch((error) => console.log(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
     // console.log('data', allProjects)
-  }, [setAllProjects])
+  }, [allProjects])
 
   /* --- ADD NEW PROJECT FETCH  --*/
 
@@ -86,19 +91,42 @@ const ProjectBoard = ({ navigation }) => {
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
     <ScrollView contentContainerStyle={styles.background}>
       {accessToken && (
         <>
           <View style={styles.header}>
-            <Text style={styles.headerH1}>Hej, {email}, välkomna till din projektsida!!</Text>
+            <Text style={styles.headerH1}>Hi,  {email}, Welcome to your project board</Text>
           </View>
-          <View style={styles.form}>
+          <View style={[styles.form, styles.boxShadow]}>
             <Formik
               initialValues={{ name: '', due_date: '' }}
               onSubmit={(values, actions) => {
-                if (values.name === '' || values.due_date === '') {
-                  return setLoginError('Please fill the name')
+                if (values.name === '') {
+                  setLoginError('Please fill out the name')
+                } else if(values.due_date === '') {
+                  setLoginError('Please fill the date')
                 } else {
                   addNewProject(values)
                   actions.resetForm()
@@ -115,27 +143,42 @@ const ProjectBoard = ({ navigation }) => {
                     multiline={false}
                     autoCapitalize='none'
                     maxLength={20}
+                    style={styles.inputText}
                   />
-                  <TextInput
-                    label='due_date'
-                    onChangeText={handleChange('due_date')}
-                    value={values.due_date}
-                    placeholder={'Date: YYYY-MM-DD'}
-                    multiline={false}
-                    autoCapitalize='none'
-                  />
+                  {loginError && <Text style={styles.errorText}>{loginError}</Text>}
 
-                  <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
-                    <Text>New project</Text>
+                    <Modal visible={calendarVisible} animationType={'slide'}>
+                    <View style={styles.calendar}>
+                      <CalendarPicker
+                      onDateChange={(date) => handleChange('due_date')(date.toISOString().slice(0,10))}
+                      style={styles.calendar}
+                      minDate={new Date()}
+                      />
+                      <TouchableOpacity 
+                      style={styles.doneButton}
+                      onPress={() => setCalendarVisible(false)}>
+                        <Text style={styles.doneButtonText}>CHOOSE</Text>
+                      </TouchableOpacity>
+                    </View>
+                    </Modal>
+                     
+                    <TouchableOpacity onPress={() => {
+                      setCalendarVisible(true);
+                      }}>
+                        <Text style={values.due_date ? styles.chosenDateText : styles.defaultDateText}>{values.due_date ? values.due_date : "YYYY-MM-DD"}</Text>
+                    </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.addProjectButton, styles.boxShadow]} onPress={handleSubmit}>
+                    <Text style={styles.buttonText}>New Project</Text>
                   </TouchableOpacity>
                 </View>
               )}
             </Formik>
-
+            
             <View>
               {allProjects.map((singleProject) => {
                 return (
-                  <>
+                  <View key={singleProject._id}>
                     <View key={singleProject._id} style={styles.listWrapper}>
                       <TouchableOpacity
                         onPress={() => {
@@ -150,9 +193,18 @@ const ProjectBoard = ({ navigation }) => {
                         <Text style={styles.row}>🗑</Text>
                       </TouchableOpacity>
                     </View>
-                  </>
+                  </View>
                 )
               })}
+              <View style={styles.findContainer}>
+                <TouchableOpacity
+                  style={[styles.findStoreButton, styles.boxShadow]}
+                  onPress={() => {
+                  navigation.navigate('FindStore')
+                 }}>
+                  <Text style={styles.buttonText}>Find Store</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </>
@@ -163,13 +215,13 @@ const ProjectBoard = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
     backgroundColor: colors.green,
     alignItems: 'center',
-    flex: 1,
     paddingVertical: 60,
+    paddingBottom: 100, 
   },
   header: {
+    marginTop: 30, 
     marginBottom: 30,
   },
   headerH1: {
@@ -177,6 +229,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: fonts.titles
   },
   pressable: {
     flex: 1,
@@ -190,6 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGrey,
     flexWrap: 'wrap',
     margin: 2,
+    
   },
   // single item styling
   row: {
@@ -197,6 +251,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingBottom: 5,
     fontSize: 16,
+    fontFamily: fonts.text
   },
   // maping + formik with white background
   form: {
@@ -237,6 +292,65 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 10,
   },
+  findStoreButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    textAlign: 'center',
+    width: '50%',
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  }, 
+  findContainer: {
+    alignItems: 'center',
+    paddingBottom: 5, 
+    paddingTop: 10, 
+  },
+  inputText: {
+    fontFamily: fonts.input,
+    fontSize: 15, 
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    fontFamily: fonts.button, 
+  },
+  calendar: {
+    flex: 1, 
+   paddingTop: 100,
+   fontFamily: fonts.text,
+   backgroundColor: colors.green,
+   alignItems: 'center' 
+  
+  
+  },
+  doneButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    textAlign: 'center',
+    width: 200,
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  }, 
+  doneButtonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    fontFamily: fonts.button, 
+  }, 
+  defaultDateText: {
+    fontFamily: fonts.input, 
+    fontWeight: 'bold'
+  }, 
+  chosenDateText: {
+    fontFamily: fonts.input
+  }, 
+  errorText: {
+    fontFamily: fonts.text, 
+    color: 'red'
+  }
 })
 
 export default ProjectBoard
