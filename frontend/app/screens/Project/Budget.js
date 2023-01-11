@@ -71,6 +71,28 @@ const Budget = ({ navigation, route }) => {
     deleteItem(itemId);
     setProject({ ...project, budgetList: project.budgetList.filter(item => item._id !== itemId) });
   }
+
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.wrapper}>
@@ -78,11 +100,11 @@ const Budget = ({ navigation, route }) => {
         <Text style={styles.headerH1}>BUDGET</Text>
         <TouchableOpacity
         onPress={() => navigation.navigate('SingleProjectPage', {projectId: project._id })}
-        style={styles.partyButton}>
+        style={[styles.partyButton, styles.boxShadow]}>
         <Text style={styles.buttonText}>Back to overview</Text>
         </TouchableOpacity>
         </View>
-        <View style={styles.whiteContainer}>
+        <View style={[styles.whiteContainer, styles.boxShadow]}>
         <View style={styles.smallHeaderContainer}>
           <View style={styles.leftColumn}>
             <Text style={styles.headingh3}>ITEM</Text>
@@ -110,7 +132,7 @@ const Budget = ({ navigation, route }) => {
             />
           </View>  
 
-          <View style={styles.buttonContainer}>
+          <View style={[styles.buttonContainer, styles.boxShadow]}>
             <TouchableOpacity
             style={styles.changeButton}
             onPress={handleCreate}> 

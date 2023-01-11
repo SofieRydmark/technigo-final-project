@@ -7,6 +7,7 @@ import { Formik } from 'formik'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
 import { PROJECTS_URL, PROJECTS_ADD_URL } from 'assets/urls/urls'
 
 const ChooseProject = ({ navigation, _id }) => {
@@ -57,15 +58,36 @@ const ChooseProject = ({ navigation, _id }) => {
       return error
     }
   }
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerH1}> Vilket projekt vill du planera? </Text>
       </View>
-      <View style={styles.container}>
+      <View style={[styles.container, styles.boxShadow]}>
         <View>
-          <TouchableOpacity onPress={() => setShowMap(!showMap)} style={styles.partyButton}>
+          <TouchableOpacity onPress={() => setShowMap(!showMap)} style={[styles.partyButton, styles.boxShadow]}>
             <Text style={styles.buttonText}>Aktiva projekt</Text>
           </TouchableOpacity>
           {showMap &&
@@ -86,7 +108,7 @@ const ChooseProject = ({ navigation, _id }) => {
         </View>
 
         <View>
-          <TouchableOpacity onPress={() => setShowForm(!showForm)} style={styles.partyButton}>
+          <TouchableOpacity onPress={() => setShowForm(!showForm)} style={[styles.partyButton, styles.boxShadow]}>
             <Text style={styles.buttonText}>Skapa nytt projekt</Text>
           </TouchableOpacity>
           {showForm && (
@@ -103,6 +125,7 @@ const ChooseProject = ({ navigation, _id }) => {
                       multiline={false}
                       autoCapitalize='none'
                       maxLength={20}
+                      style={styles.inputName}
                     />
                     <TextInput
                       label='due_date'
@@ -111,6 +134,7 @@ const ChooseProject = ({ navigation, _id }) => {
                       placeholder={'Datum: YYYY-MM-DD'}
                       multiline={false}
                       autoCapitalize='none'
+                      style={styles.inputDate}
                     />
 
                     <TouchableOpacity
@@ -119,12 +143,11 @@ const ChooseProject = ({ navigation, _id }) => {
                         if (values.name === '' || values.due_date === '') {
                           return setLoginError('Please fill the name and due date')
                         }
-                        /* handleSubmit() */ console.log('newProject', newProject)
                         const data = await addNewProject(values)
                         console.log('id Onpress', data.response._id)
                         navigation.navigate('WhatKindOfParty', { projectId: data.response._id })
                       }}>
-                      <Text>NYTT PROJEKT</Text>
+                      <Text style={styles.buttonText}>NYTT PROJEKT</Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -148,6 +171,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: 'bold',
+    fontFamily: fonts.button
   },
   container: {
     borderRadius: 30,
@@ -162,6 +186,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: fonts.titles
   },
   pressable: {
     flex: 1,
@@ -177,11 +202,12 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 8,
     backgroundColor: colors.peach,
+    fontFamily: fonts.button
   },
   listWrapper: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 8,
     backgroundColor: colors.lightGrey,
     flexWrap: 'wrap',
     margin: 2,
@@ -192,14 +218,14 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingTop: 5,
     fontSize: 16,
-    fontWeight: 'bold',
-  }, // maping + formik with white background
+    fontFamily: fonts.text
+  }, 
   form: {
     borderRadius: 10,
     width: '100%',
     backgroundColor: colors.white,
   },
-  // add new project input + button styling
+ 
   addProjectButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -210,7 +236,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
-
   input: {
     marginBottom: 10,
     padding: 25,
@@ -222,5 +247,14 @@ const styles = StyleSheet.create({
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
+  inputDate: {
+    marginTop: 10, 
+    fontFamily: fonts.input,
+    fontSize: 15, 
+  },
+  inputName: {
+    fontFamily: fonts.input,
+    fontSize: 15, 
+  }
 })
 export default ChooseProject
