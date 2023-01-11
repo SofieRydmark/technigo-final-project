@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'react-native'
+import CalendarPicker from 'react-native-calendar-picker';
 
 // Formik
 import { Formik } from 'formik'
@@ -18,6 +19,7 @@ const ChooseProject = ({ navigation, _id }) => {
   const [showMap, setShowMap] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [loginError, setLoginError] = useState(null)
+  const [calendarVisible, setCalendarVisible] = useState(false);
 
   useEffect(() => {
     const options = {
@@ -83,12 +85,12 @@ const ChooseProject = ({ navigation, _id }) => {
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
-        <Text style={styles.headerH1}> Vilket projekt vill du planera? </Text>
+        <Text style={styles.headerH1}> Which project do you want to plan? </Text>
       </View>
       <View style={[styles.container, styles.boxShadow]}>
         <View>
           <TouchableOpacity onPress={() => setShowMap(!showMap)} style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>Aktiva projekt</Text>
+            <Text style={styles.buttonText}>Active Projects</Text>
           </TouchableOpacity>
           {showMap &&
             allProjects.map((singleProject) => {
@@ -109,7 +111,7 @@ const ChooseProject = ({ navigation, _id }) => {
 
         <View>
           <TouchableOpacity onPress={() => setShowForm(!showForm)} style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>Skapa nytt projekt</Text>
+            <Text style={styles.buttonText}>CREATE NEW PROJECT</Text>
           </TouchableOpacity>
           {showForm && (
             <View style={styles.form}>
@@ -127,15 +129,26 @@ const ChooseProject = ({ navigation, _id }) => {
                       maxLength={20}
                       style={styles.inputName}
                     />
-                    <TextInput
-                      label='due_date'
-                      onChangeText={handleChange('due_date')}
-                      value={values.due_date}
-                      placeholder={'Datum: YYYY-MM-DD'}
-                      multiline={false}
-                      autoCapitalize='none'
-                      style={styles.inputDate}
-                    />
+                     <Modal visible={calendarVisible} animationType={'slide'}>
+                    <View style={styles.calendar}>
+                      <CalendarPicker
+                      onDateChange={(date) => handleChange('due_date')(date.toISOString().slice(0,10))}
+                      style={styles.calendar}
+                      minDate={new Date()}
+                      />
+                      <TouchableOpacity 
+                      style={styles.doneButton}
+                      onPress={() => setCalendarVisible(false)}>
+                        <Text style={styles.doneButtonText}>CHOOSE</Text>
+                      </TouchableOpacity>
+                    </View>
+                    </Modal>
+                     
+                    <TouchableOpacity onPress={() => {
+                      setCalendarVisible(true);
+                      }}>
+                        <Text style={styles.inputText}>{values.due_date ? values.due_date : "YYYY-MM-DD"}</Text>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                       style={styles.addProjectButton}
@@ -147,7 +160,7 @@ const ChooseProject = ({ navigation, _id }) => {
                         console.log('id Onpress', data.response._id)
                         navigation.navigate('WhatKindOfParty', { projectId: data.response._id })
                       }}>
-                      <Text style={styles.buttonText}>NYTT PROJEKT</Text>
+                      <Text style={styles.buttonText}>CREATE NEW </Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -255,6 +268,30 @@ const styles = StyleSheet.create({
   inputName: {
     fontFamily: fonts.input,
     fontSize: 15, 
+  }, 
+  calendar: {
+    flex: 1, 
+   paddingTop: 100,
+   fontFamily: fonts.text,
+   backgroundColor: colors.green,
+   alignItems: 'center' 
+  
+  
+  },
+  doneButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    textAlign: 'center',
+    width: 200,
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  }, 
+  doneButtonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    fontFamily: fonts.button, 
   }
 })
 export default ChooseProject

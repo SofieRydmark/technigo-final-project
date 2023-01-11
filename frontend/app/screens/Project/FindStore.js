@@ -19,6 +19,7 @@ import mapStyling from 'assets/jsonData/mapStyling.json'
 import colors from 'assets/styling/colors.js'
 import storeList from 'assets/jsonData/stores.json'
 import findStore from 'assets/jsonData/findStore.json'
+import fonts from 'assets/styling/fonts.js'
 
 // Icons
 import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
@@ -48,7 +49,27 @@ const FindStore = () => {
       longitudeDelta: 0.0421,
     })
   }
-
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
@@ -74,7 +95,7 @@ const FindStore = () => {
           ))}
         </MapView>
 
-        <TouchableOpacity style={styles.onlineBtn} onPress={() => setShowModal(true)}>
+        <TouchableOpacity style={[styles.onlineBtn, styles.boxShadow]} onPress={() => setShowModal(true)}>
           <Text style={styles.onlineTxt}>Want to shop online instead? Here are some tips</Text>
         </TouchableOpacity>
         <Modal
@@ -129,6 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: fonts.titles
   },
   map: {
     width: '100%',
@@ -151,6 +173,7 @@ const styles = StyleSheet.create({
   locationTxt: {
     fontSize: 16,
     textDecorationLine: 'underline',
+    fontFamily: fonts.text
   },
   modalBackground: {
     flex: 1,
@@ -179,6 +202,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: fonts.button
   },
   storeList: {
     flexDirection: 'column',
