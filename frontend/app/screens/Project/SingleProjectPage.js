@@ -336,7 +336,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                     
           <Text style={styles.headerH1}>{project.name}</Text>
                 <Text style={styles.headerH4}>{project.due_date}</Text>
-              {/* </View> */}
+              </View>
               <View style={styles.rightColumn}>
                 <TouchableOpacity
                   onPress={() => setShowInput(!showInput)}
@@ -386,7 +386,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   </View>
                 )}
               </View>
-              </View>
+              {/* </View> header container */}
             </View>
           <View style={styles.whiteWrapper}>
             <View style={styles.guestBudgetButton}>
@@ -596,6 +596,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: 40,
+    // justifyContent:'center',
+    // flexWrap: 'wrap',
   },
   leftColumn: {
     flexDirection: 'column',
