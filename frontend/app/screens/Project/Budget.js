@@ -14,12 +14,12 @@ const Budget = ({ navigation, route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const dispatch= useDispatch()
-  const project = route.params.project
   const projectId = route.params.projectId
   const [itemName, setItemName] = useState('')
   const [itemPrice, setItemPrice] = useState('')
+  const [project, setProject] = useState(route.params.project);
   
-  const totalSum = project.budgetList.reduce((sum, budget) => sum + budget.itemPrice, 0);
+  const totalSum = project.budgetList.reduce((sum, budget) => sum + Number(budget.itemPrice), 0);
 
   const createNew = ( ) => {
     dispatch(ui.actions.setLoading(true))
@@ -50,7 +50,7 @@ const Budget = ({ navigation, route }) => {
         'Content-Type': 'application/json',
         Authorization: accessToken,
       },
-       body: JSON.stringify({ _id: itemId })
+       /* body: JSON.stringify({ _id: itemId }) */
     };
     fetch(DELET_BUDGET_OBJECT_URL(userId, projectId, itemId), options)
       .then((res) => res.json())
@@ -58,10 +58,19 @@ const Budget = ({ navigation, route }) => {
        .catch((error) => console.error(error))
        .finally(() => dispatch(ui.actions.setLoading(false)))
   }
-/*   useEffect(() => {
-    getSingleProject()
-  }, []) */
- 
+  const handleCreate = () => {
+    createNew();
+    setItemName('');
+    setItemPrice('');
+    setProject(prev => {
+        return { ...prev, budgetList: [...prev.budgetList, { itemName, itemPrice }] }
+    });
+  }
+
+  const handleDelete = (itemId) => {
+    deleteItem(itemId);
+    setProject({ ...project, budgetList: project.budgetList.filter(item => item._id !== itemId) });
+  }
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.wrapper}>
@@ -104,9 +113,7 @@ const Budget = ({ navigation, route }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
             style={styles.changeButton}
-            onPress={() => {
-            createNew(itemName,itemPrice)
-            }}> 
+            onPress={handleCreate}> 
             <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           </View>
@@ -120,7 +127,7 @@ const Budget = ({ navigation, route }) => {
                 <View style={styles.rightColumn}>
                   <TouchableOpacity
                     title='DELETE'
-                    onPress={() => deleteItem(budget._id)}
+                    onPress={() => handleDelete(budget._id)}
                     style={styles.deleteButton}>
                     <Text >🗑</Text>
                   </TouchableOpacity>
@@ -240,9 +247,9 @@ const styles = StyleSheet.create({
   }, 
   whiteContainer: {
     backgroundColor: 'white', 
-    height: '80%',
+    flex: 0.5,
     marginTop: 40, 
-    padding: 20, 
+    padding: 30, 
     borderRadius: 15, 
   }, 
   smallHeaderContainer: {
