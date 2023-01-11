@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  FlatList
 } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker'
 
@@ -191,7 +192,28 @@ const SingleProjectPage = ({ navigation, route }) => {
 
     singleProjectChange(options)
   }
-
+   // Box shadow styling IOS and android
+   const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       {singleProject.map((project) => {
@@ -205,16 +227,16 @@ const SingleProjectPage = ({ navigation, route }) => {
                 {/* </View> */}
                 </View>
         
-                  <View style={styles.guestBudgetButton}>
+                  <View style={[styles.changeButtonContainer, styles.boxShadow]}>
                   <TouchableOpacity
-                  style={styles.partyButton}
+                  style={styles.changeButton}
                     onPress={() => setShowInput(!showInput)}>
                     <Text style={styles.buttonText}>CHANGE NAME </Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={() => setShowDateChange(!showDateChange)}
-                    style={styles.partyButton}>
+                    style={styles.changeButton}>
                     <Text style={styles.buttonText}>CHANGE DATE</Text>
                   </TouchableOpacity>
                   </View>
@@ -229,7 +251,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                         placeholder='New name'
                       />
                       <TouchableOpacity
-                        style={[styles.changeButton, styles.buttonText]}
+                        style={[styles.submitButton, styles.boxShadow]}
                         onPress={() => {
                           changeName(name)
                           setShowInput(false)
@@ -241,35 +263,36 @@ const SingleProjectPage = ({ navigation, route }) => {
                   
                   {showDateChange && (
                     <View style={styles.changeDateContainer}>
-                      <TextInput
-                        style={styles.input}
-                        onChangeText={(text) => setDueDate(text)}
-                        value={dueDate}
-                        placeholder='YYYY-MM-DD'
-                      />
-                      <TouchableOpacity
-                        style={styles.changeButton}
-                        onPress={() => {
-                          changeDueDate(dueDate)
-                          setShowDateChange(false)
-                        }}>
-                        <Text style={styles.buttonText}>SUBMIT</Text>
-                      </TouchableOpacity>
+                     <View style={styles.calendarContainer}>
+                      <CalendarPicker
+                        onDateChange={(date) => setDueDate(date.toISOString().slice(0,10))}
+                        style={styles.calendar}
+                        minDate={new Date()}
+                        />
+                          <TouchableOpacity 
+                          style={styles.submitButtonDate}
+                          onPress={() => {
+                          changeDueDate(dueDate);
+                          setShowDateChange(false);
+                            }}>
+                            <Text style={styles.buttonText}>SUBMIT</Text>
+                          </TouchableOpacity>
+                      </View>
                     </View>
                   )}
               </View>
               
-              <View style={styles.whiteWrapper}>
+              <View style={[styles.whiteWrapper, styles.boxShadow]}>
                 <View style={styles.guestBudgetButton}>
                   <TouchableOpacity
-                    style={styles.partyButton}
+                    style={[styles.partyButton, styles.boxShadow]}
                     onPress={() => {
                       navigation.navigate('GuestList', { project: project, projectId: project._id })
                     }}>
                     <Text style={[styles.row, styles.buttonText]}>GUEST LIST</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.partyButton}
+                    style={[styles.partyButton, styles.boxShadow]}
                     onPress={() => {
                       navigation.navigate('Budget', { project: project, projectId: project._id })
                     }}>
@@ -284,16 +307,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                       <View key={theme._id} style={styles.listWrapper}>
                         <View styles={styles.leftColumn}>
                           <Text style={[styles.row, styles.text]}>{theme.themesName}</Text>
-                          {/* <Text style={[styles.row, styles.text]}>
-                        {theme.isCompleted ? 'Completed' : 'Incomplete'}
-                      </Text> */}
                         </View>
-                        {/* <TouchableOpacity
-                        title='Mark as completed'
-                        onPress={() => completedTheme(theme._id, theme.isCompleted)}
-                        style={styles.complete}>
-                        <Text>✅</Text>
-                      </TouchableOpacity> */}
                         <TouchableOpacity
                           title='DELETE'
                           onPress={() => deleteTheme(theme._id)}
@@ -414,9 +428,11 @@ const SingleProjectPage = ({ navigation, route }) => {
                       </View>
                     )
                   })}
+
+                  
                  <View style={styles.guestBudgetButton} >
                  <TouchableOpacity 
-                 style={styles.partyButton}
+                 style={[styles.partyButton, styles.boxShadow]}
                   onPress={() => navigation.navigate('WhatKindOfParty',{projectId: project._id}) } >
                     <Text style={styles.buttonText}>BROWS CATEGORIES </Text>
                   </TouchableOpacity>  
@@ -425,8 +441,11 @@ const SingleProjectPage = ({ navigation, route }) => {
               </View>
             </View>
           </View>
+          
         )
+                  
       })}
+    
     </ScrollView>
   )
 }
@@ -456,6 +475,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'left',
+    marginTop: 3, 
+
   },
   headerH4: {
     fontSize: 13,
@@ -485,6 +506,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     padding: 5,
+    marginTop: 5, 
   },
 
   whiteWrapper: {
@@ -555,12 +577,35 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
 
-  changeButton: {
+  submitButton: {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     fontFamily: fonts.button,
     width: '100%',
+    height: 50,
+    borderRadius: 8,
+    marginBottom: 10,
+    backgroundColor: colors.peach,
+  },
+  submitButtonDate: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontFamily: fonts.button,
+    width: '50%',
+    height: 50,
+    borderRadius: 8,
+    marginBottom: 10,
+    backgroundColor: colors.peach,
+    marginLeft: 90, 
+  },
+  changeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontFamily: fonts.button,
+    width: '40%',
     height: 50,
     borderRadius: 8,
     marginBottom: 10,
@@ -586,7 +631,15 @@ const styles = StyleSheet.create({
   changeDateContainer: {
     flexDirection: 'column', 
     
-
+  }, 
+  changeButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 0,
+    borderRadius: 8,
+    marginBottom: 5,
+    marginLeft: 20, 
+    marginRight: 20, 
   }
 })
 export default SingleProjectPage
