@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 14,
     fontWeight: 'bold',
+    textTransform: 'capitalize',
   },
   addButtonCircle: {
     position: 'absolute',

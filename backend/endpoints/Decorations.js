@@ -2,13 +2,15 @@ const Decoration = require('../models/Decorations')
 
 /* --------- DECORATIONS GET ----------- */
 export const decorationsCategory = async (req, res) => {
-  const page = parseInt(req.params.page)
-  const limit = parseInt(req.params.limit) + 1
+  const resultsPerPage = 6
+  let page = req.params.page >= 1 ? req.params.page : 1
+  page = page - 1
 
   try {
     const decorationsCollection = await Decoration.find()
-      .skip(page * limit)
-      .limit(limit)
+      .sort({ name: 'asc' })
+      .limit(resultsPerPage)
+      .skip(resultsPerPage * page)
     res.status(200).json({
       response: decorationsCollection,
       success: true,
@@ -22,13 +24,15 @@ export const decorationsCategory = async (req, res) => {
 }
 
 export const decorationsType = async (req, res) => {
-  const page = parseInt(req.params.page)
-  const limit = parseInt(req.params.limit) + 1
+  const resultsPerPage = 6
+  let page = req.params.page >= 1 ? req.params.page : 1
+  page = page - 1
 
   try {
     const typeOf = await Decoration.find({ type: req.params.type })
-      .skip(page * limit)
-      .limit(limit)
+      .sort({ name: 'asc' })
+      .limit(resultsPerPage)
+      .skip(resultsPerPage * page)
     if (!typeOf) {
       res.status(400).json({
         response: 'not found',

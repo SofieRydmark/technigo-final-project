@@ -5,12 +5,12 @@ import getEndpoints from 'express-list-endpoints'
 import authenticateUser from './AuthenticateUser/authenticateUser'
 import { signIn, signUp } from './endpoints/Signup'
 import { deleteUser, changePassword } from './endpoints/AdminAccount'
-import { ThemesType, ThemesCategory, ThemesId } from './endpoints/Theme'
+import { ThemesType, ThemesCategory } from './endpoints/Theme'
 import { decorationsCategory, decorationsType } from './endpoints/Decorations'
 import { drinksCategory, drinksType } from './endpoints/Drinks'
 import { foodCategory, foodType } from './endpoints/Food'
 import { activityCategory, activityType } from './endpoints/Activity'
-import { addNewProject, allProjects, ProjectBoard, SingleProjectId } from './endpoints/ProjectBoard'
+import { addNewProject, allProjects, SingleProjectId } from './endpoints/ProjectBoard'
 import { UpdateProjectName, addNewGuest, deleteGuest } from './endpoints/UpdateProject'
 import { deleteProject } from './endpoints/DeleteProject'
 import { addActivity, addDecorations, addDrinks, addFood, addTheme } from './endpoints/AddObject'
@@ -69,24 +69,24 @@ app.patch('/:userId/admin/change', authenticateUser, changePassword)
 // ************ CATEGORY ENDPOINTS GET  *************** //
 
 // ************ THEMES *************** //
-app.get('/themes/:page/:limit', authenticateUser, ThemesCategory)
-app.get('/themes/type/:type/:page/:limit', authenticateUser, ThemesType)
+app.get('/themes/:page', authenticateUser, ThemesCategory)
+app.get('/themes/:page/type/:type', authenticateUser, ThemesType)
 
 // ************ DECORATIONS *************** //
-app.get('/decorations/:page/:limit', authenticateUser, decorationsCategory)
-app.get('/decorations/type/:type/:page/:limit', authenticateUser, decorationsType)
+app.get('/decorations/:page', authenticateUser, decorationsCategory)
+app.get('/decorations/:page/type/:type', authenticateUser, decorationsType)
 
 // ************ DRINKS *************** //
-app.get('/drinks/:page/:limit', authenticateUser, drinksCategory)
-app.get('/drinks/type/:type/:page/:limit', authenticateUser, drinksType)
+app.get('/drinks/:page', authenticateUser, drinksCategory)
+app.get('/drinks/:page/type/:type', authenticateUser, drinksType)
 
 // ************ FOOD *************** //
-app.get('/food/:page/:limit', authenticateUser, foodCategory)
-app.get('/food/type/:type/:page/:limit', authenticateUser, foodType)
+app.get('/food/:page', authenticateUser, foodCategory)
+app.get('/food/:page/type/:type', authenticateUser, foodType)
 
 // ************ ACTIVITIES *************** //
-app.get('/activities/:page/:limit', authenticateUser, activityCategory)
-app.get('/activities/type/:type/:page/:limit', authenticateUser, activityType)
+app.get('/activities/:page/', authenticateUser, activityCategory)
+app.get('/activities/:page/type/:type', authenticateUser, activityType)
 
 // ************ PROJECT ENDPOINTS *************** //
 

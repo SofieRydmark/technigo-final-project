@@ -80,7 +80,6 @@ const ChooseProject = ({ navigation, _id }) => {
                       {singleProject.name}
                     </Text>
                   </TouchableOpacity>
-                  
                 </View>
               )
             })}
@@ -92,9 +91,7 @@ const ChooseProject = ({ navigation, _id }) => {
           </TouchableOpacity>
           {showForm && (
             <View style={styles.form}>
-              <Formik
-                initialValues={{ name: '', due_date: '' }}
-              >
+              <Formik initialValues={{ name: '', due_date: '' }}>
                 {({ handleChange, handleSubmit, values }) => (
                   <View style={styles.input}>
                     <TextInput
