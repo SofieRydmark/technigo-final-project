@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
-import {
-  View,
-  Image,
-  ScrollView,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  FlatList,
-} from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native'
 
 // Geolocation and map packages
 import * as Location from 'expo-location'
@@ -95,7 +86,9 @@ const FindStore = () => {
           ))}
         </MapView>
 
-        <TouchableOpacity style={[styles.onlineBtn, styles.boxShadow]} onPress={() => setShowModal(true)}>
+        <TouchableOpacity
+          style={[styles.onlineBtn, styles.boxShadow]}
+          onPress={() => setShowModal(true)}>
           <Text style={styles.onlineTxt}>Want to shop online instead? Here are some tips</Text>
         </TouchableOpacity>
         <Modal
@@ -150,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: fonts.titles
+    fontFamily: fonts.titles,
   },
   map: {
     width: '100%',
@@ -173,7 +166,7 @@ const styles = StyleSheet.create({
   locationTxt: {
     fontSize: 16,
     textDecorationLine: 'underline',
-    fontFamily: fonts.text
+    fontFamily: fonts.text,
   },
   modalBackground: {
     flex: 1,
@@ -202,7 +195,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: fonts.button
+    fontFamily: fonts.button,
   },
   storeList: {
     flexDirection: 'column',

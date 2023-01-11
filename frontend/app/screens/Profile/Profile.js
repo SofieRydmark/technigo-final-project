@@ -8,10 +8,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from 'react-native'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
 import { ADMIN_DELETE_URL, ADMIN_PASSWORD_URL } from 'assets/urls/urls.js'
 
 // Form handler and validation Yup
@@ -121,6 +123,29 @@ const Profile = () => {
       .catch((error) => console.error(error))
   }
 
+  // Box shadow styling IOS and android
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
+
   return (
     <ScrollView
       style={styles.background}
@@ -145,7 +170,7 @@ const Profile = () => {
           <MaterialIcons name='edit' size={20} color='black' />
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
+      <View style={[styles.container, styles.boxShadow]}>
         <View style={styles.userInfoWrapper}>
           <View style={styles.userInfoItem}>
             <Text style={styles.userInfoSubTitle}>Email</Text>
@@ -155,10 +180,14 @@ const Profile = () => {
           </View>
         </View>
         <View style={styles.userBtnWrapper}>
-          <TouchableOpacity style={styles.userBtn} onPress={() => setShowPasswordModal(true)}>
+          <TouchableOpacity
+            style={[styles.userBtn, styles.boxShadow]}
+            onPress={() => setShowPasswordModal(true)}>
             <Text style={styles.userBtnTxt}>Change password</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.userBtn} onPress={() => setShowDeleteModal(true)}>
+          <TouchableOpacity
+            style={[styles.userBtn, styles.boxShadow]}
+            onPress={() => setShowDeleteModal(true)}>
             <Text style={styles.userBtnTxt}>Delete user</Text>
           </TouchableOpacity>
         </View>
@@ -217,7 +246,9 @@ const Profile = () => {
                   {errors.email && touched.email ? (
                     <Text style={styles.loginError}>{errors.email}</Text>
                   ) : null}
-                  <TouchableOpacity onPress={handleSubmit} style={styles.userBtn}>
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    style={[styles.userBtn, styles.boxShadow]}>
                     <Text style={styles.userBtnTxt}>Confirm</Text>
                   </TouchableOpacity>
                   {passwordError !== null && (
@@ -248,10 +279,14 @@ const Profile = () => {
                 <AntDesign name='close' size={25} color='black' style={styles.closeModal2} />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={deleteUserSubmit} style={styles.deleteBtn}>
+            <TouchableOpacity
+              onPress={deleteUserSubmit}
+              style={[styles.deleteBtn, styles.boxShadow]}>
               <Text style={styles.userBtnTxt}>Yes, delete user</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShowDeleteModal(false)} style={styles.userBtn}>
+            <TouchableOpacity
+              onPress={() => setShowDeleteModal(false)}
+              style={[styles.userBtn, styles.boxShadow]}>
               <Text style={styles.userBtnTxt}>No, go back</Text>
             </TouchableOpacity>
           </View>
@@ -324,6 +359,7 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
     backgroundColor: colors.white,
+    padding: 20,
   },
   closeModal: {
     right: -65,
@@ -356,7 +392,7 @@ const styles = StyleSheet.create({
   },
   userEmail: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
     marginBottom: 10,
   },
   userBtnWrapper: {
@@ -390,8 +426,8 @@ const styles = StyleSheet.create({
   },
   userBtnTxt: {
     color: colors.black,
-    fontWeight: 'bold',
-    fontSize: 18,
+    fontFamily: fonts.button,
+    fontSize: 16,
   },
   userInfoWrapper: {
     flexDirection: 'row',
@@ -404,12 +440,13 @@ const styles = StyleSheet.create({
   },
   userInfoProjectNb: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
     marginBottom: 5,
     textAlign: 'center',
   },
   userInfoSubTitle: {
     fontSize: 18,
+    fontFamily: fonts.text,
     textTransform: 'uppercase',
     color: '#666',
     textAlign: 'center',
@@ -423,6 +460,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     fontSize: 16,
+    fontFamily: fonts.text,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
@@ -456,6 +494,7 @@ const styles = StyleSheet.create({
   },
   signOutBtnText: {
     fontSize: 15,
+    fontFamily: fonts.text,
   },
 })
 

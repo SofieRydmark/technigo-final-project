@@ -3,22 +3,46 @@ import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-nati
 
 // Assets imports
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
 
 const WhatAreWeDoing = ({ navigation }) => {
+  // Box shadow styling IOS and android
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
+
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerH1}>What are we doing today?</Text>
       </View>
-      <View style={styles.container}>
+      <View style={[styles.container, styles.boxShadow]}>
         <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
-          style={styles.partyButton}>
+          style={[styles.partyButton, styles.boxShadow]}>
           <Text style={styles.buttonText}>Go to my projectboard</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('ChooseProject')}
-          style={styles.partyButton}>
+          style={[styles.partyButton, styles.boxShadow]}>
           <Text style={styles.buttonText}>Choose your project</Text>
         </TouchableOpacity>
       </View>
@@ -36,7 +60,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontFamily: fonts.button,
   },
   container: {
     borderRadius: 30,
@@ -49,7 +73,7 @@ const styles = StyleSheet.create({
   },
   headerH1: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: fonts.titles,
     textAlign: 'center',
   },
   pressable: {

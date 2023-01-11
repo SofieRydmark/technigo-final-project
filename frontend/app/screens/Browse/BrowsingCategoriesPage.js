@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import React from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  SafeAreaView,
+} from 'react-native'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-const imageTheme = require('assets/images/theme.jpg')
-const imageActivity = require('assets/images/activity.jpg')
-const imageFood = require('assets/images/fooddrink.jpg')
-const imageDecoration = require('assets/images/decor.jpg')
+import categories from 'assets/jsonData/categories.json'
 
 const BrowsCategoriesPage = ({ route, navigation }) => {
   const projectId = route.params.projectId
@@ -22,73 +26,47 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={[styles.background, backgroundStyle]}>
-      <View style={styles.ContainerStyle}>
-        <View style={styles.SmallContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Themes', {
-                partyType: partyType,
-                projectId: projectId,
-              })
-            }
-            title='Themes'>
-            <Image source={imageTheme} style={styles.buttonImage} />
-            <View style={styles.itemNameContainer}>
-              <Text style={styles.itemName}>Themes</Text>
+    <SafeAreaView
+      style={[styles.background, backgroundStyle]}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.container}>
+        <FlatList
+          style={styles.flatList}
+          data={categories}
+          numColumns={2}
+          contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+          renderItem={({ item }) => (
+            <View style={styles.item}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(item.name, { partyType: partyType, projectId: projectId })
+                }>
+                <Image source={{ uri: item.image }} style={styles.image} />
+                <View style={[styles.itemNameContainer]}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.SmallContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Decorations', { partyType: partyType, projectId: projectId })
-            }
-            title='Decorations'>
-            <Image source={imageDecoration} style={styles.buttonImage} />
-            <View style={styles.itemNameContainer}>
-              <Text style={styles.itemName}>Decorations</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.SmallContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('FoodnDrinks', { partyType: partyType, projectId: projectId })
-            }
-            title='Food and Drinks'>
-            <Image source={imageFood} style={styles.buttonImage} />
-            <View style={styles.itemNameContainer}>
-              <Text style={styles.itemName}>Food & Drinks</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.SmallContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Activities', { partyType: partyType, projectId: projectId })
-            }
-            title='Activity'>
-            <Image source={imageActivity} style={styles.buttonImage} />
-            <View style={styles.itemNameContainer}>
-              <Text style={styles.itemName}>Activities</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          )}
+          keyExtractor={(item) => item.name}
+        />
       </View>
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: colors.green,
+    flex: 1,
+  },
+  container: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
+    marginTop: 100,
+  },
+  flatList: {
+    width: '95%',
+    marginVertical: 30,
   },
   grownupBackground: {
     backgroundColor: colors.green,
@@ -96,20 +74,15 @@ const styles = StyleSheet.create({
   kidsBackground: {
     backgroundColor: colors.peach,
   },
-  buttonImage: {
+  image: {
     width: 180,
     height: 180,
-    margin: 5,
     borderRadius: 8,
   },
-  ContainerStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  SmallContainer: {
-    marginBottom: '-25%',
+  item: {
+    width: '50%',
+    marginBottom: -100,
+    padding: 4,
   },
   itemNameContainer: {
     borderRadius: 8,
