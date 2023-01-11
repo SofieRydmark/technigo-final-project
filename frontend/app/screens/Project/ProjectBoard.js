@@ -71,7 +71,7 @@ const ProjectBoard = ({ navigation }) => {
     )
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((error) => console.log(error))
+      .catch((error) => setLoginError(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
@@ -120,108 +120,107 @@ const ProjectBoard = ({ navigation }) => {
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
     <ScrollView contentContainerStyle={styles.background}>
-      {accessToken && (
-        <>
-          <View style={styles.header}>
-            <Text style={styles.headerH1}>Hi, {email}, Welcome to your project board</Text>
-          </View>
-          <View style={[styles.form, styles.boxShadow]}>
-            <Formik
-              initialValues={{ name: '', due_date: '' }}
-              onSubmit={(values, actions) => {
-                if (values.name === '') {
-                  setLoginError('Please fill out the name')
-                } else if (values.due_date === '') {
-                  setLoginError('Please fill the date')
-                } else {
-                  addNewProject(values)
-                  actions.resetForm()
-                }
-              }}>
-              {({ handleChange, handleSubmit, values }) => (
-                <View style={styles.input}>
-                  <TextInput
-                    label='name'
-                    onChangeText={handleChange('name')}
-                    value={values.name}
-                    placeholder={'Project name'}
-                    required
-                    multiline={false}
-                    autoCapitalize='none'
-                    maxLength={20}
-                    style={styles.inputText}
+      <View style={styles.header}>
+        <Text style={styles.headerH1}>Hi, {email}, Welcome to your project board</Text>
+      </View>
+      <View style={[styles.form, styles.boxShadow]}>
+        <Formik
+          initialValues={{ name: '', due_date: '' }}
+          onSubmit={(values, actions) => {
+            if (values.name === '') {
+              setLoginError('Please fill out the name')
+            } else if (values.due_date === '') {
+              setLoginError('Please fill the date')
+            } else if (values.name.length <= 5) {
+              setLoginError('Name too short, min 5 characters')
+            } else {
+              addNewProject(values)
+              setLoginError(null)
+              actions.resetForm()
+            }
+          }}>
+          {({ handleChange, handleSubmit, values }) => (
+            <View style={styles.input}>
+              <TextInput
+                label='name'
+                onChangeText={handleChange('name')}
+                value={values.name}
+                placeholder={'Project name'}
+                required
+                multiline={false}
+                autoCapitalize='none'
+                maxLength={20}
+                style={styles.inputText}
+              />
+              {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
+
+              <Modal visible={calendarVisible} animationType={'slide'}>
+                <View style={styles.calendar}>
+                  <CalendarPicker
+                    onDateChange={(date) =>
+                      handleChange('due_date')(date.toISOString().slice(0, 10))
+                    }
+                    style={styles.calendar}
+                    minDate={new Date()}
                   />
-                  {loginError && <Text style={styles.errorText}>{loginError}</Text>}
-
-                  <Modal visible={calendarVisible} animationType={'slide'}>
-                    <View style={styles.calendar}>
-                      <CalendarPicker
-                        onDateChange={(date) =>
-                          handleChange('due_date')(date.toISOString().slice(0, 10))
-                        }
-                        style={styles.calendar}
-                        minDate={new Date()}
-                      />
-                      <TouchableOpacity
-                        style={styles.doneButton}
-                        onPress={() => setCalendarVisible(false)}>
-                        <Text style={styles.doneButtonText}>CHOOSE</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </Modal>
-
                   <TouchableOpacity
-                    onPress={() => {
-                      setCalendarVisible(true)
-                    }}>
-                    <Text style={values.due_date ? styles.chosenDateText : styles.defaultDateText}>
-                      {values.due_date ? values.due_date : 'YYYY-MM-DD'}
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.addProjectButton, styles.boxShadow]}
-                    onPress={handleSubmit}>
-                    <Text style={styles.buttonText}>New Project</Text>
+                    style={styles.doneButton}
+                    onPress={() => setCalendarVisible(false)}>
+                    <Text style={styles.doneButtonText}>CHOOSE</Text>
                   </TouchableOpacity>
                 </View>
-              )}
-            </Formik>
+              </Modal>
 
-            <View>
-              {allProjects.map((singleProject) => {
-                return (
-                  <View key={singleProject._id}>
-                    <View key={singleProject._id} style={styles.listWrapper}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate('SingleProjectPage', { projectId: singleProject._id })
-                        }}>
-                        <Text style={styles.row}>{singleProject.due_date}</Text>
-                        <Text style={styles.row}>{singleProject.name}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.trashIcon}
-                        onPress={() => deleteProject(singleProject._id)}>
-                        <Text style={styles.row}>🗑</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )
-              })}
-              <View style={styles.findContainer}>
-                <TouchableOpacity
-                  style={[styles.findStoreButton, styles.boxShadow]}
-                  onPress={() => {
-                    navigation.navigate('FindStore')
-                  }}>
-                  <Text style={styles.buttonText}>Find Store</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setCalendarVisible(true)
+                }}>
+                <Text style={values.due_date ? styles.chosenDateText : styles.defaultDateText}>
+                  {values.due_date ? values.due_date : 'YYYY-MM-DD'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.addProjectButton, styles.boxShadow]}
+                onPress={handleSubmit}>
+                <Text style={styles.buttonText}>New Project</Text>
+              </TouchableOpacity>
             </View>
+          )}
+        </Formik>
+
+        <View>
+          {allProjects.map((singleProject) => {
+            return (
+              <View key={singleProject._id}>
+                <View style={styles.listWrapper}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SingleProjectPage', { projectId: singleProject._id })
+                    }}>
+                    <Text style={styles.row}>{singleProject.due_date}</Text>
+                    <Text style={styles.row}>{singleProject.name}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.trashIcon}
+                    onPress={() => deleteProject(singleProject._id)}>
+                    <Text style={styles.row}>🗑</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
+          })}
+          <View style={styles.findContainer}>
+            <TouchableOpacity
+              style={[styles.findStoreButton, styles.boxShadow]}
+              onPress={() => {
+                navigation.navigate('FindStore')
+              }}>
+              <Text style={styles.buttonText}>Find Store</Text>
+            </TouchableOpacity>
           </View>
-        </>
-      )}
+        </View>
+      </View>
     </ScrollView>
   )
 }
@@ -232,7 +231,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 60,
     paddingBottom: 100,
-    flex: 1,
   },
   header: {
     marginTop: 30,
