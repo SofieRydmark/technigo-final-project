@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 
 // Assets import
+import fonts from 'assets/styling/fonts.js'
 import colors from 'assets/styling/colors'
 import {
   ONEPROJECT_URL,
@@ -29,6 +30,8 @@ import {
 // Reducers
 import user from '../../reducers/user'
 import { ui } from '../../reducers/ui'
+
+
 
 const SingleProjectPage = ({ navigation, route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -328,19 +331,16 @@ const SingleProjectPage = ({ navigation, route }) => {
       {singleProject.map((project) => {
         return (
           <>
-            <View style={styles.headerContainer}>
+            <View style={styles.headerContainer} >
               <View style={styles.leftColumn}>
                     
-            <TouchableOpacity onPress={() => {navigation.navigate('GuestList', { project: project, projectId: project._id })}}>
-                <Text style={styles.row}>GUEST LIST</Text>
-            </TouchableOpacity>
           <Text style={styles.headerH1}>{project.name}</Text>
                 <Text style={styles.headerH4}>{project.due_date}</Text>
-              </View>
+              {/* </View> */}
               <View style={styles.rightColumn}>
                 <TouchableOpacity
                   onPress={() => setShowInput(!showInput)}
-                  style={styles.changeButton}>
+                  style={[styles.changeButton, styles.buttonText]}>
                   <Text>Change name </Text>
                 </TouchableOpacity>
              
@@ -350,10 +350,10 @@ const SingleProjectPage = ({ navigation, route }) => {
                       style={styles.input}
                       value={name}
                       onChangeText={setName}
-                      placeholder='Enter new name'
+                      placeholder='New name'
                     />
                     <TouchableOpacity
-                      style={styles.changeButton}
+                      style={[styles.changeButton, styles.buttonText]}
                       onPress={() => {
                         changeName(name, console.log('onpress', name))
                         setShowInput(false)
@@ -364,7 +364,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                 )}
                 <TouchableOpacity
                   onPress={() => setShowDateChange(!showDateChange)}
-                  style={styles.changeButton}>
+                  style={[styles.changeButton, styles.buttonText]}>
                   <Text>Change Date</Text>
                 </TouchableOpacity>
                 {showDateChange && (
@@ -373,7 +373,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                       style={styles.input}
                       onChangeText={(text) => setDueDate(text)}
                       value={dueDate}
-                      placeholder='YY-MM-DD'
+                      placeholder='YYYY-MM-DD'
                     />
                     <TouchableOpacity
                       style={styles.changeButton}
@@ -386,13 +386,23 @@ const SingleProjectPage = ({ navigation, route }) => {
                   </View>
                 )}
               </View>
+              </View>
             </View>
-
-            <TouchableOpacity
+          <View style={styles.whiteWrapper}>
+            <View style={styles.guestBudgetButton}>
+            <TouchableOpacity  style={styles.partyButton} onPress={() => {navigation.navigate('GuestList', { project: project, projectId: project._id })}}>
+                <Text style={[styles.row, styles.buttonText]}>GUEST LIST</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.partyButton}  onPress={() => {navigation.navigate('Budget', { project: project, projectId: project._id })}}>
+                <Text style={[styles.row, styles.buttonText]}>BUDGET</Text>
+            </TouchableOpacity>          
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('ProjectBoard')}
               style={styles.partyButton}>
               <Text style={styles.buttonText}>Back to projectBoard</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
+            </View>
 
             <View>
               <Text style={styles.headerh2}>THEME</Text>
@@ -400,23 +410,23 @@ const SingleProjectPage = ({ navigation, route }) => {
                 return (
                   <View key={theme._id} style={styles.listWrapper}/* style={styles.smallContainer}*/ >
                     <View styles={styles.leftColumn}>
-                      <Text style={styles.row}>{theme.themesName}</Text>
-                      <Text style={styles.row}>
+                      <Text style={[styles.row, styles.text]}>{theme.themesName}</Text>
+                      {/* <Text style={[styles.row, styles.text]}>
                         {theme.isCompleted ? 'Completed' : 'Incomplete'}
-                      </Text>
+                      </Text> */}
                     </View>
                     {/* <View style={styles.rightColumn}> */}
-                      <TouchableOpacity
+                      {/* <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedTheme(theme._id, theme.isCompleted)}
                         style={styles.complete}>
-                        <Text>Mark as completed</Text>
-                      </TouchableOpacity>
+                        <Text>✅</Text>
+                      </TouchableOpacity> */}
                       <TouchableOpacity
                         title='DELETE'
                         onPress={() => deleteTheme(theme._id)}
                         style={styles.delete}>
-                        <Text>Delete object</Text>
+                        <Text>🗑</Text>
                       </TouchableOpacity>
                     {/* </View> */}
                   </View>
@@ -428,9 +438,9 @@ const SingleProjectPage = ({ navigation, route }) => {
                 return (
                   <View key={activity._id} style={styles.listWrapper} /* style={styles.smallContainer} */>
                     <View style={styles.leftColumn}>
-                      <Text style={styles.row}>{activity.activitiesName}</Text>
+                      <Text style={[styles.row, styles.text]}>{activity.activitiesName}</Text>
                       <Text style={styles.row}>
-                        {activity.isCompleted ? 'Completed' : 'Incomplete'}
+                        {activity.isCompleted ? '✔️' : '✖️'}
                       </Text>
                     </View>
                     {/* <View /* style={styles.rightColumn}> */}
@@ -456,8 +466,8 @@ const SingleProjectPage = ({ navigation, route }) => {
                 return (
                   <View key={decoration._id} style={styles.listWrapper}>
                     <View styles={styles.leftColumn}>
-                      <Text style={styles.row}>{decoration.decorationsName}</Text>
-                      <Text style={styles.row}>{decoration.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Text style={[styles.row, styles.text]}>{decoration.decorationsName}</Text>
+                      <Text style={[styles.row, styles.text]}>{decoration.isCompleted ? '✔️' : '✖️'}</Text>
                     </View>
                     {/* <View styles={styles.rightColumn}> */}
                       <TouchableOpacity
@@ -482,8 +492,8 @@ const SingleProjectPage = ({ navigation, route }) => {
                 return (
                   <View key={food._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
-                      <Text style={styles.row}>{food.foodName}</Text>
-                      <Text>{food.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Text style={[styles.row, styles.text]}>{food.foodName}</Text>
+                      <Text>{food.isCompleted ? '✔️' : '✖️'}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                       <TouchableOpacity
@@ -509,7 +519,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <View key={drinks._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
                       <Text style={styles.row}>{drinks.drinksName}</Text>
-                      <Text style={styles.row}>{drinks.isCompleted ? 'Completed' : 'Incomplete'}</Text>
+                      <Text style={styles.row}>{drinks.isCompleted ? '✔️' : '✖️'}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                       <TouchableOpacity
@@ -536,8 +546,11 @@ const SingleProjectPage = ({ navigation, route }) => {
                     <Text>{budget.activitiesName}</Text>
                     {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
                   </View>
+                  
                 )
+                
               })}
+              </View> 
             </View>
           </>
         )
@@ -552,6 +565,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 500,
+
   },
   background: {
     flex: 1,
@@ -560,6 +574,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 60,
   },
+
+  // *** STYLING HEADERS *** //
   headerH1: {
     fontSize: 25,
     fontWeight: 'bold',
@@ -575,78 +591,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  partyButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    width: '30%',
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-  changeButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-
-    width: 70,
-    height: 20,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-  listWrapper: {
-    // flexDirection: 'column',
-    // flexDirection:'row',
-    justifyContent: 'center',
-    backgroundColor: colors.green,
-    borderRadius: 10,
-    backgroundColor: colors.lightGrey,
-    flexWrap: 'wrap',
-    margin: 2,
-  },
-  // single item styling
-  row: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingBottom: 5,
-    fontSize: 16,
-    // backgroundColor: colors.lightGrey,
-    
-  },
-
-  complete: {
-    fontSize: 16,
-    // backgroundColor: colors.lightGrey,
-    color: colors.red,
-    zIndex: 10,
-    position: 'absolute',
-    right: 10,
-    bottom: 30,
-  },
-  delete: {
-    // backgroundColor: colors.lightGrey,
-    zIndex: 10,
-    position: 'absolute',
-    right: 10,
-    bottom: 2,
-  },
-
-  input: {
-    borderRadius: 8,
-    textAlign: 'center',
-    padding: 2,
-    width: '70%',
-    backgroundColor: colors.white,
-  },
-  // smallContainer: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   paddingBottom: 40,
-  //   backgroundColor: 'grey',
-  //   borderRadius: 8,
-  // },
   headerContainer: {
     marginTop: 100,
     flexDirection: 'row',
@@ -658,13 +602,113 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
-  // rightColumn: {
-  //   // flexDirection: 'column',
-  //   indexZ: 1,
-  //   // alignItems: 'flex-end',
-  //   justifyContent: 'center',
-  //   // marginTop: 10,
-  //   paddingLeft: 30
+
+  listWrapper: {
+    justifyContent: 'center',
+    backgroundColor: colors.green,
+    borderRadius: 10,
+    backgroundColor: colors.lightGrey,
+    flexWrap: 'wrap',
+    marginBottom: 5,
+    marginLeft: 5,
+    marginRight: 5,
+    padding: 5
+
+  },
+
+  whiteWrapper: {
+    borderRadius: 10,
+    padding: 25,
+    backgroundColor: colors.white,
+
+  },
+
+  // *** SINGLE ITEM STYLING *** //
+  row: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingBottom: 5,
+    fontSize: 16,
+    // fontFamily: fonts.button
+  },
+
+  text: {
+    fontFamily: fonts.text
+  }, 
+
+  complete: {
+    zIndex: 10,
+    position: 'absolute',
+    right: 10,
+    bottom: 35,
+  },
+
+  delete: {
+    zIndex: 10,
+    position: 'absolute',
+    right: 10,
+    bottom: 5,
+  },
+
+  // *** STYLING CHANGE NAME & DUE_DATE *** // 
+  input: {
+    backgroundColor: colors.lightGrey,
+    marginBottom: 20,
+    marginTop: 10,
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 12,
+    fontSize: 16,
+    fontFamily: fonts.input,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey,
+  },
+    // borderRadius: 8,
+    // textAlign: 'center',
+    // padding: 2,
+    // width: '70%',
+    // backgroundColor: colors.white,
+    // fontFamily: fonts.input
   // },
+
+  // * STYLING BUTTONS *// 
+  buttonText: {
+    fontFamily: fonts.button
+  }, 
+
+  partyButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    width: '40%',
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  },
+
+  changeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontFamily: fonts.button,
+    width: 70,
+    height: 20,
+    borderRadius: 8,
+    marginBottom:10,
+    backgroundColor: colors.peach,
+  },
+
+  guestBudgetButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 0,
+    borderRadius: 8,
+    marginBottom: 2, 
+
+  },
+
+
 })
 export default SingleProjectPage

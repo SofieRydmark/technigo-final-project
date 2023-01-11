@@ -47,7 +47,7 @@ const Themes = ({ route }) => {
       },
     }
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/type/${partyType}/${page}/5`,
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/${page}/type/${partyType}`,
       options
     )
       .then((res) => res.json())

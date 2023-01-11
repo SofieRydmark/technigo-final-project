@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   form: {
     borderRadius: 10,
     padding: 25,
-    width: '80%',
+    width: '90%',
     backgroundColor: colors.white,
   },
   // add new project input + button styling
