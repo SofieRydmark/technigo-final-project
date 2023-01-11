@@ -54,7 +54,7 @@ const HomeNavigator = () => {
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
-      <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
+      <Stack.Screen name='Food & Drinks' component={FoodnDrinks} />
       <Stack.Screen name='Themes' component={Themes} />
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
@@ -87,7 +87,7 @@ const ProfileNavigator = () => {
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
-      <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
+      <Stack.Screen name='Food & Drinks' component={FoodnDrinks} />
       <Stack.Screen name='Themes' component={Themes} />
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
@@ -123,7 +123,7 @@ const ProjectNavigator = () => {
       <Stack.Screen name='FindStore' component={FindStore} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
-      <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
+      <Stack.Screen name='Food & Drinks' component={FoodnDrinks} />
       <Stack.Screen name='Themes' component={Themes} />
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />
@@ -156,7 +156,7 @@ const BrowseNavigator = () => {
       <Stack.Screen name='ChooseProject' component={ChooseProject} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
-      <Stack.Screen name='FoodnDrinks' component={FoodnDrinks} />
+      <Stack.Screen name='Food & Drinks' component={FoodnDrinks} />
       <Stack.Screen name='Themes' component={Themes} />
       <Stack.Screen name='Decorations' component={Decorations} />
       <Stack.Screen name='Activities' component={Activities} />

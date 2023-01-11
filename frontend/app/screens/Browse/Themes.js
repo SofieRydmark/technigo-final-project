@@ -9,13 +9,14 @@ import {
   Image,
   FlatList,
   SafeAreaView,
+  Modal,
 } from 'react-native'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-import { PARTYTYPE_THEME_URL, THEME_ADD_URL } from 'assets/urls/urls'
-import { AntDesign, Ionicons } from '@expo/vector-icons'
+import { THEME_ADD_URL } from 'assets/urls/urls'
+import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 
 // Reducers
 import user from '../../reducers/user'
@@ -27,7 +28,8 @@ const Themes = ({ route }) => {
   const [allThemes, setAllThemes] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [page, setPage] = useState(1)
-  const [themeSelected, setThemeSelected] = useState([])
+  const [showModal, setShowModal] = useState(false)
+  const [themeSelected, setThemeSelected] = useState('')
   const partyType = route.params.partyType
   const projectId = route.params.projectId
 
@@ -72,8 +74,8 @@ const Themes = ({ route }) => {
 
   /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
   const sendObjectToProject = (name) => {
-    if (themeSelected[name]) {
-      return
+    if (themeSelected !== '') {
+      setShowModal(true)
     }
     setThemeSelected({ ...themeSelected, [name]: true }) // update themeSelected state
 
@@ -90,10 +92,32 @@ const Themes = ({ route }) => {
 
     fetch(THEME_ADD_URL(userId, projectId), options)
       .then((res) => res.json())
-      .then((data) => console.log(data))
       .catch((error) => console.error(error))
     setObjectSent([...objectSent, name])
   }
+
+  // Box shadow styling IOS and android
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <SafeAreaView
@@ -101,20 +125,14 @@ const Themes = ({ route }) => {
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <View style={styles.container}>
         <Text style={styles.h1}>Themes</Text>
+
         <TextInput
           style={styles.input}
           placeholder='Search for a theme...'
           onChangeText={(text) => setSearchTerm(text)}
           value={searchTerm}
         />
-        <View style={styles.arrows}>
-          <TouchableOpacity onPress={prevPage}>
-            <AntDesign name='leftcircle' size={24} color='black' />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={nextPage}>
-            <AntDesign name='rightcircle' size={24} color='black' />
-          </TouchableOpacity>
-        </View>
+
         <FlatList
           style={styles.flatList}
           data={allThemes.filter((theme) =>
@@ -129,14 +147,13 @@ const Themes = ({ route }) => {
                   source={{ uri: item.image }}
                   style={[
                     styles.image,
-                    objectSent.includes(item.name)
-                      ? { borderColor: colors.peach, opacity: 0.5 }
-                      : { borderColor: 'none' },
+                    objectSent.includes(item.name) ? { opacity: 0.5 } : { borderColor: 'none' },
                   ]}
                 />
                 <View
                   style={[
                     styles.itemNameContainer,
+                    styles.boxShadow,
                     objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                   ]}>
                   <Text style={styles.itemName}>{item.name}</Text>
@@ -146,12 +163,45 @@ const Themes = ({ route }) => {
           )}
           keyExtractor={(item) => item.name}
         />
+        <View style={styles.arrows}>
+          <TouchableOpacity onPress={prevPage} style={{ paddingRight: 60 }}>
+            <SimpleLineIcons name='arrow-left' size={24} color='black' />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={nextPage}>
+            <SimpleLineIcons name='arrow-right' size={24} color='black' />
+          </TouchableOpacity>
+        </View>
+        <Modal
+          animationType={'slide'}
+          transparent
+          visible={showModal}
+          backdropOpacity={0.3}
+          animationIn='zoomInDown'
+          animationOut='zoomOutUp'
+          animationInTiming={600}
+          animationOutTiming={600}
+          backdropTransitionInTiming={600}
+          backdropTransitionOutTiming={600}>
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalText}>Are you sure you want more than one theme?</Text>
+                <TouchableOpacity onPress={() => setShowModal(false)}>
+                  <AntDesign name='close' size={25} color='black' style={styles.closeModal2} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
+  arrows: {
+    flexDirection: 'row',
+  },
   background: {
     flex: 1,
   },
@@ -169,28 +219,29 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  arrows: {
-    flexDirection: 'row',
-    margin: 20,
+  closeModal2: {
+    right: -20,
+    top: -15,
   },
   input: {
     backgroundColor: colors.lightGrey,
-    width: '80%',
+    width: '85%',
+    marginBottom: 5,
     borderWidth: 1,
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 12,
     fontSize: 16,
-    fontFamily: fonts.text,
+    fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
   flatList: {
     width: '90%',
-    height: '100%',
+    marginVertical: 30,
   },
   h1: {
     marginBottom: 20,
-    marginTop: 50,
+    marginTop: 60,
     fontFamily: fonts.titles,
     fontSize: 30,
   },
@@ -213,13 +264,35 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 14,
     fontFamily: fonts.titles,
+    textTransform: 'capitalize',
   },
   image: {
     width: '100%',
     height: 120,
     alignSelf: 'center',
     borderRadius: 8,
-    borderWidth: 2,
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width: '90%',
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+  },
+  modalText: {
+    fontFamily: fonts.text,
+    textAlign: 'center',
   },
 })
 

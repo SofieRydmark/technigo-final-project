@@ -82,6 +82,29 @@ const SignUp = ({ navigation }) => {
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
+  // Box shadow styling IOS and android
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
+
   return (
     <KeyboardAvoidingView
       style={styles.keyboard}
@@ -110,7 +133,7 @@ const SignUp = ({ navigation }) => {
               }
             }}>
             {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
-              <View style={styles.form}>
+              <View style={[styles.form, styles.boxShadow]}>
                 <Text style={styles.label}>EMAIL</Text>
                 <TextInput
                   label='email'

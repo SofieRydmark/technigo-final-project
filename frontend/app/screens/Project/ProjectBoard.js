@@ -37,7 +37,7 @@ const ProjectBoard = ({ navigation }) => {
       .catch((error) => console.log(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
     // console.log('data', allProjects)
-  }, [setAllProjects])
+  }, [allProjects])
 
   /* --- ADD NEW PROJECT FETCH  --*/
 
