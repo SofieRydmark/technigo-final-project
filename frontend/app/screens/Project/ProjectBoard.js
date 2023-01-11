@@ -110,7 +110,7 @@ const ProjectBoard = ({ navigation }) => {
                     label='name'
                     onChangeText={handleChange('name')}
                     value={values.name}
-                    placeholder={'Projekt namn'}
+                    placeholder={'Project name'}
                     required
                     multiline={false}
                     autoCapitalize='none'
@@ -120,13 +120,13 @@ const ProjectBoard = ({ navigation }) => {
                     label='due_date'
                     onChangeText={handleChange('due_date')}
                     value={values.due_date}
-                    placeholder={'Datum: YYYY-MM-DD'}
+                    placeholder={'Date: YYYY-MM-DD'}
                     multiline={false}
                     autoCapitalize='none'
                   />
 
                   <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
-                    <Text>NYTT PROJEKT</Text>
+                    <Text>New project</Text>
                   </TouchableOpacity>
                 </View>
               )}

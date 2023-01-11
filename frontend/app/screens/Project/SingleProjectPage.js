@@ -440,7 +440,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                     <View style={styles.leftColumn}>
                       <Text style={[styles.row, styles.text]}>{activity.activitiesName}</Text>
                       <Text style={styles.row}>
-                        {activity.isCompleted ? '✔️' : '✖️'}
+                        {/* {activity.isCompleted ? '✔️' : '✖️'} */}
                       </Text>
                     </View>
                     {/* <View /* style={styles.rightColumn}> */}
@@ -448,7 +448,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                         title='Mark as completed'
                         onPress={() => completedActivities(activity._id, activity.isCompleted)}
                         style={styles.complete}>
-                        <Text>✅</Text>
+                        <Text>{activity.isCompleted ? '✅' : '🟩'}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
@@ -467,14 +467,15 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <View key={decoration._id} style={styles.listWrapper}>
                     <View styles={styles.leftColumn}>
                       <Text style={[styles.row, styles.text]}>{decoration.decorationsName}</Text>
-                      <Text style={[styles.row, styles.text]}>{decoration.isCompleted ? '✔️' : '✖️'}</Text>
+                      <Text style={[styles.row, styles.text]}>{ /* {decoration.isCompleted ? '✔️' : '✖️'} */}</Text>
+
                     </View>
                     {/* <View styles={styles.rightColumn}> */}
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedDecorations(decoration._id, decoration.isCompleted)}
                         style={styles.complete}>
-                        <Text>✅</Text>
+                        <Text >{decoration.isCompleted ? '✅' : '🟩'}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
@@ -493,14 +494,14 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <View key={food._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
                       <Text style={[styles.row, styles.text]}>{food.foodName}</Text>
-                      <Text>{food.isCompleted ? '✔️' : '✖️'}</Text>
+                      {/* <Text>{food.isCompleted ? '✔️' : '✖️'}</Text> */}
                     </View>
                     <View style={styles.rightColumn}>
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedFood(food._id, food.isCompleted)}
                         style={styles.complete}>
-                        <Text>✅</Text>
+                        <Text>{food.isCompleted ? '✅' : '🟩'}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
@@ -519,14 +520,14 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <View key={drinks._id} style={styles.listWrapper}>
                     <View style={styles.leftColumn}>
                       <Text style={styles.row}>{drinks.drinksName}</Text>
-                      <Text style={styles.row}>{drinks.isCompleted ? '✔️' : '✖️'}</Text>
+                      <Text style={styles.row}>{/*{drinks.isCompleted ? '✅' : '🟩'}*/}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                       <TouchableOpacity
                         title='Mark as completed'
                         onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}
                         style={styles.complete}>
-                        <Text>✅</Text>
+                        <Text>{drinks.isCompleted ? '✅' : '🟩'}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         title='DELETE'
@@ -665,13 +666,6 @@ const styles = StyleSheet.create({
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
-    // borderRadius: 8,
-    // textAlign: 'center',
-    // padding: 2,
-    // width: '70%',
-    // backgroundColor: colors.white,
-    // fontFamily: fonts.input
-  // },
 
   // * STYLING BUTTONS *// 
   buttonText: {
