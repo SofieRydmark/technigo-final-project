@@ -69,7 +69,7 @@ const Activities = ({ route }) => {
     setPage(page - 1)
   }
 
-  /****************** SEND OBJECT TO SINGLE PROJECT  ************************* */
+  // *** SEND OBJECT TO SINGLE PROJECT  *** //
   const sendObjectToProject = (name) => {
     const options = {
       method: 'PATCH',
@@ -88,7 +88,7 @@ const Activities = ({ route }) => {
     setObjectSent([...objectSent, name])
   }
 
-  // Box shadow styling IOS and android
+  // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
     xOffset,
     yOffset,

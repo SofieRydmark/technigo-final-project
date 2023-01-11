@@ -20,7 +20,7 @@ const WhatKindOfParty = ({ navigation, route }) => {
             })
           }
           style={styles.partyButton}>
-          <Text style={styles.buttonText}>Grownup party</Text>
+          <Text style={styles.buttonText}>Grown-up party</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>

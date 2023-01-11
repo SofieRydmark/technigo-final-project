@@ -64,7 +64,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     getSingleProject()
   }, [singleProject])
 
-  /****************** TOOGLE OBJECT PROJECT  ************************* */
+  // *** TOOGLE OBJECT PROJECT  *** //
   const completed = (endpoint, id) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -105,7 +105,7 @@ const SingleProjectPage = ({ navigation, route }) => {
   const completedActivities = (activityId) => {
     completed('activity', activityId)
   }
-  /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
+  // *** DELETE SINGLE OBJECT PROJECT  *** //
 
   const deleteObject = (endpoint, id, name, bodyKey = `${endpoint}Name`) => {
     dispatch(ui.actions.setLoading(true))
@@ -151,7 +151,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     deleteObject('Activity', activityId, name, 'activitiesName')
   }
 
-  /****************** CHANGE NAME OBJECT PROJECT  ************************* */
+  // *** CHANGE NAME OBJECT PROJECT  *** //
 
   const singleProjectChange = (options) => {
     dispatch(ui.actions.setLoading(true))
@@ -283,16 +283,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                       <View key={theme._id} style={styles.listWrapper}>
                         <View styles={styles.leftColumn}>
                           <Text style={[styles.row, styles.text]}>{theme.themesName}</Text>
-                          {/* <Text style={[styles.row, styles.text]}>
-                        {theme.isCompleted ? 'Completed' : 'Incomplete'}
-                      </Text> */}
                         </View>
-                        {/* <TouchableOpacity
-                        title='Mark as completed'
-                        onPress={() => completedTheme(theme._id, theme.isCompleted)}
-                        style={styles.complete}>
-                        <Text>✅</Text>
-                      </TouchableOpacity> */}
                         <TouchableOpacity
                           title='DELETE'
                           onPress={() => deleteTheme(theme._id)}
@@ -308,8 +299,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                     return (
                       <View
                         key={activity._id}
-                        style={styles.listWrapper} /* style={styles.smallContainer} */
-                      >
+                        style={styles.listWrapper}>
                         <View style={styles.leftColumn}>
                           <Text style={[styles.row, styles.text]}>{activity.activitiesName}</Text>
                           <Text style={styles.row}>
@@ -448,7 +438,7 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
 
-  // *** STYLING HEADERS *** //
+  // styling headers 
   headerH1: {
     fontSize: 25,
     fontWeight: 'bold',
@@ -469,8 +459,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: 40,
-    // justifyContent:'center',
-    // flexWrap: 'wrap',
   },
   leftColumn: {
     flexDirection: 'column',
@@ -496,13 +484,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
 
-  // *** SINGLE ITEM STYLING *** //
+  // single item styling
   row: {
     paddingRight: 10,
     paddingLeft: 10,
     paddingBottom: 5,
     fontSize: 16,
-    // fontFamily: fonts.button
   },
 
   text: {
@@ -523,7 +510,7 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 
-  // *** STYLING CHANGE NAME & DUE_DATE *** //
+  // styling change name & due_date
   input: {
     backgroundColor: colors.lightGrey,
     marginBottom: 20,
@@ -537,7 +524,7 @@ const styles = StyleSheet.create({
     color: colors.darkGrey,
   },
 
-  // * STYLING BUTTONS *//
+  // styling buttons
   buttonText: {
     fontFamily: fonts.button,
   },

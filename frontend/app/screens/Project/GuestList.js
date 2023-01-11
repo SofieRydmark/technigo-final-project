@@ -24,7 +24,7 @@ const GuestList = ({ navigation, route}) => {
   console.log('project id guest', projectId)
   const project = route.params.project
 
-// ********* ADD NEW GUEST FETCH ******* // 
+// *** ADD NEW GUEST FETCH *** // 
   const addNewGuest = (values) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -47,7 +47,7 @@ const GuestList = ({ navigation, route}) => {
 
   }
 
-  // ********* DELETE GUEST FROM THE LIST ******* //
+  // *** DELETE GUEST FROM THE LIST *** //
   const deleteGuest = ( guestId) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -67,7 +67,7 @@ const GuestList = ({ navigation, route}) => {
   
 
   }
-
+  // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
     xOffset,
     yOffset,
@@ -163,7 +163,6 @@ const GuestList = ({ navigation, route}) => {
             </View>    
       </>
         )}
-        {/* </View> */}
     </ScrollView>
   )
 }
@@ -176,26 +175,30 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 60,
   },
+
   header: {
-    marginTop: 30,
+    marginTop: 30,  
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // textAlign: 'center',
   },
+
   headerH1: {
     margin: 10,
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
   },
+
   pressable: {
     flex: 1,
     background: 'transparent',
   },
+
   wrapper: {
     marginBottom: 30,
     marginTop: 20,
   },
+
   listWrapper: {
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -204,6 +207,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     margin: 2,
   },
+
   // sigle item styling
   row: {
     paddingRight: 10,
@@ -211,6 +215,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     fontSize: 16,
   },
+
   // maping + formik with white background
   form: {
     borderRadius: 10,
@@ -218,6 +223,7 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: colors.white,
   },
+
   // add new guest input + button styling
   addProjectButton: {
     alignItems: 'center',
@@ -250,6 +256,8 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 1,
   },
+
+  // comeback button styling 
   partyButton: {
     alignItems: 'center',
     justifyContent: 'center',

@@ -32,7 +32,7 @@ const ProjectBoard = ({ navigation }) => {
   const dispatch = useDispatch()
   const [calendarVisible, setCalendarVisible] = useState(false)
 
-  /* --- GET ALL PROJECTS FETCH--*/
+  // *** GET ALL PROJECTS FETCH *** //
   useEffect(() => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -50,7 +50,7 @@ const ProjectBoard = ({ navigation }) => {
     // console.log('data', allProjects)
   }, [allProjects])
 
-  /* --- ADD NEW PROJECT FETCH  --*/
+  // *** ADD NEW PROJECT FETCH *** //
 
   const addNewProject = (values) => {
     dispatch(ui.actions.setLoading(true))
@@ -75,7 +75,7 @@ const ProjectBoard = ({ navigation }) => {
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
-  /*--- DELETE PROJECT ---*/
+  // *** DELETE PROJECT *** //
 
   const deleteProject = (projectId) => {
     dispatch(ui.actions.setLoading(true))
@@ -96,7 +96,7 @@ const ProjectBoard = ({ navigation }) => {
       .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
-
+  // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
     xOffset,
     yOffset,
