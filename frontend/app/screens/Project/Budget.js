@@ -10,7 +10,7 @@ import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { ADD_BUDGET_URL, DELET_BUDGET_OBJECT_URL } from '../../assets/urls/urls'
 
-const Budget = ({ navigation, route, getSingleProject }) => {
+const Budget = ({ navigation, route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const dispatch= useDispatch()
@@ -18,7 +18,7 @@ const Budget = ({ navigation, route, getSingleProject }) => {
   const projectId = route.params.projectId
   const [itemName, setItemName] = useState('')
   const [itemPrice, setItemPrice] = useState('')
-  const [singleProject, setSingleProject] = useState([])
+  
   const totalSum = project.budgetList.reduce((sum, budget) => sum + budget.itemPrice, 0);
 
   const createNew = ( ) => {
@@ -73,6 +73,15 @@ const Budget = ({ navigation, route, getSingleProject }) => {
         <Text style={styles.buttonText}>Back to overview</Text>
         </TouchableOpacity>
         </View>
+        <View style={styles.whiteContainer}>
+        <View style={styles.smallHeaderContainer}>
+          <View style={styles.leftColumn}>
+            <Text style={styles.headingh3}>ITEM</Text>
+          </View>
+          <View style={styles.rightColumn}>
+            <Text style={styles.headingh3}> PRICE </Text>
+          </View>
+          </View>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -128,6 +137,7 @@ const Budget = ({ navigation, route, getSingleProject }) => {
           <View style={styles.rightColumn}>
             <Text style={styles.text}>{totalSum} KR</Text>
           </View>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -167,7 +177,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
   inputContainer: {
-    marginTop: 40, 
+    marginTop: 20, 
     flexDirection: 'row', 
     justifyContent: 'space-around', 
   }, 
@@ -227,6 +237,25 @@ const styles = StyleSheet.create({
   }, 
   text: {
     fontFamily: fonts.text
+  }, 
+  whiteContainer: {
+    backgroundColor: 'white', 
+    height: '80%',
+    marginTop: 40, 
+    padding: 20, 
+    borderRadius: 15, 
+  }, 
+  smallHeaderContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-around', 
+    textAlign: 'center', 
+    paddingRight: 50, 
+    paddingLeft: 50, 
+    
+  }, 
+
+  headingh3: {
+    fontFamily: fonts.titles
   }
 
   
