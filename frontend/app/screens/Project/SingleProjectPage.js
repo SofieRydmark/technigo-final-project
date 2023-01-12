@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Button,
-} from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker'
 
 // Assets import
@@ -297,9 +289,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>ACTIVITIES</Text>
                   {project.activitiesProjectList.map((activity) => {
                     return (
-                      <View
-                        key={activity._id}
-                        style={styles.listWrapper}>
+                      <View key={activity._id} style={styles.listWrapper}>
                         <View style={styles.leftColumn}>
                           <Text style={[styles.row, styles.text]}>{activity.activitiesName}</Text>
                           <Text style={styles.row}>
@@ -438,7 +428,7 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
 
-  // styling headers 
+  // styling headers
   headerH1: {
     fontSize: 25,
     fontWeight: 'bold',

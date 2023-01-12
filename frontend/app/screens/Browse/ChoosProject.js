@@ -1,7 +1,19 @@
 import { React, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'react-native'
-import CalendarPicker from 'react-native-calendar-picker';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  Pressable,
+  Platform,
+  TextInput,
+  Modal,
+} from 'react-native'
+import CalendarPicker from 'react-native-calendar-picker'
 
 // Formik
 import { Formik } from 'formik'
@@ -10,6 +22,7 @@ import { Formik } from 'formik'
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { PROJECTS_URL, PROJECTS_ADD_URL } from 'assets/urls/urls'
+import { Ionicons } from '@expo/vector-icons'
 
 const ChooseProject = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -19,7 +32,7 @@ const ChooseProject = ({ navigation, _id }) => {
   const [showMap, setShowMap] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [loginError, setLoginError] = useState(null)
-  const [calendarVisible, setCalendarVisible] = useState(false);
+  const [calendarVisible, setCalendarVisible] = useState(false)
 
   useEffect(() => {
     const options = {
@@ -60,6 +73,8 @@ const ChooseProject = ({ navigation, _id }) => {
       return error
     }
   }
+
+  // Box shadow styling IOS and android
   const generateBoxShadowStyle = (
     xOffset,
     yOffset,
@@ -83,98 +98,120 @@ const ChooseProject = ({ navigation, _id }) => {
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
-    <ScrollView contentContainerStyle={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.headerH1}> Which project do you want to plan? </Text>
-      </View>
-      <View style={[styles.container, styles.boxShadow]}>
-        <View>
-          <TouchableOpacity onPress={() => setShowMap(!showMap)} style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>Active Projects</Text>
-          </TouchableOpacity>
-          {showMap &&
-            allProjects.map((singleProject) => {
-              return (
-                <View key={singleProject._id} style={styles.listWrapper}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('WhatKindOfParty', { projectId: singleProject._id })
-                    }}>
-                    <Text key={_id} style={styles.row}>
-                      {singleProject.name}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )
-            })}
-        </View>
-
-        <View>
-          <TouchableOpacity onPress={() => setShowForm(!showForm)} style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>Create new project</Text>
-          </TouchableOpacity>
-          {showForm && (
-            <View style={styles.form}>
-              <Formik initialValues={{ name: '', due_date: '' }}>
-                {({ handleChange, handleSubmit, values }) => (
-                  <View style={styles.input}>
-                    <TextInput
-                      label='name'
-                      onChangeText={handleChange('name')}
-                      value={values.name}
-                      placeholder={'Projekt namn'}
-                      required
-                      multiline={false}
-                      autoCapitalize='none'
-                      maxLength={20}
-                      style={styles.inputName}
-                    />
-                    
-                     <Modal visible={calendarVisible} animationType={'slide'}>
-                    <View style={styles.calendar}>
-                      <CalendarPicker
-                      onDateChange={(date) => handleChange('due_date')(date.toISOString().slice(0,10))}
-                      style={styles.calendar}
-                      minDate={new Date()}
-                      />
-                      <TouchableOpacity 
-                      style={styles.doneButton}
-                      onPress={() => setCalendarVisible(false)}>
-                        <Text style={styles.doneButtonText}>CHOOSE</Text>
+    <KeyboardAvoidingView
+      style={styles.keyboard}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
+        <ScrollView contentContainerStyle={styles.background}>
+          <View style={styles.header}>
+            <Text style={styles.headerH1}> Which project do you want to plan? </Text>
+          </View>
+          <View style={[styles.container, styles.boxShadow]}>
+            <View>
+              <TouchableOpacity
+                onPress={() => setShowMap(!showMap)}
+                style={[styles.partyButton, styles.boxShadow]}>
+                <Text style={styles.buttonText}>Active Projects</Text>
+              </TouchableOpacity>
+              {showMap &&
+                allProjects.map((singleProject) => {
+                  return (
+                    <View key={singleProject._id} style={styles.listWrapper}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('WhatKindOfParty', { projectId: singleProject._id })
+                        }}>
+                        <Text key={_id} style={styles.row}>
+                          {singleProject.name}
+                        </Text>
                       </TouchableOpacity>
                     </View>
-                    </Modal>
-                    {loginError && <Text style={styles.errorText}>{loginError}</Text>}
-                    <TouchableOpacity onPress={() => {
-                      setCalendarVisible(true);
-                      }}>
-                        <Text style={styles.inputText}>{values.due_date ? values.due_date : "YYYY-MM-DD"}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={styles.addProjectButton}
-                      onPress={async () => {
-                        if (values.name === '' || values.due_date === '') {
-                          return setLoginError('Please fill the name and due date')
-                        }
-                        const data = await addNewProject(values)
-                        console.log('id Onpress', data.response._id)
-                        navigation.navigate('WhatKindOfParty', { projectId: data.response._id })
-                      }}>
-                      <Text style={styles.buttonText}>Create new</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </Formik>
+                  )
+                })}
             </View>
-          )}
-        </View>
-      </View>
-    </ScrollView>
+
+            <TouchableOpacity
+              onPress={() => setShowForm(!showForm)}
+              style={[styles.partyButton, styles.boxShadow]}>
+              <Text style={styles.buttonText}>Create new project</Text>
+            </TouchableOpacity>
+            {showForm && (
+              <View style={styles.form}>
+                <Formik initialValues={{ name: '', due_date: '' }}>
+                  {({ handleChange, handleSubmit, values }) => (
+                    <View style={styles.input}>
+                      <TextInput
+                        label='name'
+                        onChangeText={handleChange('name')}
+                        value={values.name}
+                        placeholder={'Name'}
+                        required
+                        multiline={false}
+                        autoCapitalize='none'
+                        maxLength={20}
+                        style={styles.inputName}
+                      />
+
+                      <Modal visible={calendarVisible} animationType={'slide'}>
+                        <View style={styles.calendar}>
+                          <CalendarPicker
+                            onDateChange={(date) =>
+                              handleChange('due_date')(date.toISOString().slice(0, 10))
+                            }
+                            style={styles.calendar}
+                            minDate={new Date()}
+                          />
+                          <TouchableOpacity
+                            style={[styles.doneButton, styles.boxShadow]}
+                            onPress={() => setCalendarVisible(false)}>
+                            <Text style={styles.doneButtonText}>Add date</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </Modal>
+                      {loginError && <Text style={styles.errorText}>{loginError}</Text>}
+                      <TouchableOpacity
+                        onPress={() => {
+                          setCalendarVisible(true)
+                        }}>
+                        <Text style={styles.inputText}>
+                          {values.due_date ? values.due_date : 'YYYY-MM-DD'}
+                        </Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={[styles.addProjectButton, styles.boxShadow]}
+                        onPress={async () => {
+                          if (values.name === '' || values.due_date === '') {
+                            return setLoginError('Please fill in name and due date')
+                          }
+                          const data = await addNewProject(values)
+                          navigation.navigate('WhatKindOfParty', { projectId: data.response._id })
+                        }}>
+                        <Ionicons name='add' size={35} color='black' />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </Formik>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </Pressable>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
+  addProjectButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    top: -25,
+    marginTop: -20,
+    textAlign: 'center',
+    borderRadius: 50,
+    backgroundColor: colors.peach,
+  },
   background: {
     flex: 1,
     backgroundColor: colors.green,
@@ -183,28 +220,89 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    fontFamily: fonts.button
+    fontSize: 16,
+    fontFamily: fonts.button,
+  },
+  calendar: {
+    flex: 1,
+    paddingTop: 100,
+    fontFamily: fonts.text,
+    backgroundColor: colors.green,
+    alignItems: 'center',
   },
   container: {
     borderRadius: 30,
-    padding: 25,
+    padding: 30,
+    width: '90%',
+    backgroundColor: colors.white,
+  },
+  doneButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    textAlign: 'center',
     width: '80%',
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: colors.peach,
+  },
+  doneButtonText: {
+    fontSize: 24,
+    fontFamily: fonts.button,
+  },
+  errorText: {
+    fontFamily: fonts.text,
+    color: 'red',
+  },
+  form: {
+    borderRadius: 10,
+    width: '100%',
     backgroundColor: colors.white,
   },
   header: {
     marginBottom: 30,
+    marginHorizontal: 15,
   },
   headerH1: {
     fontSize: 25,
-    fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: fonts.titles
+    fontFamily: fonts.titles,
   },
-  pressable: {
+  input: {
+    padding: 20,
+    backgroundColor: colors.lightGrey,
+    borderWidth: 1,
+    borderRadius: 12,
+    fontSize: 12,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey,
+  },
+  inputDate: {
+    fontFamily: fonts.input,
+    fontSize: 17,
+  },
+  inputName: {
+    fontFamily: fonts.input,
+    fontSize: 17,
+    marginBottom: 10,
+  },
+  keyboard: {
     flex: 1,
-    background: 'transparent',
+    backgroundColor: 'transparent',
+  },
+  listWrapper: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    backgroundColor: colors.lightGrey,
+    flexWrap: 'wrap',
+    margin: 2,
+  },
+  row: {
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    fontSize: 18,
+    fontFamily: fonts.text,
   },
   partyButton: {
     alignItems: 'center',
@@ -216,87 +314,11 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 8,
     backgroundColor: colors.peach,
-    fontFamily: fonts.button
+    fontFamily: fonts.button,
   },
-  listWrapper: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    backgroundColor: colors.lightGrey,
-    flexWrap: 'wrap',
-    margin: 2,
+  pressable: {
+    flex: 1,
+    background: 'transparent',
   },
-  row: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingBottom: 5,
-    paddingTop: 5,
-    fontSize: 16,
-    fontFamily: fonts.text
-  }, 
-  form: {
-    borderRadius: 10,
-    width: '100%',
-    backgroundColor: colors.white,
-  },
- 
-  addProjectButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 5,
-    textAlign: 'center',
-    width: '100%',
-    height: 30,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-  input: {
-    marginBottom: 10,
-    padding: 25,
-    backgroundColor: colors.lightGrey,
-    borderWidth: 1,
-    padding: 15,
-    borderRadius: 12,
-    fontSize: 12,
-    borderColor: colors.lightGrey,
-    color: colors.darkGrey,
-  },
-  inputDate: {
-    marginTop: 10, 
-    fontFamily: fonts.input,
-    fontSize: 15, 
-  },
-  inputName: {
-    fontFamily: fonts.input,
-    fontSize: 15, 
-  }, 
-  calendar: {
-    flex: 1, 
-   paddingTop: 100,
-   fontFamily: fonts.text,
-   backgroundColor: colors.green,
-   alignItems: 'center' 
-  
-  
-  },
-  doneButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    textAlign: 'center',
-    width: 200,
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  }, 
-  doneButtonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    fontFamily: fonts.button, 
-  },
-  errorText: {
-    fontFamily: fonts.text, 
-    color: 'red'
-  }
 })
 export default ChooseProject
