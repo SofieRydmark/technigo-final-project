@@ -50,7 +50,6 @@ const Budget = ({ navigation, route }) => {
         'Content-Type': 'application/json',
         Authorization: accessToken,
       },
-      /* body: JSON.stringify({ _id: itemId }) */
     }
     fetch(DELETE_BUDGET_OBJECT_URL(userId, projectId, itemId), options)
       .then((res) => res.json())

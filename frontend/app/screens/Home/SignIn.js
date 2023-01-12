@@ -11,6 +11,7 @@ import {
   Keyboard,
   Pressable,
   Platform,
+  ImageBackground
 } from 'react-native'
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
@@ -101,12 +102,14 @@ const SignIn = ({ navigation }) => {
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
-
+  const backgroundImage = require('../../assets/images/Bubble.png')
   return (
+    // <ImageBackground source={backgroundImage} style={styles.background}>
     <KeyboardAvoidingView
       style={styles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
+      <ImageBackground source={backgroundImage} style={styles.backgroundBubble}>
         <ScrollView contentContainerStyle={styles.background}>
           <View style={styles.header}>
             <Text style={styles.headerH1}>Welcome</Text>
@@ -183,16 +186,23 @@ const SignIn = ({ navigation }) => {
             Forgot password?
           </Text>
         </ScrollView>
+        </ImageBackground>
       </Pressable>
     </KeyboardAvoidingView>
+
   )
 }
 
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
-    backgroundColor: colors.green,
+    // backgroundColor: colors.green,
     alignItems: 'center',
+    // justifyContent: 'center',
+    flex: 1,
+  },
+  backgroundBubble: {
+    // backgroundColor: colors.green,
+    // alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   },
@@ -222,6 +232,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 30,
+    marginTop: 100
   },
   headerH1: {
     fontSize: 35,
