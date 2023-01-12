@@ -9,8 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  FlatList, 
-  Modal
+  FlatList,
+  Modal,
 } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker'
 
@@ -44,7 +44,7 @@ const SingleProjectPage = ({ navigation, route }) => {
   const [dueDate, setDueDate] = useState('')
   const projectId = route.params.projectId
   const dispatch = useDispatch()
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
 
   const getSingleProject = () => {
     dispatch(ui.actions.setLoading(true))
@@ -193,8 +193,8 @@ const SingleProjectPage = ({ navigation, route }) => {
 
     singleProjectChange(options)
   }
-   // Box shadow styling IOS and android
-   const generateBoxShadowStyle = (
+  // Box shadow styling IOS and android
+  const generateBoxShadowStyle = (
     xOffset,
     yOffset,
     shadowColorIos,
@@ -222,49 +222,48 @@ const SingleProjectPage = ({ navigation, route }) => {
           <View>
             <View key={project._id}>
               <View style={styles.headerContainer}>
-                  <Text style={styles.headerH1}>{project.name}</Text>
-                  <Text style={styles.headerH4}>{project.due_date}</Text>
-                  <TouchableOpacity style={styles.changeBtn} onPress={() => setShowModal(true)}>
-                    <MaterialIcons name='edit' size={20} color='black' />
-                  </TouchableOpacity>
-                </View> 
-                  <Modal animationType="slide" visible={showModal} transparent={false}>
-                  <View style={styles.modalContainer}>
+                <Text style={styles.headerH1}>{project.name}</Text>
+                <Text style={styles.headerH4}>{project.due_date}</Text>
+                <TouchableOpacity style={styles.changeBtn} onPress={() => setShowModal(true)}>
+                  <MaterialIcons name='edit' size={20} color='black' />
+                </TouchableOpacity>
+              </View>
+              <Modal animationType='slide' visible={showModal} transparent={false}>
+                <View style={styles.modalContainer}>
                   <View style={styles.calendar}>
                     <CalendarPicker
-                      onDateChange={(date) => setDueDate(date.toISOString().slice(0,10))}
+                      onDateChange={(date) => setDueDate(date.toISOString().slice(0, 10))}
                       minDate={new Date()}
-                      />
-                        <TouchableOpacity 
-                          style={[styles.boxShadow, styles.submitButton]}
-                          onPress={() => {
-                          changeDueDate(dueDate);
-                          setShowModal(false);
-                          }}>
-                          <Text style={styles.buttonText}>CHANGE DATE</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.changeNameContainer}>
-                      <Text style={styles.headerH1}>CHANGE NAME</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={name}
-                        onChangeText={setName}
-                        placeholder='New name'
-                      />
-                      <TouchableOpacity
-                        style={[styles.submitButton, styles.boxShadow]}
-                        onPress={() => {
-                          changeName(name)
-                          setShowModal(false);
-                          setName('')
-                        }}>
-                        <Text style={styles.buttonText}>SUBMIT</Text>
-                      </TouchableOpacity>
-                    </View>
-                    </View>
-                  </Modal>
-                 
+                    />
+                    <TouchableOpacity
+                      style={[styles.boxShadow, styles.submitButton]}
+                      onPress={() => {
+                        changeDueDate(dueDate)
+                        setShowModal(false)
+                      }}>
+                      <Text style={styles.buttonText}>CHANGE DATE</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.changeNameContainer}>
+                    <Text style={styles.headerH1}>CHANGE NAME</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={name}
+                      onChangeText={setName}
+                      placeholder='New name'
+                    />
+                    <TouchableOpacity
+                      style={[styles.submitButton, styles.boxShadow]}
+                      onPress={() => {
+                        changeName(name)
+                        setShowModal(false)
+                        setName('')
+                      }}>
+                      <Text style={styles.buttonText}>SUBMIT</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
 
               <View style={[styles.whiteWrapper, styles.boxShadow]}>
                 <View style={styles.guestBudgetButton}>
@@ -305,9 +304,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>ACTIVITIES</Text>
                   {project.activitiesProjectList.map((activity) => {
                     return (
-                      <View
-                        key={activity._id}
-                        style={styles.listWrapper}>
+                      <View key={activity._id} style={styles.listWrapper}>
                         <View style={styles.leftColumn}>
                           <Text style={[styles.row, styles.text]}>{activity.activitiesName}</Text>
                           <Text style={styles.row}>
@@ -412,23 +409,21 @@ const SingleProjectPage = ({ navigation, route }) => {
                     )
                   })}
 
-                  
-                 <View style={styles.guestBudgetButton} >
-                 <TouchableOpacity 
-                  style={[styles.partyButton, styles.boxShadow]}
-                  onPress={() => navigation.navigate('WhatKindOfParty',{projectId: project._id}) } >
-                    <Text style={styles.buttonText}>BROWS CATEGORIES </Text>
-                  </TouchableOpacity>  
-                  </View> 
+                  <View style={styles.guestBudgetButton}>
+                    <TouchableOpacity
+                      style={[styles.partyButton, styles.boxShadow]}
+                      onPress={() =>
+                        navigation.navigate('WhatKindOfParty', { projectId: project._id })
+                      }>
+                      <Text style={styles.buttonText}>BROWS CATEGORIES </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-          
         )
-                  
       })}
-    
     </ScrollView>
   )
 }
@@ -448,7 +443,7 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
 
-  // styling headers 
+  // styling headers
   headerH1: {
     fontSize: 25,
     fontWeight: 'bold',
@@ -458,8 +453,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'left',
-    marginTop: 3, 
-
+    marginTop: 3,
   },
   headerH4: {
     fontSize: 13,
@@ -489,7 +483,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     padding: 5,
-    marginTop: 5, 
+    marginTop: 5,
   },
 
   whiteWrapper: {
@@ -537,14 +531,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
-    paddingLeft: 20, 
-    paddingRight:20,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   // styling buttons
   buttonText: {
     fontFamily: fonts.button,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 
   partyButton: {
@@ -580,30 +574,30 @@ const styles = StyleSheet.create({
   changeNameContainer: {
     fontFamily: fonts.text,
     backgroundColor: colors.green,
-    alignItems: 'center' ,
-    paddingBottom: 300, 
-    paddingTop: 50, 
-  },  
+    alignItems: 'center',
+    paddingBottom: 300,
+    paddingTop: 50,
+  },
   changeButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 0,
     borderRadius: 8,
     marginBottom: 5,
-    marginLeft: 20, 
-    marginRight: 20, 
-    alignItems: 'center' 
+    marginLeft: 20,
+    marginRight: 20,
+    alignItems: 'center',
   },
   calendar: {
-   fontFamily: fonts.text,
-   backgroundColor: colors.green,
-   alignItems: 'center' 
+    fontFamily: fonts.text,
+    backgroundColor: colors.green,
+    alignItems: 'center',
   },
   modalContainer: {
-    paddingTop: 100, 
-    backgroundColor: colors.green, 
-    paddingBottom: 100, 
-    alignItems: 'center' 
+    paddingTop: 100,
+    backgroundColor: colors.green,
+    paddingBottom: 100,
+    alignItems: 'center',
   },
   changeBtn: {
     position: 'absolute',
@@ -612,6 +606,6 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: colors.lightGrey,
     borderRadius: 50,
-  }
+  },
 })
 export default SingleProjectPage
