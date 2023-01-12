@@ -102,7 +102,7 @@ const SignIn = ({ navigation }) => {
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
-  const backgroundImage = require('../../assets/images/Bubble.png')
+  const backgroundImage = require('../../assets/images/BubbleImg.png')
   return (
     // <ImageBackground source={backgroundImage} style={styles.background}>
     <KeyboardAvoidingView
@@ -197,12 +197,9 @@ const styles = StyleSheet.create({
   background: {
     // backgroundColor: colors.green,
     alignItems: 'center',
-    // justifyContent: 'center',
     flex: 1,
   },
   backgroundBubble: {
-    // backgroundColor: colors.green,
-    // alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   },
