@@ -111,7 +111,7 @@ const ChooseProject = ({ navigation, _id }) => {
 
         <View>
           <TouchableOpacity onPress={() => setShowForm(!showForm)} style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>CREATE NEW PROJECT</Text>
+            <Text style={styles.buttonText}>Create new project</Text>
           </TouchableOpacity>
           {showForm && (
             <View style={styles.form}>
@@ -161,7 +161,7 @@ const ChooseProject = ({ navigation, _id }) => {
                         console.log('id Onpress', data.response._id)
                         navigation.navigate('WhatKindOfParty', { projectId: data.response._id })
                       }}>
-                      <Text style={styles.buttonText}>CREATE NEW </Text>
+                      <Text style={styles.buttonText}>Create new</Text>
                     </TouchableOpacity>
                   </View>
                 )}

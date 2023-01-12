@@ -40,6 +40,7 @@ const FindStore = () => {
       longitudeDelta: 0.0421,
     })
   }
+  // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
     xOffset,
     yOffset,

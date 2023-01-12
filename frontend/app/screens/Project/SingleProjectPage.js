@@ -66,7 +66,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     getSingleProject()
   }, [singleProject])
 
-  /****************** TOOGLE OBJECT PROJECT  ************************* */
+  // *** TOOGLE OBJECT PROJECT  *** //
   const completed = (endpoint, id) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -107,7 +107,7 @@ const SingleProjectPage = ({ navigation, route }) => {
   const completedActivities = (activityId) => {
     completed('activity', activityId)
   }
-  /****************** DELETE SINGLE OBJECT PROJECT  ************************* */
+  // *** DELETE SINGLE OBJECT PROJECT  *** //
 
   const deleteObject = (endpoint, id, name, bodyKey = `${endpoint}Name`) => {
     dispatch(ui.actions.setLoading(true))
@@ -153,7 +153,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     deleteObject('Activity', activityId, name, 'activitiesName')
   }
 
-  /****************** CHANGE NAME OBJECT PROJECT  ************************* */
+  // *** CHANGE NAME OBJECT PROJECT  *** //
 
   const singleProjectChange = (options) => {
     dispatch(ui.actions.setLoading(true))
@@ -256,7 +256,8 @@ const SingleProjectPage = ({ navigation, route }) => {
                         style={[styles.submitButton, styles.boxShadow]}
                         onPress={() => {
                           changeName(name)
-                          setShowInput(false)
+                          setShowModal(false);
+                          setName('')
                         }}>
                         <Text style={styles.buttonText}>SUBMIT</Text>
                       </TouchableOpacity>
@@ -447,7 +448,7 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
 
-  // *** STYLING HEADERS *** //
+  // styling headers 
   headerH1: {
     fontSize: 25,
     fontWeight: 'bold',
@@ -497,13 +498,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
 
-  // *** SINGLE ITEM STYLING *** //
+  // single item styling
   row: {
     paddingRight: 10,
     paddingLeft: 10,
     paddingBottom: 5,
     fontSize: 16,
-    // fontFamily: fonts.button
   },
 
   text: {
@@ -524,7 +524,7 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 
-  // *** STYLING CHANGE NAME*** //
+  // styling change name
   input: {
     backgroundColor: colors.lightGrey,
     marginBottom: 10,
@@ -541,7 +541,7 @@ const styles = StyleSheet.create({
     paddingRight:20,
   },
 
-  // * STYLING BUTTONS *//
+  // styling buttons
   buttonText: {
     fontFamily: fonts.button,
     textAlign: 'center'

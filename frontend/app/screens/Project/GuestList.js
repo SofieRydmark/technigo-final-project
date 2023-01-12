@@ -4,10 +4,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { Formik } from 'formik'
 
-
+// Assets import
 import colors from 'assets/styling/colors.js'
+import fonts from 'assets/styling/fonts.js'
+
+// Reducers
 import { ui } from '../../reducers/ui'
-import SingleProjectPage from './SingleProjectPage'
+
 
 
 
@@ -21,7 +24,7 @@ const GuestList = ({ navigation, route}) => {
   console.log('project id guest', projectId)
   const project = route.params.project
 
-// ********* ADD NEW GUEST FETCH ******* // 
+// *** ADD NEW GUEST FETCH *** // 
   const addNewGuest = (values) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -44,7 +47,7 @@ const GuestList = ({ navigation, route}) => {
 
   }
 
-  // ********* DELETE GUEST FROM THE LIST ******* //
+  // *** DELETE GUEST FROM THE LIST *** //
   const deleteGuest = ( guestId) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
@@ -64,77 +67,100 @@ const GuestList = ({ navigation, route}) => {
   
 
   }
+  // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
+  const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.headerH1}>GuestList</Text>
-      </View>
-        {accessToken && (
-        <>
-        <View style={styles.form}>
-            <Formik
-              initialValues={{ guestName: '', phone: '' }}
-              onSubmit={(values, actions) => {
-                if (values.guestName === '' || values.phone === '') {
-                  return setLoginError('Please fill the name')
-                } else {
-                  addNewGuest(values)
-                  actions.resetForm()
-                }
-              }}>
-              {({ handleChange, handleSubmit, values }) => (
-                <View style={styles.input}>
-                  <TextInput
-                    label='guestName'
-                    onChangeText={handleChange('guestName')}
-                    value={values.guestName}
-                    placeholder={'Namn'}
-                    required
-                    multiline={false}
-                    autoCapitalize='none'
-                    maxLength={20}
-                  />
-                  <TextInput
-                    label='phone'
-                    onChangeText={handleChange('phone')}
-                    value={values.phone}
-                    placeholder={'Telefonnummer'}
-                    multiline={false}
-                    autoCapitalize='none'
-                  />
+      <View style={styles.wrapper}>
+        <View style={styles.header}>
+          <Text style={styles.headerH1}>GUEST LIST</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SingleProjectPage', { projectId: project._id })}
+            style={[styles.partyButton, styles.boxShadow]}>
+            <Text style={styles.buttonText}>Back to overview</Text>
+          </TouchableOpacity>
+        </View>
+       </View> 
+          {accessToken && (
+          <>
+          <View style={styles.form}>
+              <Formik
+                initialValues={{ guestName: '', phone: '' }}
+                onSubmit={(values, actions) => {
+                  if (values.guestName === '' || values.phone === '') {
+                    return setLoginError('Please fill the name')
+                  } else {
+                    addNewGuest(values)
+                    actions.resetForm()
+                  }
+                }}>
+                {({ handleChange, handleSubmit, values }) => (
+                  <View style={styles.input}>
+                    <TextInput
+                      label='guestName'
+                      onChangeText={handleChange('guestName')}
+                      value={values.guestName}
+                      placeholder={'Namn'}
+                      required
+                      multiline={false}
+                      autoCapitalize='none'
+                      maxLength={20}
+                    />
+                    <TextInput
+                      label='phone'
+                      onChangeText={handleChange('phone')}
+                      value={values.phone}
+                      placeholder={'Telefonnummer'}
+                      multiline={false}
+                      autoCapitalize='none'
+                    />
 
-                  <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
-                    <Text>NY GÄST</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </Formik>
-            <View>
-              {project.guestList.map((guest) => {
-                return(
-                  <>
-                  <View style={styles.listWrapper} key={guest._id}>
-                    <Text style={styles.row}>{guest.guestName}</Text>
-                    <Text style={styles.row}>{guest.phone}</Text>
-                  </View>
-                  <View>
-                    <TouchableOpacity style={styles.trashIcon} onPress={() => deleteGuest(guest._id)}>
-                      <Text style={styles.row}>🗑</Text>
+                    <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
+                      <Text>NY GÄST</Text>
                     </TouchableOpacity>
                   </View>
+                )}
+              </Formik>
+              <View>
+                {project.guestList.map((guest) => {
+                  return(
+                    <>
+                    <View style={styles.listWrapper} key={guest._id}>
+                      <Text style={styles.row}>{guest.guestName}</Text>
+                      <Text style={styles.row}>{guest.phone}</Text>
+                    </View>
+                    <View>
+                      <TouchableOpacity style={styles.trashIcon} onPress={() => deleteGuest(guest._id)}>
+                        <Text style={styles.row}>🗑</Text>
+                      </TouchableOpacity>
+                    </View>
+                    </>
+                  )
+                })}
 
-                  </>
-                )
-              })}
-
-            </View>
-          </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ProjectBoard')}
-          style={styles.partyButton}>
-          <Text style={styles.buttonText}>Back to projectBoard</Text>
-        </TouchableOpacity>
+              </View>
+            </View>    
       </>
         )}
     </ScrollView>
@@ -149,18 +175,28 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 60,
   },
+
   header: {
-    marginBottom: 30,
+    marginTop: 30,  
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
+
   headerH1: {
     margin: 10,
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
   },
+
   pressable: {
     flex: 1,
     background: 'transparent',
+  },
+
+  wrapper: {
+    marginBottom: 30,
+    marginTop: 20,
   },
 
   listWrapper: {
@@ -171,6 +207,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     margin: 2,
   },
+
   // sigle item styling
   row: {
     paddingRight: 10,
@@ -178,6 +215,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     fontSize: 16,
   },
+
   // maping + formik with white background
   form: {
     borderRadius: 10,
@@ -185,6 +223,7 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: colors.white,
   },
+
   // add new guest input + button styling
   addProjectButton: {
     alignItems: 'center',
@@ -217,16 +256,21 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 1,
   },
+
+  // comeback button styling 
   partyButton: {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    marginTop: 10,
     marginBottom: 10,
-    width: '100%',
-    height: 70,
+    width: '50%',
+    height: 40,
     borderRadius: 8,
     backgroundColor: colors.peach,
+  },
+
+  buttonText: {
+    fontFamily: fonts.button,
   },
 })
 export default GuestList

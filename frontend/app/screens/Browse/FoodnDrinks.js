@@ -48,7 +48,7 @@ const FoodnDrinks = ({ route }) => {
       },
     }
 
-    // FOOD FETCH
+    // *** FOOD FETCH *** //
     fetch(
       `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/food/${page}/type/${partyType}`,
       options
@@ -58,7 +58,7 @@ const FoodnDrinks = ({ route }) => {
       .then(setPage(page))
       .catch((error) => console.error(error))
 
-    // DRINKS FETCH
+    // *** DRINKS FETCH *** //
     fetch(
       `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/drinks/${page}/type/${partyType}`,
       options
@@ -90,7 +90,8 @@ const FoodnDrinks = ({ route }) => {
   const handleDrinksButton = () => {
     setSelectedFetch('drinks')
   }
-  /****************** SEND FOOD TO SINGLE PROJECT  ************************* */
+
+  // *** SEND FOOD TO SINGLE PROJECT  *** //
   const sendFoodToProject = (name) => {
     const options = {
       method: 'PATCH',
@@ -109,7 +110,7 @@ const FoodnDrinks = ({ route }) => {
     setObjectSent([...objectSent, name])
   }
 
-  /****************** SEND DRINKS TO SINGLE PROJECT  ************************* */
+  // *** SEND DRINKS TO SINGLE PROJECT  *** //
   const sendDrinksToProject = (name) => {
     const options = {
       method: 'PATCH',
@@ -128,7 +129,7 @@ const FoodnDrinks = ({ route }) => {
     setObjectSent([...objectSent, name])
   }
 
-  // Box shadow styling IOS and android
+  // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
     xOffset,
     yOffset,

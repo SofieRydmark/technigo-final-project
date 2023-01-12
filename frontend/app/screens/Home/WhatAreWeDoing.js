@@ -6,6 +6,7 @@ import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 
 const WhatAreWeDoing = ({ navigation }) => {
+  
   // Box shadow styling IOS and android
   const generateBoxShadowStyle = (
     xOffset,
@@ -38,7 +39,7 @@ const WhatAreWeDoing = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
           style={[styles.partyButton, styles.boxShadow]}>
-          <Text style={styles.buttonText}>Go to my projectboard</Text>
+          <Text style={styles.buttonText}>Go to my project board</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('ChooseProject')}
