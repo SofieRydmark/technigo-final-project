@@ -9,7 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  FlatList
+  FlatList, 
+  Modal
 } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker'
 
@@ -28,7 +29,7 @@ import {
   ACTIVITY_DELETE_URL,
   ONEPROJECT_CHANGE_URL,
 } from 'assets/urls/urls'
-
+import { MaterialIcons } from '@expo/vector-icons'
 // Reducers
 import user from '../../reducers/user'
 import { ui } from '../../reducers/ui'
@@ -43,7 +44,7 @@ const SingleProjectPage = ({ navigation, route }) => {
   const [dueDate, setDueDate] = useState('')
   const projectId = route.params.projectId
   const dispatch = useDispatch()
-  const [calendarVisible, setCalendarVisible] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   const getSingleProject = () => {
     dispatch(ui.actions.setLoading(true))
@@ -221,29 +222,30 @@ const SingleProjectPage = ({ navigation, route }) => {
           <View>
             <View key={project._id}>
               <View style={styles.headerContainer}>
-                {/* <View style={styles.leftColumn}> */}
                   <Text style={styles.headerH1}>{project.name}</Text>
                   <Text style={styles.headerH4}>{project.due_date}</Text>
-                {/* </View> */}
-                </View>
-        
-                  <View style={[styles.changeButtonContainer, styles.boxShadow]}>
-                  <TouchableOpacity
-                  style={styles.changeButton}
-                    onPress={() => setShowInput(!showInput)}>
-                    <Text style={styles.buttonText}>CHANGE NAME </Text>
+                  <TouchableOpacity style={styles.changeBtn} onPress={() => setShowModal(true)}>
+                    <MaterialIcons name='edit' size={20} color='black' />
                   </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={() => setShowDateChange(!showDateChange)}
-                    style={styles.changeButton}>
-                    <Text style={styles.buttonText}>CHANGE DATE</Text>
-                  </TouchableOpacity>
-                  </View>
-
-                  <View style={styles.changeContainer}>
-                  {showInput && (
+                </View> 
+                  <Modal animationType="slide" visible={showModal} transparent={false}>
+                  <View style={styles.modalContainer}>
+                  <View style={styles.calendar}>
+                    <CalendarPicker
+                      onDateChange={(date) => setDueDate(date.toISOString().slice(0,10))}
+                      minDate={new Date()}
+                      />
+                        <TouchableOpacity 
+                          style={[styles.boxShadow, styles.submitButton]}
+                          onPress={() => {
+                          changeDueDate(dueDate);
+                          setShowModal(false);
+                          }}>
+                          <Text style={styles.buttonText}>CHANGE DATE</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.changeNameContainer}>
+                      <Text style={styles.headerH1}>CHANGE NAME</Text>
                       <TextInput
                         style={styles.input}
                         value={name}
@@ -259,29 +261,10 @@ const SingleProjectPage = ({ navigation, route }) => {
                         <Text style={styles.buttonText}>SUBMIT</Text>
                       </TouchableOpacity>
                     </View>
-                  )}
-                  
-                  {showDateChange && (
-                    <View style={styles.changeDateContainer}>
-                     <View style={styles.calendarContainer}>
-                      <CalendarPicker
-                        onDateChange={(date) => setDueDate(date.toISOString().slice(0,10))}
-                        style={styles.calendar}
-                        minDate={new Date()}
-                        />
-                          <TouchableOpacity 
-                          style={styles.submitButtonDate}
-                          onPress={() => {
-                          changeDueDate(dueDate);
-                          setShowDateChange(false);
-                            }}>
-                            <Text style={styles.buttonText}>SUBMIT</Text>
-                          </TouchableOpacity>
-                      </View>
                     </View>
-                  )}
-              </View>
-              
+                  </Modal>
+                 
+
               <View style={[styles.whiteWrapper, styles.boxShadow]}>
                 <View style={styles.guestBudgetButton}>
                   <TouchableOpacity
@@ -323,8 +306,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                     return (
                       <View
                         key={activity._id}
-                        style={styles.listWrapper} /* style={styles.smallContainer} */
-                      >
+                        style={styles.listWrapper}>
                         <View style={styles.leftColumn}>
                           <Text style={[styles.row, styles.text]}>{activity.activitiesName}</Text>
                           <Text style={styles.row}>
@@ -432,7 +414,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   
                  <View style={styles.guestBudgetButton} >
                  <TouchableOpacity 
-                 style={[styles.partyButton, styles.boxShadow]}
+                  style={[styles.partyButton, styles.boxShadow]}
                   onPress={() => navigation.navigate('WhatKindOfParty',{projectId: project._id}) } >
                     <Text style={styles.buttonText}>BROWS CATEGORIES </Text>
                   </TouchableOpacity>  
@@ -542,16 +524,16 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 
-  // *** STYLING CHANGE NAME & DUE_DATE *** //
+  // *** STYLING CHANGE NAME*** //
   input: {
     backgroundColor: colors.lightGrey,
-    marginBottom: 20,
-    marginTop: 10,
+    marginBottom: 10,
+    marginTop: 30,
     borderWidth: 1,
     padding: 5,
     borderRadius: 12,
     fontSize: 16,
-    width: '100%',
+    width: 200,
     fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
@@ -580,38 +562,13 @@ const styles = StyleSheet.create({
   submitButton: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 20,
     textAlign: 'center',
-    fontFamily: fonts.button,
-    width: '100%',
+    width: 200,
     height: 50,
     borderRadius: 8,
-    marginBottom: 10,
     backgroundColor: colors.peach,
   },
-  submitButtonDate: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    fontFamily: fonts.button,
-    width: '50%',
-    height: 50,
-    borderRadius: 8,
-    marginBottom: 10,
-    backgroundColor: colors.peach,
-    marginLeft: 90, 
-  },
-  changeButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    fontFamily: fonts.button,
-    width: '40%',
-    height: 50,
-    borderRadius: 8,
-    marginBottom: 10,
-    backgroundColor: colors.peach,
-  },
-
   guestBudgetButton: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -621,17 +578,12 @@ const styles = StyleSheet.create({
   },
 
   changeNameContainer: {
-    flexDirection: 'column',
-  }, 
-  changeContainer: {
-    flexDirection: 'row', 
-    justifyContent: 'space-around', 
-    alignItems: 'center'
-  }, 
-  changeDateContainer: {
-    flexDirection: 'column', 
-    
-  }, 
+    fontFamily: fonts.text,
+    backgroundColor: colors.green,
+    alignItems: 'center' ,
+    paddingBottom: 300, 
+    paddingTop: 50, 
+  },  
   changeButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -640,6 +592,26 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 20, 
     marginRight: 20, 
+    alignItems: 'center' 
+  },
+  calendar: {
+   fontFamily: fonts.text,
+   backgroundColor: colors.green,
+   alignItems: 'center' 
+  },
+  modalContainer: {
+    paddingTop: 100, 
+    backgroundColor: colors.green, 
+    paddingBottom: 100, 
+    alignItems: 'center' 
+  },
+  changeBtn: {
+    position: 'absolute',
+    right: 40,
+    bottom: 50,
+    padding: 8,
+    backgroundColor: colors.lightGrey,
+    borderRadius: 50,
   }
 })
 export default SingleProjectPage
