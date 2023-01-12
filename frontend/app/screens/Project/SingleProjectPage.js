@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import {
   View,
+  SafeAreaView,
   ScrollView,
   Text,
   StyleSheet,
@@ -17,19 +18,9 @@ import CalendarPicker from 'react-native-calendar-picker'
 // Assets import
 import fonts from 'assets/styling/fonts.js'
 import colors from 'assets/styling/colors'
-import {
-  ONEPROJECT_URL,
-  DRINK_COMPLETE_URL,
-  DECOR_COMPLETE_URL,
-  THEME_COMPLETE_URL,
-  ACTIVITY_COMPLETE_URL,
-  DRINK_DELETE_URL,
-  DECOR_DELETE_URL,
-  THEME_DELETE_URL,
-  ACTIVITY_DELETE_URL,
-  ONEPROJECT_CHANGE_URL,
-} from 'assets/urls/urls'
-import { MaterialIcons } from '@expo/vector-icons'
+import { ONEPROJECT_URL, ONEPROJECT_CHANGE_URL } from 'assets/urls/urls'
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
+
 // Reducers
 import user from '../../reducers/user'
 import { ui } from '../../reducers/ui'
@@ -86,10 +77,8 @@ const SingleProjectPage = ({ navigation, route }) => {
       options
     )
       .then((res) => res.json())
-      .then((data) => console.log(data))
       .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
-    console.log(`marked as completed ${endpoint}`)
   }
 
   const completedDrinks = (drinksId) => {
@@ -122,16 +111,14 @@ const SingleProjectPage = ({ navigation, route }) => {
         _id: id,
       }),
     }
-    console.log('id', id)
+
     fetch(
       `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/delete${endpoint}/${id}`,
       options
     )
       .then((res) => res.json())
-      .then((data) => console.log(data))
       .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
-    console.log(`marked as deleted ${endpoint}`)
   }
 
   const deleteDecoration = (decorationId, name) => {
@@ -159,7 +146,6 @@ const SingleProjectPage = ({ navigation, route }) => {
     dispatch(ui.actions.setLoading(true))
     fetch(ONEPROJECT_CHANGE_URL(userId, projectId), options)
       .then((res) => res.json())
-      .then((data) => console.log(data))
       .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
@@ -215,8 +201,11 @@ const SingleProjectPage = ({ navigation, route }) => {
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
+
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+    <ScrollView
+      style={styles.background}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       {singleProject.map((project) => {
         return (
           <View>
@@ -272,14 +261,14 @@ const SingleProjectPage = ({ navigation, route }) => {
                     onPress={() => {
                       navigation.navigate('GuestList', { project: project, projectId: project._id })
                     }}>
-                    <Text style={[styles.row, styles.buttonText]}>GUEST LIST</Text>
+                    <Text style={styles.buttonText}>Guestlist</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[styles.partyButton, styles.boxShadow]}
                     onPress={() => {
                       navigation.navigate('Budget', { project: project, projectId: project._id })
                     }}>
-                    <Text style={[styles.row, styles.buttonText]}>BUDGET</Text>
+                    <Text style={styles.buttonText}>Budget</Text>
                   </TouchableOpacity>
                 </View>
 
@@ -287,16 +276,34 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>THEME</Text>
                   {project.themeProjectList.map((theme) => {
                     return (
-                      <View key={theme._id} style={styles.listWrapper}>
-                        <View styles={styles.leftColumn}>
-                          <Text style={[styles.row, styles.text]}>{theme.themesName}</Text>
+                      <View key={theme._id} style={styles.itemWrapper}>
+                        <View>
+                          <Text style={styles.text}>{theme.themesName}</Text>
                         </View>
-                        <TouchableOpacity
-                          title='DELETE'
-                          onPress={() => deleteTheme(theme._id)}
-                          style={styles.delete}>
-                          <Text>🗑</Text>
-                        </TouchableOpacity>
+                        <View style={styles.icons}>
+                          <TouchableOpacity
+                            title='Mark as completed'
+                            onPress={() => completedTheme(theme._id, theme.isCompleted)}
+                            style={styles.icon}>
+                            <Text>
+                              {theme.isCompleted ? (
+                                <FontAwesome5 name='check' size={20} color={colors.green} />
+                              ) : (
+                                <MaterialCommunityIcons
+                                  name='checkbox-blank-outline'
+                                  size={20}
+                                  color='black'
+                                />
+                              )}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            title='DELETE'
+                            onPress={() => deleteTheme(theme._id)}
+                            style={styles.icon}>
+                            <Text>🗑</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     )
                   })}
@@ -305,24 +312,33 @@ const SingleProjectPage = ({ navigation, route }) => {
                   {project.activitiesProjectList.map((activity) => {
                     return (
                       <View key={activity._id} style={styles.listWrapper}>
-                        <View style={styles.leftColumn}>
-                          <Text style={[styles.row, styles.text]}>{activity.activitiesName}</Text>
-                          <Text style={styles.row}>
-                            {/* {activity.isCompleted ? '✔️' : '✖️'} */}
-                          </Text>
+                        <View>
+                          <Text style={styles.text}>{activity.activitiesName}</Text>
                         </View>
-                        <TouchableOpacity
-                          title='Mark as completed'
-                          onPress={() => completedActivities(activity._id, activity.isCompleted)}
-                          style={styles.complete}>
-                          <Text>{activity.isCompleted ? '✅' : '🟩'}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          title='DELETE'
-                          onPress={() => deleteActivity(activity._id)}
-                          style={styles.delete}>
-                          <Text>🗑</Text>
-                        </TouchableOpacity>
+                        <View style={styles.icons}>
+                          <TouchableOpacity
+                            title='Mark as completed'
+                            onPress={() => completedActivities(activity._id, activity.isCompleted)}
+                            style={styles.icon}>
+                            <Text>
+                              {activity.isCompleted ? (
+                                <FontAwesome5 name='check' size={20} color={colors.green} />
+                              ) : (
+                                <MaterialCommunityIcons
+                                  name='checkbox-blank-outline'
+                                  size={20}
+                                  color='black'
+                                />
+                              )}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            title='DELETE'
+                            onPress={() => deleteActivity(activity._id)}
+                            style={styles.icon}>
+                            <Text>🗑</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     )
                   })}
@@ -331,28 +347,35 @@ const SingleProjectPage = ({ navigation, route }) => {
                   {project.decorationsProjectList.map((decoration) => {
                     return (
                       <View key={decoration._id} style={styles.listWrapper}>
-                        <View styles={styles.leftColumn}>
-                          <Text style={[styles.row, styles.text]}>
-                            {decoration.decorationsName}
-                          </Text>
-                          <Text style={[styles.row, styles.text]}>
-                            {/* {decoration.isCompleted ? '✔️' : '✖️'} */}
-                          </Text>
+                        <View>
+                          <Text style={styles.text}>{decoration.decorationsName}</Text>
                         </View>
-                        <TouchableOpacity
-                          title='Mark as completed'
-                          onPress={() =>
-                            completedDecorations(decoration._id, decoration.isCompleted)
-                          }
-                          style={styles.complete}>
-                          <Text>{decoration.isCompleted ? '✅' : '🟩'}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          title='DELETE'
-                          onPress={() => deleteDecoration(decoration._id)}
-                          style={styles.delete}>
-                          <Text>🗑</Text>
-                        </TouchableOpacity>
+                        <View style={styles.icons}>
+                          <TouchableOpacity
+                            title='Mark as completed'
+                            onPress={() =>
+                              completedDecorations(decoration._id, decoration.isCompleted)
+                            }
+                            style={styles.icon}>
+                            <Text>
+                              {decoration.isCompleted ? (
+                                <FontAwesome5 name='check' size={20} color={colors.green} />
+                              ) : (
+                                <MaterialCommunityIcons
+                                  name='checkbox-blank-outline'
+                                  size={20}
+                                  color='black'
+                                />
+                              )}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            title='DELETE'
+                            onPress={() => deleteDecoration(decoration._id)}
+                            style={styles.icon}>
+                            <Text>🗑</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     )
                   })}
@@ -361,24 +384,33 @@ const SingleProjectPage = ({ navigation, route }) => {
                   {project.foodProjectList.map((food) => {
                     return (
                       <View key={food._id} style={styles.listWrapper}>
-                        <View style={styles.leftColumn}>
-                          <Text style={[styles.row, styles.text]}>{food.foodName}</Text>
-                          <Text style={[styles.row, styles.text]}>
-                            {/*{food.isCompleted ? '✔️' : '✖️'}*/}
-                          </Text>
+                        <View>
+                          <Text style={styles.text}>{food.foodName}</Text>
                         </View>
-                        <TouchableOpacity
-                          title='Mark as completed'
-                          onPress={() => completedFood(food._id, food.isCompleted)}
-                          style={styles.complete}>
-                          <Text>{food.isCompleted ? '✅' : '🟩'}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          title='DELETE'
-                          onPress={() => deleteFood(food._id)}
-                          style={styles.delete}>
-                          <Text>🗑</Text>
-                        </TouchableOpacity>
+                        <View style={styles.icons}>
+                          <TouchableOpacity
+                            title='Mark as completed'
+                            onPress={() => completedFood(food._id, food.isCompleted)}
+                            style={styles.icon}>
+                            <Text>
+                              {food.isCompleted ? (
+                                <FontAwesome5 name='check' size={20} color={colors.green} />
+                              ) : (
+                                <MaterialCommunityIcons
+                                  name='checkbox-blank-outline'
+                                  size={20}
+                                  color='black'
+                                />
+                              )}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            title='DELETE'
+                            onPress={() => deleteFood(food._id)}
+                            style={styles.icon}>
+                            <Text>🗑</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     )
                   })}
@@ -387,24 +419,33 @@ const SingleProjectPage = ({ navigation, route }) => {
                   {project.drinksProjectList.map((drinks) => {
                     return (
                       <View key={drinks._id} style={styles.listWrapper}>
-                        <View style={styles.leftColumn}>
-                          <Text style={styles.row}>{drinks.drinksName}</Text>
-                          <Text style={[styles.row, styles.text]}>
-                            {/*{drinks.isCompleted ? '✅' : '🟩'}*/}
-                          </Text>
+                        <View>
+                          <Text style={styles.text}>{drinks.drinksName}</Text>
                         </View>
-                        <TouchableOpacity
-                          title='Mark as completed'
-                          onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}
-                          style={styles.complete}>
-                          <Text>{drinks.isCompleted ? '✅' : '🟩'}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          title='DELETE'
-                          onPress={() => deleteDrinks(drinks._id)}
-                          style={styles.delete}>
-                          <Text>🗑</Text>
-                        </TouchableOpacity>
+                        <View style={styles.icons}>
+                          <TouchableOpacity
+                            title='Mark as completed'
+                            onPress={() => completedFood(drinks._id, drinks.isCompleted)}
+                            style={styles.icon}>
+                            <Text>
+                              {drinks.isCompleted ? (
+                                <FontAwesome5 name='check' size={20} color={colors.green} />
+                              ) : (
+                                <MaterialCommunityIcons
+                                  name='checkbox-blank-outline'
+                                  size={20}
+                                  color='black'
+                                />
+                              )}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            title='DELETE'
+                            onPress={() => deleteDrinks(drinks._id)}
+                            style={styles.icon}>
+                            <Text>🗑</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     )
                   })}
@@ -415,7 +456,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                       onPress={() =>
                         navigation.navigate('WhatKindOfParty', { projectId: project._id })
                       }>
-                      <Text style={styles.buttonText}>BROWS CATEGORIES </Text>
+                      <Text style={styles.buttonText}>Browse ideas </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -429,93 +470,69 @@ const SingleProjectPage = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    backgroundColor: colors.green,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 500,
-  },
   background: {
     flex: 1,
     backgroundColor: colors.green,
-    alignItems: 'center',
-    flex: 1,
-    paddingVertical: 60,
   },
-
   // styling headers
   headerH1: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: fonts.titles,
     textAlign: 'center',
   },
   headerh2: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fonts.labels,
     textAlign: 'left',
     marginTop: 3,
   },
   headerH4: {
-    fontSize: 13,
-    fontWeight: 'bold',
+    fontSize: 17,
+    fontFamily: fonts.text,
     textAlign: 'center',
   },
   headerContainer: {
     marginTop: 100,
     flexDirection: 'column',
-    alignItems: 'flex-start',
     justifyContent: 'center',
     paddingBottom: 40,
   },
-  leftColumn: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-
-  listWrapper: {
-    justifyContent: 'center',
-    backgroundColor: colors.green,
+  itemWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    textAlign: 'center',
     borderRadius: 10,
     backgroundColor: colors.lightGrey,
-    flexWrap: 'wrap',
-    marginBottom: 10,
-    marginLeft: 5,
-    marginRight: 5,
-    padding: 5,
-    marginTop: 5,
+    marginBottom: 5,
+    padding: 15,
   },
-
+  listWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    textAlign: 'center',
+    borderRadius: 10,
+    backgroundColor: colors.lightGrey,
+    marginBottom: 5,
+    padding: 15,
+  },
   whiteWrapper: {
     borderRadius: 10,
     padding: 25,
     backgroundColor: colors.white,
   },
-
   // single item styling
-  row: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingBottom: 5,
-    fontSize: 16,
-  },
-
   text: {
     fontFamily: fonts.text,
+    fontSize: 17,
+    textTransform: 'capitalize',
   },
-
-  complete: {
-    zIndex: 10,
-    position: 'absolute',
-    right: 10,
-    bottom: 35,
+  icon: {
+    padding: 5,
   },
-
-  delete: {
-    zIndex: 10,
-    position: 'absolute',
-    right: 10,
-    bottom: 5,
+  icons: {
+    flexDirection: 'row',
   },
 
   // styling change name
@@ -601,7 +618,7 @@ const styles = StyleSheet.create({
   },
   changeBtn: {
     position: 'absolute',
-    right: 40,
+    right: 5,
     bottom: 50,
     padding: 8,
     backgroundColor: colors.lightGrey,

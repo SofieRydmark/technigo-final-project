@@ -23,7 +23,7 @@ import { Formik } from 'formik'
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { PROJECTS_URL } from 'assets/urls/urls'
-import { MaterialIcons, AntDesign, Octicons, Ionicons } from '@expo/vector-icons'
+import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
 // Reducers
 import user from '../../reducers/user'
@@ -53,7 +53,6 @@ const ProjectBoard = ({ navigation }) => {
       .then((data) => setAllProjects(data.response))
       .catch((error) => console.log(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
-    // console.log('data', allProjects)
   }, [allProjects])
 
   // *** ADD NEW PROJECT FETCH *** //
@@ -121,7 +120,7 @@ const ProjectBoard = ({ navigation }) => {
       styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
-  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
+  generateBoxShadowStyle(-5, 3, '#171717', 0.2, 4, 6, '#171717')
 
   return (
     <SafeAreaView
@@ -129,9 +128,9 @@ const ProjectBoard = ({ navigation }) => {
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <Text style={styles.headerH1}>Projectboard</Text>
       <Text style={styles.headerH2}>{email}</Text>
-      <View style={styles.container}>
+      <View style={[styles.container, styles.boxShadow]}>
         <Text style={styles.projectListH3}>Add new</Text>
-        <View style={[styles.form, styles.boxShadow]}>
+        <View style={styles.form}>
           <Formik
             initialValues={{ name: '', due_date: '' }}
             onSubmit={(values, actions) => {

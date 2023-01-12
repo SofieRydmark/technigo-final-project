@@ -11,13 +11,10 @@ import {
   Keyboard,
   Pressable,
   Platform,
-  ImageBackground
+  ImageBackground,
 } from 'react-native'
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
-
-// Components
-import MainButton from 'components/otherComponents/MainButton'
 
 // Asset imports
 import colors from 'assets/styling/colors.js'
@@ -102,100 +99,98 @@ const SignIn = ({ navigation }) => {
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
-  const backgroundImage = require('../../assets/images/BubbleImg.png')
+  const backgroundImage = require('assets/images/BubbleImg.png')
   return (
     // <ImageBackground source={backgroundImage} style={styles.background}>
     <KeyboardAvoidingView
       style={styles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
-      <ImageBackground source={backgroundImage} style={styles.backgroundBubble}>
-        <ScrollView contentContainerStyle={styles.background}>
-          <View style={styles.header}>
-            <Text style={styles.headerH1}>Welcome</Text>
-            <Text style={styles.headerH2}>
-              Not a member yet? Sign up
-              <Text style={styles.here} onPress={() => navigation.navigate('SignUp')}>
-                {' '}
-                here
+        <ImageBackground source={backgroundImage} style={styles.backgroundBubble}>
+          <ScrollView contentContainerStyle={styles.background}>
+            <View style={styles.header}>
+              <Text style={styles.headerH1}>Welcome</Text>
+              <Text style={styles.headerH2}>
+                Not a member yet? Sign up
+                <Text style={styles.here} onPress={() => navigation.navigate('SignUp')}>
+                  {' '}
+                  here
+                </Text>
               </Text>
-            </Text>
-          </View>
-          <Formik
-            initialValues={{ email: '', password: '' }}
-            validationSchema={ReviewSchema}
-            onSubmit={(values, actions) => {
-              if (values.email === '' || values.password === '') {
-                return setLoginError('Please fill in all fields')
-              } else {
-                signInSubmit(values)
-                actions.resetForm()
-              }
-            }}>
-            {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
-              <View style={[styles.form, styles.boxShadow]}>
-                <Text style={styles.label}>EMAIL</Text>
-                <TextInput
-                  label='email'
-                  style={styles.input}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                  required
-                  multiline={false}
-                  autoCapitalize='none'
-                  placeholder='hello@email.com'
-                  keyboardType='email-address'
-                />
-                {errors.email && touched.email ? (
-                  <Text style={styles.loginError}>{errors.email}</Text>
-                ) : null}
-                <Text style={styles.label}>PASSWORD</Text>
-                <TextInput
-                  label='password'
-                  style={styles.input}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  required
-                  multiline={false}
-                  autoCapitalize='none'
-                  secureTextEntry={hidePassword === true ? true : false}
-                  placeholder='*******'
-                />
-                <TouchableOpacity onPress={showPassword}>
-                  <Octicons
-                    name={hidePassword === true ? 'eye-closed' : 'eye'}
-                    size={20}
-                    style={styles.eyeIcon}
+            </View>
+            <Formik
+              initialValues={{ email: '', password: '' }}
+              validationSchema={ReviewSchema}
+              onSubmit={(values, actions) => {
+                if (values.email === '' || values.password === '') {
+                  return setLoginError('Please fill in all fields')
+                } else {
+                  signInSubmit(values)
+                  actions.resetForm()
+                }
+              }}>
+              {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
+                <View style={[styles.form, styles.boxShadow]}>
+                  <Text style={styles.label}>EMAIL</Text>
+                  <TextInput
+                    label='email'
+                    style={styles.input}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    placeholder='hello@email.com'
+                    keyboardType='email-address'
                   />
-                </TouchableOpacity>
-                {errors.password && touched.password ? (
-                  <Text style={styles.loginError}>{errors.password}</Text>
-                ) : null}
-                {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={[styles.signInButton, styles.boxShadow]}>
-                  <Text style={styles.buttonText}>Sign in</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-          <Text style={styles.forgotPassword} onPress={''}>
-            Forgot password?
-          </Text>
-        </ScrollView>
+                  {errors.email && touched.email ? (
+                    <Text style={styles.loginError}>{errors.email}</Text>
+                  ) : null}
+                  <Text style={styles.label}>PASSWORD</Text>
+                  <TextInput
+                    label='password'
+                    style={styles.input}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    secureTextEntry={hidePassword === true ? true : false}
+                    placeholder='*******'
+                  />
+                  <TouchableOpacity onPress={showPassword}>
+                    <Octicons
+                      name={hidePassword === true ? 'eye-closed' : 'eye'}
+                      size={20}
+                      style={styles.eyeIcon}
+                    />
+                  </TouchableOpacity>
+                  {errors.password && touched.password ? (
+                    <Text style={styles.loginError}>{errors.password}</Text>
+                  ) : null}
+                  {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    style={[styles.signInButton, styles.boxShadow]}>
+                    <Text style={styles.buttonText}>Sign in</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+            <Text style={styles.forgotPassword} onPress={''}>
+              Forgot password?
+            </Text>
+          </ScrollView>
         </ImageBackground>
       </Pressable>
     </KeyboardAvoidingView>
-
   )
 }
 
 const styles = StyleSheet.create({
   background: {
-    // backgroundColor: colors.green,
     alignItems: 'center',
     flex: 1,
   },
@@ -229,7 +224,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 30,
-    marginTop: 100
+    marginTop: 150,
   },
   headerH1: {
     fontSize: 35,

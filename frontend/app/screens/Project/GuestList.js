@@ -1,20 +1,27 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import {
+  View,
+  ScrollView,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+} from 'react-native'
 import { Formik } from 'formik'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
+import { Ionicons } from '@expo/vector-icons'
+import { ONEPROJECT_URL } from 'assets/urls/urls'
 
 // Reducers
 import { ui } from '../../reducers/ui'
 
-
-
-
-const GuestList = ({ navigation, route}) => {
+const GuestList = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const projectId = route.params.projectId
   const [allGuests, setAllGuests] = useState([])
@@ -24,31 +31,31 @@ const GuestList = ({ navigation, route}) => {
   console.log('project id guest', projectId)
   const project = route.params.project
 
-// *** ADD NEW GUEST FETCH *** // 
+  // *** ADD NEW GUEST FETCH *** //
   const addNewGuest = (values) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-         Authorization: accessToken,
+        Authorization: accessToken,
       },
-       body: JSON.stringify({
-        guestName: values.guestName,  // values comes from Formik
-        phone: values.phone
-        }),
-      }
-      fetch(`https:party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/${projectId}`, options)
-      .then ((res) => res.json())
+      body: JSON.stringify({
+        guestName: values.guestName, // values comes from Formik
+        phone: values.phone,
+      }),
+    }
+    fetch(
+      `https:party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/${projectId}`,
+      options
+    )
+      .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error))
-      .finally(()=> dispatch(ui.actions.setLoading(false)))
-
-
+      .finally(() => dispatch(ui.actions.setLoading(false)))
   }
-
   // *** DELETE GUEST FROM THE LIST *** //
-  const deleteGuest = ( guestId) => {
+  const deleteGuest = (guestId) => {
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
@@ -56,16 +63,16 @@ const GuestList = ({ navigation, route}) => {
         'Content-Type': 'application/json',
         Authorization: accessToken,
       },
-       body: JSON.stringify({ _id:guestId })
-
-    };
-    fetch(`https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteGuest/${guestId}`, options)
+      body: JSON.stringify({ _id: guestId }),
+    }
+    fetch(
+      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteGuest/${guestId}`,
+      options
+    )
       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.error(error))
-       .finally(() => dispatch(ui.actions.setLoading(false)))
-  
-
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
   }
   // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
@@ -91,79 +98,78 @@ const GuestList = ({ navigation, route}) => {
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
-    <ScrollView contentContainerStyle={styles.background}>
+    <SafeAreaView
+      style={styles.background}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <View style={styles.wrapper}>
-        <View style={styles.header}>
-          <Text style={styles.headerH1}>GUEST LIST</Text>
-          <TouchableOpacity
+        <Text style={styles.headerH1}>Guestlist</Text>
+        {/* <TouchableOpacity
             onPress={() => navigation.navigate('SingleProjectPage', { projectId: project._id })}
             style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>Back to overview</Text>
-          </TouchableOpacity>
-        </View>
-       </View> 
-          {accessToken && (
-          <>
-          <View style={styles.form}>
-              <Formik
-                initialValues={{ guestName: '', phone: '' }}
-                onSubmit={(values, actions) => {
-                  if (values.guestName === '' || values.phone === '') {
-                    return setLoginError('Please fill the name')
-                  } else {
-                    addNewGuest(values)
-                    actions.resetForm()
-                  }
-                }}>
-                {({ handleChange, handleSubmit, values }) => (
-                  <View style={styles.input}>
-                    <TextInput
-                      label='guestName'
-                      onChangeText={handleChange('guestName')}
-                      value={values.guestName}
-                      placeholder={'Namn'}
-                      required
-                      multiline={false}
-                      autoCapitalize='none'
-                      maxLength={20}
-                    />
-                    <TextInput
-                      label='phone'
-                      onChangeText={handleChange('phone')}
-                      value={values.phone}
-                      placeholder={'Telefonnummer'}
-                      multiline={false}
-                      autoCapitalize='none'
-                    />
+            <Text style={styles.buttonText}>Back to project</Text>
+          </TouchableOpacity> */}
+      </View>
+      <View style={[styles.form, styles.boxShadow]}>
+        <Formik
+          initialValues={{ guestName: '', phone: '' }}
+          onSubmit={(values, actions) => {
+            if (values.guestName === '') {
+              return setLoginError('Please fill the name')
+            } else {
+              addNewGuest(values)
+              actions.resetForm()
+            }
+          }}>
+          {({ handleChange, handleSubmit, values }) => (
+            <View style={styles.input}>
+              <TextInput
+                label='guestName'
+                onChangeText={handleChange('guestName')}
+                value={values.guestName}
+                placeholder={'Name'}
+                required
+                multiline={false}
+                autoCapitalize='none'
+                maxLength={20}
+                style={styles.inputText}
+              />
+              <TextInput
+                label='phone'
+                onChangeText={handleChange('phone')}
+                value={values.phone}
+                placeholder={'Phonenumber'}
+                multiline={false}
+                autoCapitalize='none'
+                style={styles.inputText}
+              />
 
-                    <TouchableOpacity style={styles.addProjectButton} onPress={handleSubmit}>
-                      <Text>NY GÄST</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </Formik>
-              <View>
-                {project.guestList.map((guest) => {
-                  return(
-                    <>
-                    <View style={styles.listWrapper} key={guest._id}>
-                      <Text style={styles.row}>{guest.guestName}</Text>
-                      <Text style={styles.row}>{guest.phone}</Text>
-                    </View>
-                    <View>
-                      <TouchableOpacity style={styles.trashIcon} onPress={() => deleteGuest(guest._id)}>
-                        <Text style={styles.row}>🗑</Text>
-                      </TouchableOpacity>
-                    </View>
-                    </>
-                  )
-                })}
+              <TouchableOpacity
+                style={[styles.addGuestButton, styles.boxShadow]}
+                onPress={handleSubmit}>
+                <Ionicons name='add' size={35} color='black' />
+              </TouchableOpacity>
+            </View>
+          )}
+        </Formik>
+        <View>
+          <FlatList
+            style={styles.flatList}
+            data={project.guestList}
+            renderItem={({ item }) => (
+              <View style={styles.listWrapper}>
+                <Text style={styles.row}>{item.guestName}</Text>
+                <Text style={styles.row}>{item.phone}</Text>
 
+                <TouchableOpacity style={styles.trashIcon} onPress={() => deleteGuest(item._id)}>
+                  <Text style={styles.row}>🗑</Text>
+                </TouchableOpacity>
               </View>
-            </View>    
-      </>
-        )}
-    </ScrollView>
+            )}
+            keyExtractor={(item) => item._id}
+          />
+        </View>
+      </View>
+    </SafeAreaView>
   )
 }
 
@@ -175,67 +181,52 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 60,
   },
-
-  header: {
-    marginTop: 30,  
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-
   headerH1: {
-    margin: 10,
-    fontSize: 25,
-    fontWeight: 'bold',
+    marginTop: 50,
+    fontSize: 30,
+    fontFamily: fonts.titles,
     textAlign: 'center',
   },
-
   pressable: {
     flex: 1,
     background: 'transparent',
   },
-
   wrapper: {
     marginBottom: 30,
     marginTop: 20,
   },
-
   listWrapper: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 10,
     backgroundColor: colors.lightGrey,
+    borderRadius: 10,
     flexWrap: 'wrap',
     margin: 2,
   },
-
-  // sigle item styling
+  // single item styling
   row: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingBottom: 5,
-    fontSize: 16,
+    padding: 15,
+    fontSize: 20,
+    fontFamily: fonts.text,
   },
-
   // maping + formik with white background
   form: {
     borderRadius: 10,
-    padding: 25,
-    width: '80%',
+    padding: 30,
+    width: '90%',
     backgroundColor: colors.white,
   },
-
   // add new guest input + button styling
-  addProjectButton: {
+  addGuestButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 5,
+    alignSelf: 'flex-end',
+    top: -20,
+    right: 5,
+    marginTop: -20,
     textAlign: 'center',
-    width: '50%',
-    height: 30,
-    borderRadius: 8,
+    borderRadius: 50,
     backgroundColor: colors.peach,
   },
-
   input: {
     marginBottom: 10,
     padding: 25,
@@ -243,21 +234,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
-    fontSize: 12,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
+  },
+  inputText: {
+    fontFamily: fonts.input,
+    fontSize: 17,
   },
 
   //delete icon styling
   trashIcon: {
-    color: colors.red,
     zIndex: 10,
     position: 'absolute',
     right: 10,
     bottom: 1,
   },
 
-  // comeback button styling 
+  // comeback button styling
   partyButton: {
     alignItems: 'center',
     justifyContent: 'center',

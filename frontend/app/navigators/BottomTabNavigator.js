@@ -24,7 +24,6 @@ const BottomTabNavigator = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        // tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarInactiveTintColor: colors.black,
@@ -61,7 +60,6 @@ const BottomTabNavigator = () => {
           name='HomeNavigator'
           component={HomeNavigator}
           options={{
-            // tabBarButton: (props) => <CustomTabBarButton route='Profile' {...props} />,
             tabBarLabel: 'Home',
           }}
         />
@@ -69,7 +67,6 @@ const BottomTabNavigator = () => {
           name='ProfileNavigator'
           component={ProfileNavigator}
           options={{
-            // tabBarButton: (props) => <CustomTabBarButton route='Profile' {...props} />,
             tabBarLabel: 'Profile',
           }}
         />
@@ -77,7 +74,6 @@ const BottomTabNavigator = () => {
           name='ProjectNavigator'
           component={ProjectNavigator}
           options={{
-            // tabBarButton: (props) => <CustomTabBarButton route='ProjectBoard' {...props} />,
             tabBarLabel: 'Projects',
           }}
         />
@@ -85,7 +81,6 @@ const BottomTabNavigator = () => {
           name='BrowseNavigator'
           component={BrowseNavigator}
           options={{
-            // tabBarButton: (props) => <CustomTabBarButton route='Browse' {...props} />,
             tabBarLabel: 'Browse ideas',
           }}
         />

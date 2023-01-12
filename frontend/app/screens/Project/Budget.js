@@ -1,7 +1,16 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput, FlatList } from 'react-native'
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+  SafeAreaView,
+} from 'react-native'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
@@ -93,42 +102,45 @@ const Budget = ({ navigation, route }) => {
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
-    <ScrollView contentContainerStyle={styles.background}>
+    <ScrollView
+      style={styles.background}
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <View style={styles.wrapper}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerH1}>BUDGET</Text>
-          <TouchableOpacity
+        <Text style={styles.headerH1}>Budget</Text>
+        {/* <TouchableOpacity
             onPress={() => navigation.navigate('SingleProjectPage', { projectId: project._id })}
             style={[styles.partyButton, styles.boxShadow]}>
             <Text style={styles.buttonText}>Back to overview</Text>
-          </TouchableOpacity>
-        </View>
+          </TouchableOpacity> */}
         <View style={[styles.whiteContainer, styles.boxShadow]}>
           <View style={styles.smallHeaderContainer}>
             <View style={styles.leftColumn}>
               <Text style={styles.headingh3}>ITEM</Text>
             </View>
             <View style={styles.rightColumn}>
-              <Text style={styles.headingh3}> PRICE </Text>
+              <Text style={styles.headingh3}>PRICE</Text>
             </View>
           </View>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={itemName}
-              onChangeText={setItemName}
-              placeholder='Enter item name'
-              required
-            />
-
-            <TextInput
-              style={styles.input}
-              keyboardType={'numeric'}
-              value={itemPrice}
-              onChangeText={setItemPrice}
-              placeholder='Enter price'
-              required
-            />
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.input}
+                value={itemName}
+                onChangeText={setItemName}
+                placeholder='Enter item name'
+                required
+              />
+            </View>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.input}
+                keyboardType={'numeric'}
+                value={itemPrice}
+                onChangeText={setItemPrice}
+                placeholder='Enter price'
+                required
+              />
+            </View>
           </View>
 
           <View style={[styles.buttonContainer, styles.boxShadow]}>
@@ -136,7 +148,7 @@ const Budget = ({ navigation, route }) => {
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           </View>
-        
+
           {project.budgetList.map((budget) => {
             return (
               <View key={budget._id} style={styles.budgetContainer}>
@@ -158,10 +170,10 @@ const Budget = ({ navigation, route }) => {
 
           <View style={styles.budgetContainer}>
             <View style={styles.leftColumn}>
-              <Text style={styles.text}>Total</Text>
+              <Text style={styles.textTotal}>Total</Text>
             </View>
             <View style={styles.rightColumn}>
-              <Text style={styles.text}>{totalSum} KR</Text>
+              <Text style={styles.textTotal}>{totalSum} KR</Text>
             </View>
           </View>
         </View>
@@ -173,24 +185,13 @@ const Budget = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   background: {
     backgroundColor: colors.green,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 500,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  wrapper: {
-    marginBottom: 30,
-    marginTop: 20,
+    flex: 1,
   },
   headerH1: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    marginTop: 100,
+    fontSize: 30,
     fontFamily: fonts.titles,
-    marginTop: 10,
+    textAlign: 'center',
   },
   partyButton: {
     alignItems: 'center',
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
   input: {
     marginBottom: 10,
@@ -213,11 +214,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
-    fontSize: 12,
+    fontSize: 18,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
-    width: '45%',
     fontFamily: fonts.input,
+  },
+  inputBox: {
+    width: 150,
+    marginHorizontal: 10,
   },
   buttonContainer: {
     marginTop: 10,
@@ -228,7 +232,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    width: 110,
+    width: '40%',
     height: 45,
     borderRadius: 12,
     backgroundColor: colors.peach,
@@ -236,7 +240,7 @@ const styles = StyleSheet.create({
   budgetContainer: {
     flexDirection: 'row',
     marginTop: 20,
-    padding: 10,
+    padding: 15,
     backgroundColor: colors.lightGrey,
     borderRadius: 12,
   },
@@ -260,16 +264,22 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: fonts.button,
+    fontSize: 18,
   },
   text: {
     fontFamily: fonts.text,
+    fontSize: 18,
+  },
+  textTotal: {
+    fontFamily: fonts.button,
+    fontSize: 18,
   },
   whiteContainer: {
-    backgroundColor: 'white',
-    flex: 0.5,
+    backgroundColor: colors.white,
     marginTop: 40,
     padding: 30,
     borderRadius: 15,
+    width: '85%',
   },
   smallHeaderContainer: {
     flexDirection: 'row',
@@ -278,9 +288,11 @@ const styles = StyleSheet.create({
     paddingRight: 50,
     paddingLeft: 50,
   },
-
   headingh3: {
-    fontFamily: fonts.titles,
+    fontFamily: fonts.text,
+    textTransform: 'uppercase',
+    fontSize: 20,
+    color: colors.darkGrey,
   },
 })
 export default Budget
