@@ -9,6 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  FlatList, 
+  Modal
 } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker'
 
@@ -27,7 +29,7 @@ import {
   ACTIVITY_DELETE_URL,
   ONEPROJECT_CHANGE_URL,
 } from 'assets/urls/urls'
-
+import { MaterialIcons } from '@expo/vector-icons'
 // Reducers
 import user from '../../reducers/user'
 import { ui } from '../../reducers/ui'
@@ -42,7 +44,7 @@ const SingleProjectPage = ({ navigation, route }) => {
   const [dueDate, setDueDate] = useState('')
   const projectId = route.params.projectId
   const dispatch = useDispatch()
-  const [calendarVisible, setCalendarVisible] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   const getSingleProject = () => {
     dispatch(ui.actions.setLoading(true))
@@ -191,27 +193,59 @@ const SingleProjectPage = ({ navigation, route }) => {
 
     singleProjectChange(options)
   }
-
+   // Box shadow styling IOS and android
+   const generateBoxShadowStyle = (
+    xOffset,
+    yOffset,
+    shadowColorIos,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+    shadowColorAndroid
+  ) => {
+    if (Platform.OS === 'ios') {
+      styles.boxShadow = {
+        shadowColor: shadowColorIos,
+        shadowOpacity,
+        shadowRadius,
+        shadowOffset: { width: xOffset, height: yOffset },
+      }
+    } else if (Platform.OS === 'android') {
+      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+    }
+  }
+  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       {singleProject.map((project) => {
         return (
-          <>
+          <View>
             <View key={project._id}>
               <View style={styles.headerContainer}>
-                <View style={styles.leftColumn}>
                   <Text style={styles.headerH1}>{project.name}</Text>
                   <Text style={styles.headerH4}>{project.due_date}</Text>
-                </View>
-                <View style={styles.rightColumn}>
-                  <TouchableOpacity
-                    onPress={() => setShowInput(!showInput)}
-                    style={[styles.changeButton, styles.buttonText]}>
-                    <Text>Change name </Text>
+                  <TouchableOpacity style={styles.changeBtn} onPress={() => setShowModal(true)}>
+                    <MaterialIcons name='edit' size={20} color='black' />
                   </TouchableOpacity>
-
-                  {showInput && (
-                    <View>
+                </View> 
+                  <Modal animationType="slide" visible={showModal} transparent={false}>
+                  <View style={styles.modalContainer}>
+                  <View style={styles.calendar}>
+                    <CalendarPicker
+                      onDateChange={(date) => setDueDate(date.toISOString().slice(0,10))}
+                      minDate={new Date()}
+                      />
+                        <TouchableOpacity 
+                          style={[styles.boxShadow, styles.submitButton]}
+                          onPress={() => {
+                          changeDueDate(dueDate);
+                          setShowModal(false);
+                          }}>
+                          <Text style={styles.buttonText}>CHANGE DATE</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.changeNameContainer}>
+                      <Text style={styles.headerH1}>CHANGE NAME</Text>
                       <TextInput
                         style={styles.input}
                         value={name}
@@ -219,61 +253,35 @@ const SingleProjectPage = ({ navigation, route }) => {
                         placeholder='New name'
                       />
                       <TouchableOpacity
-                        style={[styles.changeButton, styles.buttonText]}
+                        style={[styles.submitButton, styles.boxShadow]}
                         onPress={() => {
-                          changeName(name, console.log('onpress', name))
-                          setShowInput(false)
+                          changeName(name)
+                          setShowModal(false);
+                          setName('')
                         }}>
-                        <Text>Submit</Text>
+                        <Text style={styles.buttonText}>SUBMIT</Text>
                       </TouchableOpacity>
                     </View>
-                  )}
-                  <TouchableOpacity
-                    onPress={() => setShowDateChange(!showDateChange)}
-                    style={[styles.changeButton, styles.buttonText]}>
-                    <Text>Change Date</Text>
-                  </TouchableOpacity>
-                  {showDateChange && (
-                    <View>
-                      <TextInput
-                        style={styles.input}
-                        onChangeText={(text) => setDueDate(text)}
-                        value={dueDate}
-                        placeholder='YYYY-MM-DD'
-                      />
-                      <TouchableOpacity
-                        style={styles.changeButton}
-                        onPress={() => {
-                          changeDueDate(dueDate)
-                          setShowDateChange(false)
-                        }}>
-                        <Text>Submit</Text>
-                      </TouchableOpacity>
                     </View>
-                  )}
-                </View>
-              </View>
-              <View style={styles.whiteWrapper}>
+                  </Modal>
+                 
+
+              <View style={[styles.whiteWrapper, styles.boxShadow]}>
                 <View style={styles.guestBudgetButton}>
                   <TouchableOpacity
-                    style={styles.partyButton}
+                    style={[styles.partyButton, styles.boxShadow]}
                     onPress={() => {
                       navigation.navigate('GuestList', { project: project, projectId: project._id })
                     }}>
                     <Text style={[styles.row, styles.buttonText]}>GUEST LIST</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.partyButton}
+                    style={[styles.partyButton, styles.boxShadow]}
                     onPress={() => {
                       navigation.navigate('Budget', { project: project, projectId: project._id })
                     }}>
                     <Text style={[styles.row, styles.buttonText]}>BUDGET</Text>
                   </TouchableOpacity>
-                  {/* <TouchableOpacity
-              onPress={() => navigation.navigate('ProjectBoard')}
-              style={styles.partyButton}>
-              <Text style={styles.buttonText}>Back to projectBoard</Text>
-            </TouchableOpacity> */}
                 </View>
 
                 <View>
@@ -404,21 +412,23 @@ const SingleProjectPage = ({ navigation, route }) => {
                     )
                   })}
 
-                  {/* <Button title='Brows categories 'onPress={navigation.navigate('BrowsingCategoriesPage', { projectId:singleProject._id })} /> */}
-                  {project.budgetList.map((budget) => {
-                    return (
-                      <View key={budget._id}>
-                        <Text>{budget.activitiesName}</Text>
-                        {/* <Text>{activity.isCompleted ? 'Completed' : 'Incomplete'}</Text> */}
-                      </View>
-                    )
-                  })}
+                  
+                 <View style={styles.guestBudgetButton} >
+                 <TouchableOpacity 
+                  style={[styles.partyButton, styles.boxShadow]}
+                  onPress={() => navigation.navigate('WhatKindOfParty',{projectId: project._id}) } >
+                    <Text style={styles.buttonText}>BROWS CATEGORIES </Text>
+                  </TouchableOpacity>  
+                  </View> 
                 </View>
               </View>
             </View>
-          </>
+          </View>
+          
         )
+                  
       })}
+    
     </ScrollView>
   )
 }
@@ -448,6 +458,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'left',
+    marginTop: 3, 
+
   },
   headerH4: {
     fontSize: 13,
@@ -456,8 +468,9 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     marginTop: 100,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
     paddingBottom: 40,
   },
   leftColumn: {
@@ -472,10 +485,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: colors.lightGrey,
     flexWrap: 'wrap',
-    marginBottom: 5,
+    marginBottom: 10,
     marginLeft: 5,
     marginRight: 5,
     padding: 5,
+    marginTop: 5, 
   },
 
   whiteWrapper: {
@@ -510,49 +524,51 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 
-  // styling change name & due_date
+  // styling change name
   input: {
     backgroundColor: colors.lightGrey,
-    marginBottom: 20,
-    marginTop: 10,
+    marginBottom: 10,
+    marginTop: 30,
     borderWidth: 1,
-    padding: 15,
+    padding: 5,
     borderRadius: 12,
     fontSize: 16,
+    width: 200,
     fontFamily: fonts.input,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
+    paddingLeft: 20, 
+    paddingRight:20,
   },
 
   // styling buttons
   buttonText: {
     fontFamily: fonts.button,
+    textAlign: 'center'
   },
 
   partyButton: {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 5,
+    marginBottom: 5,
     width: '40%',
     height: 50,
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
 
-  changeButton: {
+  submitButton: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 20,
     textAlign: 'center',
-    fontFamily: fonts.button,
-    width: 70,
-    height: 20,
+    width: 200,
+    height: 50,
     borderRadius: 8,
-    marginBottom: 10,
     backgroundColor: colors.peach,
   },
-
   guestBudgetButton: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -560,5 +576,42 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 2,
   },
+
+  changeNameContainer: {
+    fontFamily: fonts.text,
+    backgroundColor: colors.green,
+    alignItems: 'center' ,
+    paddingBottom: 300, 
+    paddingTop: 50, 
+  },  
+  changeButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 0,
+    borderRadius: 8,
+    marginBottom: 5,
+    marginLeft: 20, 
+    marginRight: 20, 
+    alignItems: 'center' 
+  },
+  calendar: {
+   fontFamily: fonts.text,
+   backgroundColor: colors.green,
+   alignItems: 'center' 
+  },
+  modalContainer: {
+    paddingTop: 100, 
+    backgroundColor: colors.green, 
+    paddingBottom: 100, 
+    alignItems: 'center' 
+  },
+  changeBtn: {
+    position: 'absolute',
+    right: 40,
+    bottom: 50,
+    padding: 8,
+    backgroundColor: colors.lightGrey,
+    borderRadius: 50,
+  }
 })
 export default SingleProjectPage

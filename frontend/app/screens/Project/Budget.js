@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput, FlatList } from 'react-native'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
@@ -136,7 +136,7 @@ const Budget = ({ navigation, route }) => {
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           </View>
-
+        
           {project.budgetList.map((budget) => {
             return (
               <View key={budget._id} style={styles.budgetContainer}>
