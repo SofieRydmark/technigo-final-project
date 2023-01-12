@@ -1,42 +1,17 @@
 import React from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
-// Assets import
 import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
 
 const WhatKindOfParty = ({ navigation, route }) => {
   const projectId = route.params.projectId
-
-  // Box shadow styling IOS and android
-  const generateBoxShadowStyle = (
-    xOffset,
-    yOffset,
-    shadowColorIos,
-    shadowOpacity,
-    shadowRadius,
-    elevation,
-    shadowColorAndroid
-  ) => {
-    if (Platform.OS === 'ios') {
-      styles.boxShadow = {
-        shadowColor: shadowColorIos,
-        shadowOpacity,
-        shadowRadius,
-        shadowOffset: { width: xOffset, height: yOffset },
-      }
-    } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
-    }
-  }
-  generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <ScrollView contentContainerStyle={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerH1}>What kind of party do you need ideas for?</Text>
       </View>
-      <View style={[styles.container, styles.boxShadow]}>
+      <View style={styles.container}>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('BrowsingCategoriesPage', {
@@ -44,7 +19,7 @@ const WhatKindOfParty = ({ navigation, route }) => {
               projectId: projectId,
             })
           }
-          style={[styles.partyButton, styles.boxShadow]}>
+          style={styles.partyButton}>
           <Text style={styles.buttonText}>Grown-up party</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -54,7 +29,7 @@ const WhatKindOfParty = ({ navigation, route }) => {
               projectId: projectId,
             })
           }
-          style={[styles.partyButton, styles.boxShadow]}>
+          style={styles.partyButton}>
           <Text style={styles.buttonText}>Kids party</Text>
         </TouchableOpacity>
       </View>
@@ -71,23 +46,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    fontSize: 16,
-    fontFamily: fonts.button,
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   container: {
     borderRadius: 30,
-    padding: 30,
-    width: '90%',
+    padding: 25,
+    width: '80%',
     backgroundColor: colors.white,
   },
   header: {
     marginBottom: 30,
-    marginHorizontal: 15,
   },
   headerH1: {
     fontSize: 25,
-    fontFamily: fonts.titles,
+    fontWeight: 'bold',
     textAlign: 'center',
+  },
+  pressable: {
+    flex: 1,
+    background: 'transparent',
   },
   partyButton: {
     alignItems: 'center',

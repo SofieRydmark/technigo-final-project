@@ -6,6 +6,7 @@ import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 
 const WhatAreWeDoing = ({ navigation }) => {
+  
   // Box shadow styling IOS and android
   const generateBoxShadowStyle = (
     xOffset,
@@ -59,18 +60,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: fonts.button,
   },
   container: {
     borderRadius: 30,
-    padding: 30,
-    width: '90%',
+    padding: 25,
+    width: '80%',
     backgroundColor: colors.white,
   },
   header: {
     marginBottom: 30,
-    marginHorizontal: 15,
   },
   headerH1: {
     fontSize: 25,

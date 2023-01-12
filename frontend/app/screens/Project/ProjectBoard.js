@@ -6,13 +6,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  Pressable,
   TextInput,
   Modal,
-  FlatList,
-  SafeAreaView,
 } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker'
 
@@ -22,8 +17,7 @@ import { Formik } from 'formik'
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-import { PROJECTS_URL } from 'assets/urls/urls'
-import { MaterialIcons, AntDesign, Octicons, Ionicons } from '@expo/vector-icons'
+import { PROJECTS_URL, PROJECTS_ADD_URL, ONEPROJECT_DELETE_URL } from 'assets/urls/urls'
 
 // Reducers
 import user from '../../reducers/user'
@@ -76,6 +70,7 @@ const ProjectBoard = ({ navigation }) => {
       options
     )
       .then((res) => res.json())
+      .then((data) => console.log(data))
       .catch((error) => setLoginError(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
@@ -97,6 +92,7 @@ const ProjectBoard = ({ navigation }) => {
       options
     )
       .then((res) => res.json())
+      .then((data) => console.log(data))
       .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
@@ -122,245 +118,213 @@ const ProjectBoard = ({ navigation }) => {
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
-
   return (
-    <SafeAreaView
-      style={styles.background}
-      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={styles.headerH1}>Projectboard</Text>
-      <Text style={styles.headerH2}>{email}</Text>
-      <View style={styles.container}>
-        <Text style={styles.projectListH3}>Add new</Text>
-        <View style={[styles.form, styles.boxShadow]}>
-          <Formik
-            initialValues={{ name: '', due_date: '' }}
-            onSubmit={(values, actions) => {
-              if (values.name === '') {
-                setLoginError('Please fill out the name')
-              } else if (values.due_date === '') {
-                setLoginError('Please fill the date')
-              } else if (values.name.length <= 5) {
-                setLoginError('Name too short, min 5 characters')
-              } else {
-                addNewProject(values)
-                setLoginError(null)
-                actions.resetForm()
-              }
-            }}>
-            {({ handleChange, handleSubmit, values }) => (
-              <View style={styles.input}>
-                <TextInput
-                  label='name'
-                  onChangeText={handleChange('name')}
-                  value={values.name}
-                  placeholder={'Name'}
-                  required
-                  multiline={false}
-                  autoCapitalize='none'
-                  maxLength={20}
-                  style={styles.inputText}
-                />
-                {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
+    <ScrollView contentContainerStyle={styles.background}>
+      <View style={styles.header}>
+        <Text style={styles.headerH1}>Hi, {email}, Welcome to your project board</Text>
+      </View>
+      <View style={[styles.form, styles.boxShadow]}>
+        <Formik
+          initialValues={{ name: '', due_date: '' }}
+          onSubmit={(values, actions) => {
+            if (values.name === '') {
+              setLoginError('Please fill out the name')
+            } else if (values.due_date === '') {
+              setLoginError('Please fill the date')
+            } else if (values.name.length <= 5) {
+              setLoginError('Name too short, min 5 characters')
+            } else {
+              addNewProject(values)
+              setLoginError(null)
+              actions.resetForm()
+            }
+          }}>
+          {({ handleChange, handleSubmit, values }) => (
+            <View style={styles.input}>
+              <TextInput
+                label='name'
+                onChangeText={handleChange('name')}
+                value={values.name}
+                placeholder={'Project name'}
+                required
+                multiline={false}
+                autoCapitalize='none'
+                maxLength={20}
+                style={styles.inputText}
+              />
+              {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
 
-                <Modal visible={calendarVisible} animationType={'slide'}>
-                  <View style={styles.calendar}>
-                    <CalendarPicker
-                      onDateChange={(date) =>
-                        handleChange('due_date')(date.toISOString().slice(0, 10))
-                      }
-                      style={styles.calendar}
-                      minDate={new Date()}
-                    />
-                    <TouchableOpacity
-                      style={styles.doneButton}
-                      onPress={() => setCalendarVisible(false)}>
-                      <Text style={styles.doneButtonText}>Add date</Text>
-                    </TouchableOpacity>
-                  </View>
-                </Modal>
+              <Modal visible={calendarVisible} animationType={'slide'}>
+                <View style={styles.calendar}>
+                  <CalendarPicker
+                    onDateChange={(date) =>
+                      handleChange('due_date')(date.toISOString().slice(0, 10))
+                    }
+                    style={styles.calendar}
+                    minDate={new Date()}
+                  />
+                  <TouchableOpacity
+                    style={styles.doneButton}
+                    onPress={() => setCalendarVisible(false)}>
+                    <Text style={styles.doneButtonText}>CHOOSE</Text>
+                  </TouchableOpacity>
+                </View>
+              </Modal>
 
-                <TouchableOpacity
-                  onPress={() => {
-                    setCalendarVisible(true)
-                  }}>
-                  <Text style={values.due_date ? styles.chosenDateText : styles.defaultDateText}>
-                    {values.due_date ? values.due_date : 'YYYY-MM-DD'}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.addProjectButton, styles.boxShadow]}
-                  onPress={handleSubmit}>
-                  <Ionicons name='add' size={35} color='black' />
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-        </View>
-
-        <Text style={styles.projectListH3}>All projects</Text>
-        <FlatList
-          style={styles.flatList}
-          data={allProjects}
-          renderItem={({ item }) => (
-            <View style={styles.listItem}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('SingleProjectPage', { projectId: item._id })
+                  setCalendarVisible(true)
                 }}>
-                <View style={styles.editIcon}>
-                  <MaterialIcons name='edit' size={20} color={colors.darkGrey} />
-                </View>
-                <View styles={styles.itemInfo}>
-                  <Text style={styles.row1}>{item.name}</Text>
-                  <Text style={styles.row2}>{item.due_date}</Text>
-                </View>
+                <Text style={values.due_date ? styles.chosenDateText : styles.defaultDateText}>
+                  {values.due_date ? values.due_date : 'YYYY-MM-DD'}
+                </Text>
               </TouchableOpacity>
-              <View style={styles.trashIcon}>
-                <TouchableOpacity onPress={() => deleteProject(item._id)}>
-                  <Text>🗑</Text>
-                </TouchableOpacity>
-              </View>
+
+              <TouchableOpacity
+                style={[styles.addProjectButton, styles.boxShadow]}
+                onPress={handleSubmit}>
+                <Text style={styles.buttonText}>New Project</Text>
+              </TouchableOpacity>
             </View>
           )}
-          keyExtractor={(item) => item._id}
-        />
+        </Formik>
 
-        <TouchableOpacity
-          style={[styles.findStoreButton, styles.boxShadow]}
-          onPress={() => {
-            navigation.navigate('FindStore')
-          }}>
-          <Text style={styles.buttonText}>Find Store</Text>
-        </TouchableOpacity>
+        <View>
+          {allProjects.map((singleProject) => {
+            return (
+              <View key={singleProject._id}>
+                <View style={styles.listWrapper}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SingleProjectPage', { projectId: singleProject._id })
+                    }}>
+                    <Text style={styles.row}>{singleProject.due_date}</Text>
+                    <Text style={styles.row}>{singleProject.name}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.trashIcon}
+                    onPress={() => deleteProject(singleProject._id)}>
+                    <Text style={styles.row}>🗑</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
+          })}
+          <View style={styles.findContainer}>
+            <TouchableOpacity
+              style={[styles.findStoreButton, styles.boxShadow]}
+              onPress={() => {
+                navigation.navigate('FindStore')
+              }}>
+              <Text style={styles.buttonText}>Find Store</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
     backgroundColor: colors.green,
-  },
-  container: {
     alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: '90%',
-    backgroundColor: colors.white,
-    borderRadius: 10,
-    padding: 10,
+    paddingVertical: 60,
+    paddingBottom: 100,
+  },
+  header: {
+    marginTop: 30,
+    marginBottom: 30,
   },
   headerH1: {
-    marginTop: 80,
-    fontSize: 30,
+    margin: 10,
+    fontSize: 25,
+    fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: fonts.titles,
-  },
-  headerH2: {
-    fontSize: 16,
-    marginBottom: 20,
-    fontFamily: fonts.text,
-    textTransform: 'uppercase',
-    color: colors.darkGrey,
-    textAlign: 'center',
-  },
-  keyboard: {
-    flex: 1,
-    backgroundColor: 'transparent',
   },
   pressable: {
     flex: 1,
     background: 'transparent',
   },
-  projectListH3: {
-    textTransform: 'uppercase',
-    alignSelf: 'flex-start',
-    fontFamily: fonts.text,
-    color: colors.darkGrey,
-    fontSize: 18,
-    paddingLeft: 15,
-    paddingTop: 15,
-    paddingBottom: 5,
+
+  listWrapper: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    backgroundColor: colors.lightGrey,
+    flexWrap: 'wrap',
+    margin: 2,
   },
   // single item styling
-  flatList: {
-    width: '90%',
-  },
-  listItem: {
-    borderRadius: 10,
-    marginBottom: 10,
-    paddingTop: -10,
-    paddingBottom: 20,
-    backgroundColor: colors.lightGrey,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  row1: {
-    paddingLeft: 12,
-    fontSize: 18,
-    fontFamily: fonts.text,
-  },
-  row2: {
-    paddingLeft: 12,
+  row: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingBottom: 5,
     fontSize: 16,
     fontFamily: fonts.text,
   },
   // maping + formik with white background
   form: {
-    paddingHorizontal: 15,
-    width: '100%',
+    borderRadius: 10,
+    padding: 25,
+    width: '90%',
+    backgroundColor: colors.white,
   },
   // add new project input + button styling
   addProjectButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'flex-end',
-    top: -20,
-    right: 5,
-    marginTop: -20,
+    marginTop: 5,
     textAlign: 'center',
-    borderRadius: 50,
+    width: '100%',
+    height: 30,
+    borderRadius: 8,
     backgroundColor: colors.peach,
   },
+
   input: {
-    padding: 10,
+    marginBottom: 10,
+    padding: 25,
     backgroundColor: colors.lightGrey,
     borderWidth: 1,
+    padding: 15,
     borderRadius: 12,
+    fontSize: 12,
     borderColor: colors.lightGrey,
     color: colors.darkGrey,
   },
-  //icon styling
+
+  //delete icon styling
   trashIcon: {
-    right: -20,
-    top: 10,
-  },
-  editIcon: {
-    left: -20,
-    top: '45%',
+    color: colors.red,
+    zIndex: 10,
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
   },
   findStoreButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 20,
+    marginTop: 5,
     textAlign: 'center',
-    alignSelf: 'center',
     width: '50%',
-    height: 50,
+    height: 30,
     borderRadius: 8,
     backgroundColor: colors.peach,
   },
+  findContainer: {
+    alignItems: 'center',
+    paddingBottom: 5,
+    paddingTop: 10,
+  },
   inputText: {
     fontFamily: fonts.input,
-    fontSize: 17,
-    top: 10,
-    paddingBottom: 10,
+    fontSize: 15,
   },
   buttonText: {
-    fontSize: 17,
+    fontSize: 15,
+    fontWeight: 'bold',
     fontFamily: fonts.button,
   },
   calendar: {
@@ -387,11 +351,10 @@ const styles = StyleSheet.create({
   },
   defaultDateText: {
     fontFamily: fonts.input,
-    fontSize: 17,
+    fontWeight: 'bold',
   },
   chosenDateText: {
     fontFamily: fonts.input,
-    fontSize: 17,
   },
   errorText: {
     fontFamily: fonts.text,
