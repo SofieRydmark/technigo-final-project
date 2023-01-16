@@ -9,5 +9,4 @@ Team: Sofie Rydmark, Amanda Elvkull, Kaja Wilbik
 
 ## View it live
 
-Frontend: 
-Backend:
+EXPO GO: https://expo.dev/@sofierydmark/Planda?serviceType=classic&distribution=expo-go
