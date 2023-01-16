@@ -1,7 +1,6 @@
 import React from 'react'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
 // Navigators
@@ -43,7 +42,7 @@ const HomeNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.green,
+        headerTintColor: 'transparent',
         headerTransparent: true,
         headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
@@ -82,7 +81,7 @@ const ProfileNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.green,
+        headerTintColor: 'transparent',
         headerTransparent: true,
         headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
@@ -115,18 +114,13 @@ const ProjectNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.green,
+        headerTintColor: 'transparent',
         headerTransparent: true,
         headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
           paddingLeft: 10,
         },
       }}>
-      <Stack.Screen
-        name='WhatAreWeDoing'
-        component={WhatAreWeDoing}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
       <Stack.Screen name='Budget' component={Budget} />
@@ -148,23 +142,18 @@ export { ProjectNavigator }
 const BrowseNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName='ChoosProject'
+      initialRouteName='ChooseProject'
       screenOptions={{
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: colors.green,
+        headerTintColor: 'transparent',
         headerTransparent: true,
         headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
           paddingLeft: 10,
         },
       }}>
-      <Stack.Screen
-        name='WhatAreWeDoing'
-        component={WhatAreWeDoing}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen name='ChooseProject' component={ChooseProject} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
