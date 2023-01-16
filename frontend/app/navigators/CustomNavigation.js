@@ -1,7 +1,8 @@
 import React from 'react'
 
-// Our colors
+// Assets import
 import colors from 'assets/styling/colors.js'
+import { SimpleLineIcons } from '@expo/vector-icons'
 
 // Navigators
 import { createStackNavigator } from '@react-navigation/stack'
@@ -23,7 +24,15 @@ import {
   Budget,
   FindStore,
 } from '../screens'
-import ChooseProject from '../screens/Browse/ChoosProject'
+import ChooseProject from '../screens/Browse/ChooseProject'
+
+const BackBtn = () => {
+  return (
+    <>
+      <SimpleLineIcons name='arrow-left' size={24} color='black' />
+    </>
+  )
+}
 
 // Custom stack navigators for bottom tabs
 const HomeNavigator = () => {
@@ -36,9 +45,9 @@ const HomeNavigator = () => {
         },
         headerTintColor: colors.green,
         headerTransparent: true,
-        headerTitle: '',
+        headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
-          paddingLeft: 20,
+          paddingLeft: 10,
         },
       }}>
       <Stack.Screen
@@ -73,10 +82,11 @@ const ProfileNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
+        headerTintColor: colors.green,
         headerTransparent: true,
-        headerTitle: '',
+        headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
-          paddingLeft: 20,
+          paddingLeft: 10,
         },
       }}>
       <Stack.Screen name='Profile' component={Profile} />
@@ -105,10 +115,11 @@ const ProjectNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
+        headerTintColor: colors.green,
         headerTransparent: true,
-        headerTitle: '',
+        headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
-          paddingLeft: 20,
+          paddingLeft: 10,
         },
       }}>
       <Stack.Screen
@@ -137,15 +148,16 @@ export { ProjectNavigator }
 const BrowseNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName='ChooseProject'
+      initialRouteName='ChoosProject'
       screenOptions={{
         headerStyle: {
           backgroundColor: 'transparent',
         },
+        headerTintColor: colors.green,
         headerTransparent: true,
-        headerTitle: '',
+        headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
-          paddingLeft: 20,
+          paddingLeft: 10,
         },
       }}>
       <Stack.Screen
