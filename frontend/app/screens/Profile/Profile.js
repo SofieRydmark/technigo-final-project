@@ -58,7 +58,7 @@ const Profile = () => {
   const [hidePassword, setHidePassword] = useState(true)
   const [passwordError, setPasswordError] = useState(null)
   const [avatarModal, setAvatarModal] = useState(false)
-  const [chosenAvatar, setChosenAvatar] = useState(avatar1)
+  const [chosenAvatar, setChosenAvatar] = useState(avatar3)
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const email = useSelector((store) => store.user.email)

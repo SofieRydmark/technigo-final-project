@@ -26,6 +26,7 @@ import { SIGN_UP_URL } from 'assets/urls/urls.js'
 
 // Reducers
 import user from '../../reducers/user'
+import { ui } from '../../reducers/ui'
 
 // Validation of input fields with yup
 import * as Yup from 'yup'
