@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "Planda",
+    "slug": "Planda",
+    "description": "Browse ideas and plan your next kids or grownup party easy with Planda",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/iconPlanda.png",
