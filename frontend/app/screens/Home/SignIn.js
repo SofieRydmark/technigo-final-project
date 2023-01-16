@@ -19,7 +19,7 @@ import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 import LottieView from 'lottie-react-native'
 
-// Asset imports
+// Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { SIGN_IN_URL } from 'assets/urls/urls.js'
@@ -103,11 +103,7 @@ const SignIn = ({ navigation }) => {
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
-  const backgroundImage = require('assets/images/BubbleImg.png')
-  const backgroundImage2 = require('assets/lotties/bubbles.json')
-
   return (
-    // <ImageBackground source={backgroundImage} style={styles.background}>
     <KeyboardAvoidingView
       style={styles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
