@@ -2,14 +2,9 @@ import React from 'react'
 import LottieView from 'lottie-react-native'
 import { useSelector } from 'react-redux'
 import { StyleSheet, View } from 'react-native'
+import animationData from 'assets/lotties/lazyPanda.json'
 
-import React from 'react'
-import LottieView from 'lottie-react-native'
-import animationData from 'assets/lotties/lazy-panda.json'
-import { useSelector } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
-
-export const Loading = () => {
+const Loading = () => {
   const isLoading = useSelector((store) => store.ui.isLoading)
 
   const defaultOptions = {
@@ -21,11 +16,15 @@ export const Loading = () => {
     },
   }
 
+  if (!isLoading) {
+    return
+  }
+
   return (
     <>
       {isLoading && (
         <View style={[StyleSheet.absoluteFillObject, styles.container]}>
-          <LottieView source={require('assets/lotties/lazy-panda.json')} autoPlay loop />
+          <LottieView source={require('assets/lotties/lazyPanda.json')} autoPlay loop />
         </View>
       )}
     </>
@@ -39,3 +38,5 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 })
+
+export default Loading

@@ -11,7 +11,6 @@ import {
   Keyboard,
   Pressable,
   Platform,
-  ImageBackground,
 } from 'react-native'
 
 // Formik and external assets

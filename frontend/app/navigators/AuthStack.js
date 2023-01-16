@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 const Stack = createStackNavigator()
 
 // Screen imports
-import { SignIn, SignUp } from '../screens'
+import { ResetPassword, SignIn, SignUp } from '../screens'
 
 // Navigation stack if you are not logged in
 const AuthStack = () => {
@@ -19,6 +19,7 @@ const AuthStack = () => {
         }}>
         <Stack.Screen name='SignIn' component={SignIn} />
         <Stack.Screen name='SignUp' component={SignUp} />
+        <Stack.Screen name='ResetPassword' component={ResetPassword} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -11,7 +11,6 @@ import {
   Keyboard,
   Pressable,
   Platform,
-  ImageBackground,
 } from 'react-native'
 
 // Formik and external assets
@@ -204,7 +203,7 @@ const SignIn = ({ navigation }) => {
               </View>
             )}
           </Formik>
-          <Text style={styles.forgotPassword} onPress={''}>
+          <Text style={styles.forgotPassword} onPress={() => navigation.navigate('ResetPassword')}>
             Forgot password?
           </Text>
         </ScrollView>

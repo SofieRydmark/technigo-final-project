@@ -22,6 +22,7 @@ import {
   GuestList,
   Budget,
   FindStore,
+  Loading,
 } from '../screens'
 import ChooseProject from '../screens/Browse/ChooseProject'
 
@@ -54,6 +55,7 @@ const HomeNavigator = () => {
         component={WhatAreWeDoing}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name='Loading' component={Loading} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
       <Stack.Screen name='Budget' component={Budget} />
@@ -88,6 +90,7 @@ const ProfileNavigator = () => {
           paddingLeft: 10,
         },
       }}>
+      <Stack.Screen name='Loading' component={Loading} />
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
@@ -121,6 +124,7 @@ const ProjectNavigator = () => {
           paddingLeft: 10,
         },
       }}>
+      <Stack.Screen name='Loading' component={Loading} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
       <Stack.Screen name='Budget' component={Budget} />
@@ -154,6 +158,7 @@ const BrowseNavigator = () => {
           paddingLeft: 10,
         },
       }}>
+      <Stack.Screen name='Loading' component={Loading} />
       <Stack.Screen name='ChooseProject' component={ChooseProject} />
       <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
       <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
