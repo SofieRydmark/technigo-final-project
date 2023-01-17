@@ -2,6 +2,9 @@ import bcrypt from 'bcrypt'
 const User = require('../models/User.js')
 const crypto = require('crypto')
 const nodemailer = require('nodemailer')
+require('dotenv').config();
+
+
 
 export const resetPassword = async (req, res) => {
   const email = req.body.email
@@ -25,15 +28,16 @@ export const resetPassword = async (req, res) => {
 
       // Send reset token to user's email
       const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: 'outlook',
         auth: {
-          user: 'partyPlannerPlanda@gmail.com',
-          pass: 'PlandaTechnigo',
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+          
         },
       })
 
       const mailOptions = {
-        from: 'partyPlannerPlanda@gmail.com',
+        from: 'partyplannerplanda@outlook.com',
         to: user.email,
         subject: 'Password Reset',
         text: `You are receiving this email because you (or someone else) requested a password reset for your account at Planda.
@@ -66,3 +70,33 @@ export const resetPassword = async (req, res) => {
     })
   }
 }
+
+/* export const setResetPassword = async (req,res ) => {
+  const salt = await bcrypt.genSalt();
+ 
+  const updatedUser = await User.findOneAndUpdate(
+    { resetToken: req.body.resetToken },
+    {
+        $set: {
+            password: await bcrypt.hash(req.body.newPassword, salt),
+            resetToken: undefined,
+            resetTokenExpiration: undefined,
+        },
+    },
+    { new: true }
+  );
+
+  if (!updatedUser) {
+    res.status(404).json({
+      response: 'Invalid reset token',
+      success: false,
+    });
+    return;
+  }
+  
+  res.status(200).json({
+    response: 'Password reset successful',
+    success: true,
+  });
+}
+ */

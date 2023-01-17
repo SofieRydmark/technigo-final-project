@@ -30,7 +30,7 @@ import {
   ToggleTheme,
 } from './endpoints/ToggleCompleted'
 import { AddBudget, deleteItemFromBudget } from './endpoints/Budget'
-import { resetPassword } from './endpoints/ResetPassword'
+import { resetPassword/* , setResetPassword */ } from './endpoints/ResetPassword'
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -63,6 +63,7 @@ app.get('/', (req, res) => {
 app.post('/signUp', signUp)
 app.post('/signIn', signIn)
 app.post('/forgotPassword', resetPassword)
+/* app.post('/reset/:resetToken', setResetPassword) */
 
 // ************ ADMIN USER ACCOUNT *************** //
 app.delete('/:userId/admin/delete', authenticateUser, deleteUser)
