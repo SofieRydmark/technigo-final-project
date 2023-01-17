@@ -5,8 +5,54 @@ User will be able to save projects/parties to their profile with a project board
 
 We will build a database with the different categories to browse.
 
+Problems: 
+-
+-
+-
+-
+-
+
+Our approach:
+-
+-
+-
+-
+-
+
+<h2> What we have learned and practise: </h2>
+
+1. Project menagment 
+      - bigger project planning
+      - project code structure
+      - how to work in Agile
+      - how to work in different branches and connecting everything together 
+      - how to work with tickets
+
+2. TECH
+
+        + Frontend 
+             -  React Native 
+             -  Styling in React Native 
+             -  Redux 
+             -  Lottie animations 
+             -  How to connect backend to frontend 
+
+         + Backend 
+            - Node.js
+            - MongoDB
+            - MongoDB Schema & Models (including submodels) 
+            - Authentication  
+      
+3. Others
+
+     - using mobile develomplent tools (emulators) 
+     - Google Clouds 
+     - Mongo Atlas & Compass 
+     - Postman
+
 Team: Sofie Rydmark, Amanda Elvkull, Kaja Wilbik
 
 ## View it live
+Backend: https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/
 
 EXPO GO: https://expo.dev/@sofierydmark/Planda?serviceType=classic&distribution=expo-go
