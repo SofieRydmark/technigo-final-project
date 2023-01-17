@@ -3,7 +3,7 @@ export { default as SignIn } from './Home/SignIn'
 export { default as SignUp } from './Home/SignUp'
 export { default as Loading } from './Home/Loading'
 export { default as WhatAreWeDoing } from './Home/WhatAreWeDoing'
-export { default as ResetPassword } from './Reset/ResetPassword'
+export { default as ResetPassword } from './Home/ResetPassword'
 
 // Profile Screens
 export { default as Profile } from './Profile/Profile'
