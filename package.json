@@ -5,6 +5,7 @@
     "postinstall": "npm install --prefix backend"
   },
   "dependencies": {
+    "nodemailer": "^6.9.0",
     "react-native-calendar-picker": "^7.1.3"
   }
 }
