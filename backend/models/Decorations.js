@@ -1,13 +1,11 @@
-import mongoose from "mongoose"
-import decorationsData from '../data/decorations.json'
+import mongoose from 'mongoose'
 
 const DecorationSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    type: Array,
-    belongs_to_themes: Array,
-  })
+  name: String,
+  image: String,
+  type: Array,
+  belongs_to_themes: Array,
+})
 
-const Decoration = mongoose.model('Decoration', DecorationSchema);
+const Decoration = mongoose.model('Decoration', DecorationSchema)
 module.exports = Decoration
-  

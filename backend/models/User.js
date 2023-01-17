@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import mongoose from 'mongoose'
+import bcrypt from 'bcrypt'
 
 const crypto = require('crypto')
 
@@ -19,6 +19,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: () => crypto.randomBytes(128).toString('hex'),
   },
+  resetToken: {
+    type: String,
+  },
+  resetTokenExpiration: {
+    type: Date,
+  },
 })
-const User = mongoose.model("User", UserSchema)
-module.exports = User; 
+const User = mongoose.model('User', UserSchema)
+module.exports = User
