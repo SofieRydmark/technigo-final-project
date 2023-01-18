@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt'
 const User = require('../models/User.js')
-
-
 const crypto = require('crypto')
 
 // ************ SIGN IN/SIGN UP/UPDATE USER ENDPOINTS *************** //

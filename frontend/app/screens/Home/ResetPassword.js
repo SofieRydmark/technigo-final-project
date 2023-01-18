@@ -1,12 +1,38 @@
-import React from 'react'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+  Pressable,
+  Keyboard,
+} from 'react-native'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import LottieView from 'lottie-react-native'
+import { RESET_URL } from 'assets/urls/urls'
 
-const ResetPassword = ({ navigation }) => {
+// Formik and validation
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+const ReviewSchema = Yup.object().shape({
+  email: Yup.string().email('Please enter valid email').required('Email is required'),
+})
+
+// Reducers
+import { ui } from '../../reducers/ui'
+
+const ResetPassword = () => {
+  const [emailSent, setEmailSent] = useState(false)
+  const [loginError, setLoginError] = useState(null)
+  const dispatch = useDispatch()
+
   // Box shadow styling IOS and android
   const generateBoxShadowStyle = (
     xOffset,
@@ -30,31 +56,92 @@ const ResetPassword = ({ navigation }) => {
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
+  // Reset fetch
+  const resetLinkSubmit = (values) => {
+    dispatch(ui.actions.setLoading(true))
+    setLoginError(null)
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: values.email }),
+    }
+
+    fetch(RESET_URL, options) // reset link
+      .then((res) => res.json())
+      .catch((error) => console.error(error))
+      .finally(() => dispatch(ui.actions.setLoading(false)))
+
+    setEmailSent(true)
+  }
+
   return (
-    <ScrollView contentContainerStyle={styles.background}>
-      <View style={[styles.container, styles.boxShadow]}>
-        <View style={styles.header}>
-          <Text style={styles.headerH1}>
-            Sorry! This feature is coming soon. If you forgot your password, please create a new
-            account with a new email for now.
-          </Text>
-        </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('SignUp')}
-          style={[styles.partyButton, styles.boxShadow]}>
-          <Text style={styles.buttonText}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
-      <LottieView
-        autoPlay
-        style={{
-          width: 200,
-          height: 200,
-          backgroundColor: 'transparent',
-        }}
-        source={require('assets/lotties/meditatingPanda.json')}
-      />
-    </ScrollView>
+    <KeyboardAvoidingView
+      style={styles.keyboard}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
+        <ScrollView contentContainerStyle={styles.background}>
+          <View style={[styles.container, styles.boxShadow]}>
+            <View style={styles.header}>
+              <Text style={styles.headerH1}>
+                Oops, did you forget your password? No worries. Fill in your email below and we will
+                send a reset link.
+              </Text>
+            </View>
+            <Formik
+              initialValues={{ email: '' }}
+              validationSchema={ReviewSchema}
+              onSubmit={(values, actions) => {
+                if (values.email === '') {
+                  return setLoginError('Please enter your email')
+                } else {
+                  resetLinkSubmit(values)
+                  actions.resetForm()
+                  setLoginError(null)
+                }
+              }}>
+              {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
+                <>
+                  <TextInput
+                    label='email'
+                    style={styles.input}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    placeholder='hello@email.com'
+                    keyboardType='email-address'
+                  />
+                  {errors.email && touched.email ? (
+                    <Text style={styles.loginError}>{errors.email}</Text>
+                  ) : null}
+                  {emailSent && (
+                    <Text style={styles.emailSent}>Reset link has been sent to your email</Text>
+                  )}
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    style={[styles.partyButton, styles.boxShadow]}>
+                    <Text style={styles.buttonText}>Reset password</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Formik>
+          </View>
+          <LottieView
+            autoPlay
+            style={{
+              width: 200,
+              height: 200,
+              backgroundColor: 'transparent',
+            }}
+            source={require('assets/lotties/meditatingPanda.json')}
+          />
+        </ScrollView>
+      </Pressable>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -76,14 +163,47 @@ const styles = StyleSheet.create({
     width: '90%',
     backgroundColor: colors.white,
   },
+  emailSent: {
+    fontFamily: fonts.text,
+    textAlign: 'center',
+    padding: 10,
+    fontSize: 16,
+    color: colors.green,
+  },
   header: {
     marginBottom: 30,
     marginHorizontal: 15,
   },
   headerH1: {
-    fontSize: 25,
+    fontSize: 18,
     fontFamily: fonts.text,
     textAlign: 'center',
+  },
+  input: {
+    backgroundColor: colors.lightGrey,
+    marginBottom: 20,
+    marginTop: 10,
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 12,
+    fontSize: 16,
+    fontFamily: fonts.input,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey,
+  },
+  keyboard: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  loginError: {
+    fontSize: 15,
+    color: 'red',
+    marginBottom: 15,
+    marginTop: -15,
+  },
+  pressable: {
+    flex: 1,
+    background: 'transparent',
   },
   partyButton: {
     alignItems: 'center',
