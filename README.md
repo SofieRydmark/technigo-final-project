@@ -10,14 +10,14 @@ Problems:
 -
 -
 -
--
+- Android version crashed few days before hand-in, did not work on emulator, not on android device
 
 Our approach:
 -
 -
 -
 -
--
+- Android problem troubleshooting: We decided to come back to moment when everything was working, and check one by one, what is the feature that crashed the app. First of all we created a new app to check if it is not a problem with expo, new app worked without issue. Next we went to uppdates in app.json because we changed expo icon to our own, that was not an issue either. The third check was lottie animation in background in the app, which end up being an issue for android. After changing it back to picture, everything started working again. 
 
 <h2> What we have learned and practise: </h2>
 
