@@ -4,6 +4,7 @@ export const BASE_URL = 'https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app'
 // User and admin
 export const SIGN_IN_URL = `${BASE_URL}/signIn`
 export const SIGN_UP_URL = `${BASE_URL}/signUp`
+export const RESET_URL = `${BASE_URL}/forgotPassword`
 export const ADMIN_DELETE_URL = (userId) => `${BASE_URL}/${userId}/admin/delete`
 export const ADMIN_PASSWORD_URL = (userId) => `${BASE_URL}/${userId}/admin/change`
 
