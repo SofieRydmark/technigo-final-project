@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch, batch } from 'react-redux'
 import {
   Modal,
@@ -14,7 +14,7 @@ import {
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-import { ADMIN_DELETE_URL, ADMIN_PASSWORD_URL, PROJECTS_URL } from 'assets/urls/urls.js'
+import { ADMIN_DELETE_URL, ADMIN_PASSWORD_URL } from 'assets/urls/urls.js'
 
 // Form handler and validation Yup
 import { Formik } from 'formik'
@@ -51,7 +51,6 @@ const avatars = [
 
 // Reducer
 import user from '../../reducers/user'
-import { ui } from '../../reducers/ui'
 
 const Profile = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false)
@@ -60,7 +59,6 @@ const Profile = () => {
   const [passwordError, setPasswordError] = useState(null)
   const [avatarModal, setAvatarModal] = useState(false)
   const [chosenAvatar, setChosenAvatar] = useState(avatar3)
-  const [allProjects, setAllProjects] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const email = useSelector((store) => store.user.email)
@@ -125,30 +123,6 @@ const Profile = () => {
       .catch((error) => console.error(error))
   }
 
-  // Project counter on profile screen
-  const projectCounter = () => {
-
-    useEffect(() => {
-      dispatch(ui.actions.setLoading(true))
-      const options = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: accessToken,
-        },
-      }
-      fetch(PROJECTS_URL(userId), options)
-        .then((res) => res.json())
-        .then((data) => setAllProjects(data.response))
-        .catch((error) => console.log(error))
-        .finally(() => dispatch(ui.actions.setLoading(false)))
-    }, [allProjects])
-  
-    return(
-      allProjects.length
-    )
- }
-
   // Box shadow styling IOS and android
   const generateBoxShadowStyle = (
     xOffset,
@@ -202,7 +176,7 @@ const Profile = () => {
             <Text style={styles.userInfoSubTitle}>Email</Text>
             <Text style={styles.userEmail}>{email}</Text>
             <Text style={styles.userInfoSubTitle}>Projects</Text>
-            <Text style={styles.userInfoProjectNb}>{projectCounter()}</Text>
+            <Text style={styles.userInfoProjectNb}>0</Text>
           </View>
         </View>
         <View style={styles.userBtnWrapper}>
