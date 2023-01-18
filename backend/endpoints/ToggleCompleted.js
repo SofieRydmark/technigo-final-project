@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
-const User = require('../models/User')
-const Project = require('../models/Project')
-const DrinksProject = require('../models/DrinksProject')
-const FoodProject = require('../models/FoodProject')
-const ActivityProject = require('../models/ActivityProject')
-const DecorationProject = require('../models/DecorationsProject')
+import User from '../models/User'
+import Project from '../models/Project'
+import DrinksProject from '../models/DrinksProject'
+import FoodProject from '../models/FoodProject'
+import ActivityProject from '../models/ActivityProject'
+import DecorationProject from '../models/DecorationsProject'
 
 export const ToggleDrinks = async (req, res) => {
   try {

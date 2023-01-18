@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt'
-const User = require('../models/User.js')
-const crypto = require('crypto')
-const nodemailer = require('nodemailer')
-require('dotenv').config()
+import User from '../models/User.js'
+import crypto from 'crypto'
+import nodemailer from 'nodemailer'
+import * as dotenv from 'dotenv'
+dotenv.config()
 
+// Mail transporter credentials
 const transporter = nodemailer.createTransport({
   service: 'outlook',
   auth: {
@@ -36,7 +38,7 @@ export const resetPassword = async (req, res) => {
         subject: 'Password Reset',
         text: `Seems like you have forgotten your email at Planda. Don't worry. 
       Please click on the following link to reset your password and receive a new one:
-      https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/reset/${resetToken}
+      http://localhost:8080/reset/${resetToken}
       If you did not request this, please ignore this email and your password will remain unchanged`,
       }
 

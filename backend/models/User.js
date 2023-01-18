@@ -1,9 +1,6 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 
-const crypto = require('crypto')
-
-// ************ SCHEMAS & MODELS *************** //
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,

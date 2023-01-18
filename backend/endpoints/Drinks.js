@@ -1,4 +1,4 @@
-const Drink = require('../models/Drink')
+import Drink from '../models/Drink'
 
 /* --------- DRINKS GET  ----------- */
 export const drinksCategory = async (req, res) => {

@@ -1,4 +1,4 @@
-const Food = require('../models/Food')
+import Food from '../models/Food'
 
 /* --------- FOOD GET  ----------- */
 export const foodCategory = async (req, res) => {

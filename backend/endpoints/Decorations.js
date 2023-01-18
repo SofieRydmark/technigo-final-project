@@ -1,4 +1,4 @@
-const Decoration = require('../models/Decorations')
+import Decoration from '../models/Decorations'
 
 /* --------- DECORATIONS GET ----------- */
 export const decorationsCategory = async (req, res) => {

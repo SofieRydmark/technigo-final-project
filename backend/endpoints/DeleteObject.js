@@ -1,19 +1,22 @@
 import mongoose from 'mongoose'
-const User = require('../models/User')
-const Project = require('../models/Project')
-const DrinksProject = require('../models/DrinksProject')
-const FoodProject = require('../models/FoodProject')
-const ActivityProject = require('../models/ActivityProject')
-const DecorationProject = require('../models/DecorationsProject')
+import User from '../models/User'
+import Project from '../models/Project'
+import DrinksProject from '../models/DrinksProject'
+import FoodProject from '../models/FoodProject'
+import ActivityProject from '../models/ActivityProject'
+import DecorationProject from '../models/DecorationsProject'
 
-export const DeleteTheme = async (req, res ) => {
+export const DeleteTheme = async (req, res) => {
   const { userId, projectId, themeId } = req.params
-  const { themProjectList, themesName} = req.body
+  const { themProjectList, themesName } = req.body
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
-    const themeToDelete =  await Project.findByIdAndUpdate({_id: projectId}, {$pull: {themeProjectList: {_id: mongoose.Types.ObjectId(themeId)}}});
-    
+    const themeToDelete = await Project.findByIdAndUpdate(
+      { _id: projectId },
+      { $pull: { themeProjectList: { _id: mongoose.Types.ObjectId(themeId) } } }
+    )
+
     if (user && project) {
       res.status(200).json({
         response: 'Theme has been deleted',
@@ -33,17 +36,19 @@ export const DeleteTheme = async (req, res ) => {
   }
 }
 
-export const DeleteDrink = async (req, res ) => {
+export const DeleteDrink = async (req, res) => {
   const { userId, projectId, drinksId } = req.params
-  const { drinksProjectList, drinksProject, drinksName} = req.body
+  const { drinksProjectList, drinksProject, drinksName } = req.body
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
-    const drinksToDelete =  await Project.findByIdAndUpdate({_id: projectId}, {$pull: {drinksProjectList: {_id: mongoose.Types.ObjectId(drinksId)}}});
-    
+    const drinksToDelete = await Project.findByIdAndUpdate(
+      { _id: projectId },
+      { $pull: { drinksProjectList: { _id: mongoose.Types.ObjectId(drinksId) } } }
+    )
+
     if (user && project) {
-      
-      console.log("guestToDelete",drinksToDelete)
+      console.log('guestToDelete', drinksToDelete)
       res.status(200).json({
         response: 'Drink has been deleted',
         success: true,
@@ -62,14 +67,17 @@ export const DeleteDrink = async (req, res ) => {
   }
 }
 
-export const DeleteFood = async (req, res ) => {
+export const DeleteFood = async (req, res) => {
   const { userId, projectId, foodId } = req.params
-  const { foodProjectList, foodProject, foodName} = req.body
+  const { foodProjectList, foodProject, foodName } = req.body
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
-    const foodToDelete =  await Project.findByIdAndUpdate({_id: projectId}, {$pull: {foodProjectList: {_id: mongoose.Types.ObjectId(foodId)}}});
-    
+    const foodToDelete = await Project.findByIdAndUpdate(
+      { _id: projectId },
+      { $pull: { foodProjectList: { _id: mongoose.Types.ObjectId(foodId) } } }
+    )
+
     if (user && project) {
       res.status(200).json({
         response: 'Food has been deleted',
@@ -89,14 +97,17 @@ export const DeleteFood = async (req, res ) => {
   }
 }
 
-export const DeleteActivity = async (req, res ) => {
+export const DeleteActivity = async (req, res) => {
   const { userId, projectId, activityId } = req.params
-  const { activitiesProjectList, activityProject,  activitiesName} = req.body
+  const { activitiesProjectList, activityProject, activitiesName } = req.body
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
-    const activityToDelete =  await Project.findByIdAndUpdate({_id: projectId}, {$pull: {activitiesProjectList: {_id: mongoose.Types.ObjectId(activityId)}}});
-    
+    const activityToDelete = await Project.findByIdAndUpdate(
+      { _id: projectId },
+      { $pull: { activitiesProjectList: { _id: mongoose.Types.ObjectId(activityId) } } }
+    )
+
     if (user && project) {
       res.status(200).json({
         response: 'Activity has been deleted',
@@ -116,14 +127,17 @@ export const DeleteActivity = async (req, res ) => {
   }
 }
 
-export const DeleteDecoration = async (req, res ) => {
+export const DeleteDecoration = async (req, res) => {
   const { userId, projectId, decorationId } = req.params
-  const { decorationsProjectList, decorationProject , decorationsName} = req.body
+  const { decorationsProjectList, decorationProject, decorationsName } = req.body
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
-    const decorationToDelete =  await Project.findByIdAndUpdate({_id: projectId}, {$pull: {decorationsProjectList: {_id: mongoose.Types.ObjectId(decorationId)}}});
-    
+    const decorationToDelete = await Project.findByIdAndUpdate(
+      { _id: projectId },
+      { $pull: { decorationsProjectList: { _id: mongoose.Types.ObjectId(decorationId) } } }
+    )
+
     if (user && project) {
       res.status(200).json({
         response: 'Decoration has been deleted',

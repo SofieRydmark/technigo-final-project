@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt'
-const User = require('../models/User.js')
-
-const crypto = require('crypto')
+import User from '../models/User.js'
 
 export const deleteUser = async (req, res) => {
   const { userId } = req.params

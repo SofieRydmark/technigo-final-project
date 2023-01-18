@@ -1,4 +1,4 @@
-const Theme = require('../models/Theme')
+import Theme from '../models/Theme'
 
 /* --------- THEMES GET  ----------- */
 export const ThemesCategory = async (req, res) => {

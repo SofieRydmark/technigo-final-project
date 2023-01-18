@@ -1,4 +1,4 @@
-const Activity = require('../models/Activity')
+import Activity from '../models/Activity'
 
 /* --------- ACTIVITIES GET  ----------- */
 export const activityCategory = async (req, res) => {
