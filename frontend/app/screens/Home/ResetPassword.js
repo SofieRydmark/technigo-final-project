@@ -16,7 +16,6 @@ import {
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import LottieView from 'lottie-react-native'
-import { RESET_URL } from 'assets/urls/urls'
 
 // Formik and validation
 import { Formik } from 'formik'
@@ -25,13 +24,11 @@ const ReviewSchema = Yup.object().shape({
   email: Yup.string().email('Please enter valid email').required('Email is required'),
 })
 
-// Reducers
-import { ui } from '../../reducers/ui'
-
 const ResetPassword = () => {
   const [emailSent, setEmailSent] = useState(false)
   const [loginError, setLoginError] = useState(null)
-  const dispatch = useDispatch()
+
+  console.log(emailSent)
 
   // Box shadow styling IOS and android
   const generateBoxShadowStyle = (
@@ -58,8 +55,6 @@ const ResetPassword = () => {
 
   // Reset fetch
   const resetLinkSubmit = (values) => {
-    dispatch(ui.actions.setLoading(true))
-    setLoginError(null)
     const options = {
       method: 'POST',
       headers: {
@@ -68,12 +63,12 @@ const ResetPassword = () => {
       body: JSON.stringify({ email: values.email }),
     }
 
-    fetch(RESET_URL, options) // reset link
+    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/forgotPassword', options) // reset link
       .then((res) => res.json())
       .catch((error) => console.error(error))
-      .finally(() => dispatch(ui.actions.setLoading(false)))
 
     setEmailSent(true)
+    console.log('fetch done', values.email)
   }
 
   return (
@@ -98,7 +93,6 @@ const ResetPassword = () => {
                 } else {
                   resetLinkSubmit(values)
                   actions.resetForm()
-                  setLoginError(null)
                 }
               }}>
               {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (

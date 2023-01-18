@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 })
 
 export const resetPassword = async (req, res) => {
-  const email = req.body.email
+  const { email } = req.body
 
   try {
     const user = await User.findOne({ email: email })
@@ -30,7 +30,6 @@ export const resetPassword = async (req, res) => {
       user.resetToken = resetToken
       user.resetTokenExpiration = Date.now() + 3600000 // 1 hour
       await user.save()
-      console.log('user is saved')
 
       const mailOptions = {
         from: 'partyplannerplanda@outlook.com',
