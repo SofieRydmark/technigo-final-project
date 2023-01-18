@@ -38,7 +38,7 @@ export const resetPassword = async (req, res) => {
         subject: 'Password Reset',
         text: `Seems like you have forgotten your email at Planda. Don't worry. 
       Please click on the following link to reset your password and receive a new one:
-      http://localhost:8080/reset/${resetToken}
+      https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/reset/${resetToken}
       If you did not request this, please ignore this email and your password will remain unchanged`,
       }
 
