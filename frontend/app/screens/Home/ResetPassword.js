@@ -18,7 +18,18 @@ import fonts from 'assets/styling/fonts.js'
 import LottieView from 'lottie-react-native'
 import { RESET_URL } from 'assets/urls/urls'
 
+// Formik and validation
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+const ReviewSchema = Yup.object().shape({
+  email: Yup.string().email('Please enter valid email').required('Email is required'),
+})
+
+// Reducers
+import { ui } from '../../reducers/ui'
+
 const ResetPassword = () => {
+  const [emailSent, setEmailSent] = useState(false)
   const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
 
@@ -46,7 +57,7 @@ const ResetPassword = () => {
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   // Reset fetch
-  const resetLink = (values) => {
+  const resetLinkSubmit = (values) => {
     dispatch(ui.actions.setLoading(true))
     setLoginError(null)
     const options = {
@@ -59,26 +70,10 @@ const ResetPassword = () => {
 
     fetch(RESET_URL, options) // reset link
       .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          batch(() => {
-            dispatch(user.actions.setUserId(data.response.userId))
-            dispatch(user.actions.setAccessToken(data.response.accessToken))
-            dispatch(user.actions.setEmail(data.response.email))
-            dispatch(user.actions.setError(null))
-            setLoginError(null)
-          })
-        } else {
-          batch(() => {
-            dispatch(user.actions.setError(data.response))
-            dispatch(user.actions.setUserId(null))
-            dispatch(user.actions.setAccessToken(null))
-            dispatch(user.actions.setEmail(null))
-            setLoginError(data.response)
-          })
-        }
-      })
+      .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
+
+    setEmailSent(true)
   }
 
   return (
@@ -90,27 +85,51 @@ const ResetPassword = () => {
           <View style={[styles.container, styles.boxShadow]}>
             <View style={styles.header}>
               <Text style={styles.headerH1}>
-                Oops did you forget your password? Don't worry. Fill in your email below and we will
+                Oops, did you forget your password? No worries. Fill in your email below and we will
                 send a reset link.
               </Text>
-              <TextInput
-                label='email'
-                style={styles.input}
-                // onChangeText={handleChange('email')}
-                // onBlur={handleBlur('email')}
-                //value={values.email}
-                required
-                multiline={false}
-                autoCapitalize='none'
-                placeholder='hello@email.com'
-                keyboardType='email-address'
-              />
             </View>
-            <TouchableOpacity onPress={resetLink} style={[styles.partyButton, styles.boxShadow]}>
-              <Text style={styles.buttonText}>Send link</Text>
-            </TouchableOpacity>
+            <Formik
+              initialValues={{ email: '' }}
+              validationSchema={ReviewSchema}
+              onSubmit={(values, actions) => {
+                if (values.email === '') {
+                  return setLoginError('Please enter your email')
+                } else {
+                  resetLinkSubmit(values)
+                  actions.resetForm()
+                  setLoginError(null)
+                }
+              }}>
+              {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
+                <>
+                  <TextInput
+                    label='email'
+                    style={styles.input}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    placeholder='hello@email.com'
+                    keyboardType='email-address'
+                  />
+                  {errors.email && touched.email ? (
+                    <Text style={styles.loginError}>{errors.email}</Text>
+                  ) : null}
+                  {emailSent && (
+                    <Text style={styles.emailSent}>Reset link has been sent to your email</Text>
+                  )}
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    style={[styles.partyButton, styles.boxShadow]}>
+                    <Text style={styles.buttonText}>Reset password</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Formik>
           </View>
-
           <LottieView
             autoPlay
             style={{
@@ -144,18 +163,43 @@ const styles = StyleSheet.create({
     width: '90%',
     backgroundColor: colors.white,
   },
+  emailSent: {
+    fontFamily: fonts.text,
+    textAlign: 'center',
+    padding: 10,
+    fontSize: 16,
+    color: colors.green,
+  },
   header: {
     marginBottom: 30,
     marginHorizontal: 15,
   },
   headerH1: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: fonts.text,
     textAlign: 'center',
+  },
+  input: {
+    backgroundColor: colors.lightGrey,
+    marginBottom: 20,
+    marginTop: 10,
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 12,
+    fontSize: 16,
+    fontFamily: fonts.input,
+    borderColor: colors.lightGrey,
+    color: colors.darkGrey,
   },
   keyboard: {
     flex: 1,
     backgroundColor: 'transparent',
+  },
+  loginError: {
+    fontSize: 15,
+    color: 'red',
+    marginBottom: 15,
+    marginTop: -15,
   },
   pressable: {
     flex: 1,
