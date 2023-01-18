@@ -11,12 +11,12 @@ import {
   Keyboard,
   Pressable,
   Platform,
+  ImageBackground,
 } from 'react-native'
 
 // Formik and external assets
 import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
-import LottieView from 'lottie-react-native'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
@@ -107,106 +107,88 @@ const SignIn = ({ navigation }) => {
       style={styles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
-        <ScrollView contentContainerStyle={styles.background}>
-          <LottieView
-            autoPlay
-            style={{
-              position: 'absolute',
-              top: 0,
-              width: '100%',
-              height: '80%',
-              zIndex: -99,
-              backgroundColor: colors.green,
-            }}
-            source={require('assets/lotties/bubbles.json')}
-          />
-          <LottieView
-            autoPlay
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              width: '130%',
-              height: '80%',
-              zIndex: -99,
-              backgroundColor: colors.green,
-            }}
-            source={require('assets/lotties/bubbles.json')}
-          />
-          <View style={styles.header}>
-            <Text style={styles.headerH1}>Welcome</Text>
-            <Text style={styles.headerH2}>
-              Not a member yet? Sign up
-              <Text style={styles.here} onPress={() => navigation.navigate('SignUp')}>
-                {' '}
-                here
+        <ImageBackground
+          source={require('assets/images/BubbleImg.png')}
+          style={styles.backgroundBubble}>
+          <ScrollView contentContainerStyle={styles.background}>
+            <View style={styles.header}>
+              <Text style={styles.headerH1}>Welcome</Text>
+              <Text style={styles.headerH2}>
+                Not a member yet? Sign up
+                <Text style={styles.here} onPress={() => navigation.navigate('SignUp')}>
+                  {' '}
+                  here
+                </Text>
               </Text>
-            </Text>
-          </View>
-          <Formik
-            initialValues={{ email: '', password: '' }}
-            validationSchema={ReviewSchema}
-            onSubmit={(values, actions) => {
-              if (values.email === '' || values.password === '') {
-                return setLoginError('Please fill in all fields')
-              } else {
-                signInSubmit(values)
-                actions.resetForm()
-              }
-            }}>
-            {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
-              <View style={[styles.form, styles.boxShadow]}>
-                <Text style={styles.label}>EMAIL</Text>
-                <TextInput
-                  label='email'
-                  style={styles.input}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                  required
-                  multiline={false}
-                  autoCapitalize='none'
-                  placeholder='hello@email.com'
-                  keyboardType='email-address'
-                />
-                {errors.email && touched.email ? (
-                  <Text style={styles.loginError}>{errors.email}</Text>
-                ) : null}
-                <Text style={styles.label}>PASSWORD</Text>
-                <TextInput
-                  label='password'
-                  style={styles.input}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  required
-                  multiline={false}
-                  autoCapitalize='none'
-                  secureTextEntry={hidePassword === true ? true : false}
-                  placeholder='*******'
-                />
-                <TouchableOpacity onPress={showPassword}>
-                  <Octicons
-                    name={hidePassword === true ? 'eye-closed' : 'eye'}
-                    size={20}
-                    style={styles.eyeIcon}
+            </View>
+            <Formik
+              initialValues={{ email: '', password: '' }}
+              validationSchema={ReviewSchema}
+              onSubmit={(values, actions) => {
+                if (values.email === '' || values.password === '') {
+                  return setLoginError('Please fill in all fields')
+                } else {
+                  signInSubmit(values)
+                  actions.resetForm()
+                }
+              }}>
+              {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
+                <View style={[styles.form, styles.boxShadow]}>
+                  <Text style={styles.label}>EMAIL</Text>
+                  <TextInput
+                    label='email'
+                    style={styles.input}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    placeholder='hello@email.com'
+                    keyboardType='email-address'
                   />
-                </TouchableOpacity>
-                {errors.password && touched.password ? (
-                  <Text style={styles.loginError}>{errors.password}</Text>
-                ) : null}
-                {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={[styles.signInButton, styles.boxShadow]}>
-                  <Text style={styles.buttonText}>Sign in</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-          <Text style={styles.forgotPassword} onPress={() => navigation.navigate('ResetPassword')}>
-            Forgot password?
-          </Text>
-        </ScrollView>
+                  {errors.email && touched.email ? (
+                    <Text style={styles.loginError}>{errors.email}</Text>
+                  ) : null}
+                  <Text style={styles.label}>PASSWORD</Text>
+                  <TextInput
+                    label='password'
+                    style={styles.input}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    required
+                    multiline={false}
+                    autoCapitalize='none'
+                    secureTextEntry={hidePassword === true ? true : false}
+                    placeholder='*******'
+                  />
+                  <TouchableOpacity onPress={showPassword}>
+                    <Octicons
+                      name={hidePassword === true ? 'eye-closed' : 'eye'}
+                      size={20}
+                      style={styles.eyeIcon}
+                    />
+                  </TouchableOpacity>
+                  {errors.password && touched.password ? (
+                    <Text style={styles.loginError}>{errors.password}</Text>
+                  ) : null}
+                  {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    style={[styles.signInButton, styles.boxShadow]}>
+                    <Text style={styles.buttonText}>Sign in</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+            <Text
+              style={styles.forgotPassword}
+              onPress={() => navigation.navigate('ResetPassword')}>
+              Forgot password?
+            </Text>
+          </ScrollView>
+        </ImageBackground>
       </Pressable>
     </KeyboardAvoidingView>
   )
@@ -215,6 +197,10 @@ const SignIn = ({ navigation }) => {
 const styles = StyleSheet.create({
   background: {
     alignItems: 'center',
+    flex: 1,
+  },
+  backgroundBubble: {
+    justifyContent: 'center',
     flex: 1,
   },
   buttonText: {

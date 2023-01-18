@@ -34,8 +34,6 @@ const AppWrapper = () => {
   )
 }
 
-
-
 const App = () => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const [fontsLoaded] = useFonts({
@@ -45,7 +43,6 @@ const App = () => {
     Poppins_400Regular,
     Poppins_700Bold,
   })
-  // const backgroundImage = require('./app/assets/images/Bubble-3.7s-1920px')
 
   useEffect(() => {
     async function prepare() {
