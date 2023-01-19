@@ -9,8 +9,10 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  Alert,
 } from 'react-native'
 import { Formik } from 'formik'
+import ProjectBoard from './ProjectBoard'
 
 // Assets import
 import colors from 'assets/styling/colors.js'
@@ -54,8 +56,25 @@ const GuestList = ({ route }) => {
       .catch((error) => console.log(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
+
+
   // *** DELETE GUEST FROM THE LIST *** //
   const deleteGuest = (guestId) => {
+    // pop up alert after clicking on trash can
+    Alert.alert('Delete', 'Are you sure you wish to delete this guest?', [
+      {
+        text: 'Cancel',
+        onPress: () => {
+          console.log('Cancel Pressed')
+        },
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: () => {
+          console.log('deleting item')
+
+  
     dispatch(ui.actions.setLoading(true))
     const options = {
       method: 'DELETE',
@@ -73,6 +92,9 @@ const GuestList = ({ route }) => {
       .then((data) => console.log(data))
       .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
+    }
+  }
+  ])
   }
   // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
@@ -166,6 +188,7 @@ const GuestList = ({ route }) => {
               </View>
             )}
             keyExtractor={(item) => item._id}
+            // extraData={project.guestList}
           />
         </View>
       </View>
