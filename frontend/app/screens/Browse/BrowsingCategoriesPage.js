@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 100,
+    marginTop: 110,
   },
   flatList: {
     width: '95%',
-    marginVertical: 30,
+    height: '80%',
   },
   grownupBackground: {
     backgroundColor: colors.green,
@@ -75,14 +75,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
   image: {
-    width: 180,
-    height: 180,
+    width: 160,
+    height: 160,
     borderRadius: 8,
   },
   item: {
-    width: '50%',
-    marginBottom: -100,
-    padding: 4,
+    marginBottom: -65,
+    marginHorizontal: 10,
   },
   itemNameContainer: {
     borderRadius: 8,
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
     height: 70,
-    margin: 16,
+    margin: 10,
   },
   itemName: {
     fontSize: 16,

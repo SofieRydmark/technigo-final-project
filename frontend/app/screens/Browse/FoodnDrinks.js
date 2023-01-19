@@ -158,18 +158,6 @@ const FoodnDrinks = ({ route }) => {
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <View style={styles.container}>
         <View style={styles.headerWrapper}>
-          <TouchableOpacity onPress={handleDrinksButton}>
-            <Text
-              style={[
-                styles.h1,
-                selectedFetch === 'food'
-                  ? { opacity: 0.2 }
-                  : { textDecorationLine: 'underline', textDecorationColor: 'black' },
-              ]}>
-              Drinks
-            </Text>
-          </TouchableOpacity>
-          <Text style={styles.h1}> / </Text>
           <TouchableOpacity onPress={handleFoodButton}>
             <Text
               style={[
@@ -181,47 +169,20 @@ const FoodnDrinks = ({ route }) => {
               Food
             </Text>
           </TouchableOpacity>
+          <Text style={styles.h1}> / </Text>
+          <TouchableOpacity onPress={handleDrinksButton}>
+            <Text
+              style={[
+                styles.h1,
+                selectedFetch === 'food'
+                  ? { opacity: 0.2 }
+                  : { textDecorationLine: 'underline', textDecorationColor: 'black' },
+              ]}>
+              Drinks
+            </Text>
+          </TouchableOpacity>
         </View>
-        {selectedFetch === 'food' ? (
-          <>
-            <TextInput
-              style={styles.input}
-              placeholder='Search for food...'
-              onChangeText={(text) => setSearchTerm(text)}
-              value={searchTerm}
-            />
-            <FlatList
-              style={styles.flatList}
-              data={allFood.filter((foods) =>
-                foods.name.toLowerCase().includes(searchTerm.toLowerCase())
-              )}
-              numColumns={2}
-              contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-              renderItem={({ item }) => (
-                <View style={styles.item}>
-                  <TouchableOpacity onPress={() => sendFoodToProject(item.name)}>
-                    <Image
-                      source={{ uri: item.image }}
-                      style={[
-                        styles.image,
-                        objectSent.includes(item.name) ? { opacity: 0.5 } : { borderColor: 'none' },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.itemNameContainer,
-                        styles.boxShadow,
-                        objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
-                      ]}>
-                      <Text style={styles.itemName}>{item.name}</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              )}
-              keyExtractor={(item) => item.name}
-            />
-          </>
-        ) : (
+        {selectedFetch === 'drinks' ? (
           <>
             <TextInput
               style={styles.input}
@@ -260,9 +221,48 @@ const FoodnDrinks = ({ route }) => {
               keyExtractor={(item) => item.name}
             />
           </>
+        ) : (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder='Search for food...'
+              onChangeText={(text) => setSearchTerm(text)}
+              value={searchTerm}
+            />
+            <FlatList
+              style={styles.flatList}
+              data={allFood.filter((foods) =>
+                foods.name.toLowerCase().includes(searchTerm.toLowerCase())
+              )}
+              numColumns={2}
+              contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+              renderItem={({ item }) => (
+                <View style={styles.item}>
+                  <TouchableOpacity onPress={() => sendFoodToProject(item.name)}>
+                    <Image
+                      source={{ uri: item.image }}
+                      style={[
+                        styles.image,
+                        objectSent.includes(item.name) ? { opacity: 0.5 } : { borderColor: 'none' },
+                      ]}
+                    />
+                    <View
+                      style={[
+                        styles.itemNameContainer,
+                        styles.boxShadow,
+                        objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
+                      ]}>
+                      <Text style={styles.itemName}>{item.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={(item) => item.name}
+            />
+          </>
         )}
         <View style={styles.arrows}>
-          <TouchableOpacity onPress={prevPage} style={{ paddingRight: 60 }}>
+          <TouchableOpacity onPress={prevPage} style={{ paddingRight: 70 }}>
             <SimpleLineIcons name='arrow-left' size={24} color='black' />
           </TouchableOpacity>
           <TouchableOpacity onPress={nextPage}>
@@ -299,7 +299,6 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.lightGrey,
     width: '85%',
-    marginBottom: 5,
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
@@ -313,7 +312,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   h1: {
-    marginBottom: 20,
+    marginBottom: 10,
     marginTop: 60,
     fontFamily: fonts.titles,
     fontSize: 30,
@@ -321,8 +320,8 @@ const styles = StyleSheet.create({
   },
   item: {
     width: '50%',
-    marginBottom: -60,
-    padding: 4,
+    marginBottom: -70,
+    padding: 2,
   },
   itemNameContainer: {
     borderRadius: 8,
@@ -332,7 +331,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
     height: 73,
-    width: '80%',
+    width: '87%',
     alignSelf: 'center',
   },
   itemName: {

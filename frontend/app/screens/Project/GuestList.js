@@ -12,7 +12,6 @@ import {
   Alert,
 } from 'react-native'
 
-
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
@@ -47,7 +46,7 @@ const GuestList = ({ route }) => {
         // guestName: values.guestName, // values comes from Formik
         // phone: values.phone,
         guestName: guestName,
-        phone: phone
+        phone: phone,
       }),
     }
     fetch(
@@ -68,7 +67,6 @@ const GuestList = ({ route }) => {
     })
   }
 
-
   // *** DELETE GUEST FROM THE LIST *** //
   const deleteGuest = (guestId) => {
     // pop up alert after clicking on trash can
@@ -85,29 +83,26 @@ const GuestList = ({ route }) => {
         onPress: () => {
           console.log('deleting item')
 
-  
-    dispatch(ui.actions.setLoading(true))
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
+          dispatch(ui.actions.setLoading(true))
+          const options = {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: accessToken,
+            },
+            body: JSON.stringify({ _id: guestId }),
+          }
+          fetch(
+            `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteGuest/${guestId}`,
+            options
+          )
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error(error))
+            .finally(() => dispatch(ui.actions.setLoading(false)))
+        },
       },
-      body: JSON.stringify({ _id: guestId }),
-    }
-    fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteGuest/${guestId}`,
-      options
-    )
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error))
-      .finally(() => dispatch(ui.actions.setLoading(false)))
-    }
-  }
-  
-  ])
-
+    ])
   }
 
   const handleDelete = (itemId) => {
@@ -142,36 +137,32 @@ const GuestList = ({ route }) => {
       style={styles.background}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <View style={styles.wrapper}>
-        <Text style={styles.headerH1}>Guestlist</Text>
-        {/* <TouchableOpacity
-            onPress={() => navigation.navigate('SingleProjectPage', { projectId: project._id })}
-            style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>Back to project</Text>
-          </TouchableOpacity> */}
+        <Text style={styles.headerH1}>Guest list</Text>
       </View>
       <View style={[styles.form, styles.boxShadow]}>
-          <View style={styles.input}>
-               <TextInput
-                // style={styles.input}
-                value={guestName}
-                onChangeText={setGuestName}
-                placeholder='Enter guest name'
-                required
-              />
-               <TextInput
-                // style={styles.input}
-                value={phone}
-                onChangeText={setPhone}
-                placeholder='Enter phone number'
-                required
-              />
+        <View style={styles.input}>
+          <TextInput
+            value={guestName}
+            onChangeText={setGuestName}
+            placeholder='Enter guest name'
+            fontSize={18}
+            required
+          />
+          <TextInput
+            value={phone}
+            fontSize={18}
+            onChangeText={setPhone}
+            placeholder='Enter phone number'
+            required
+          />
 
-              <TouchableOpacity style={[styles.addGuestButton, styles.boxShadow]}
-              onPress ={handleCreate}>
-                    <Ionicons name='add' size={35} color='black' />
-              </TouchableOpacity>
-              </View>
- 
+          <TouchableOpacity
+            style={[styles.addGuestButton, styles.boxShadow]}
+            onPress={handleCreate}>
+            <Ionicons name='add' size={35} color='black' />
+          </TouchableOpacity>
+        </View>
+
         <View>
           <FlatList
             style={styles.flatList}
@@ -241,7 +232,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-    top: -10,
+    top: -20,
     right: 5,
     marginTop: -20,
     textAlign: 'center',
@@ -249,42 +240,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
   input: {
-    marginBottom: 10,
     padding: 25,
-    backgroundColor: colors.lightGrey,
+    justifyContent: 'center',
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
-    borderColor: colors.lightGrey,
+    borderColor: 'transparent',
+    backgroundColor: colors.lightGrey,
     color: colors.darkGrey,
   },
-  inputText: {
-    fontFamily: fonts.input,
-    fontSize: 17,
-  },
-
   //delete icon styling
   trashIcon: {
     zIndex: 10,
     position: 'absolute',
     right: 10,
     bottom: 1,
-  },
-
-  // comeback button styling
-  partyButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginBottom: 10,
-    width: '50%',
-    height: 40,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-
-  buttonText: {
-    fontFamily: fonts.button,
   },
 })
 export default GuestList

@@ -22,7 +22,7 @@ import { Formik } from 'formik'
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { PROJECTS_URL, PROJECTS_ADD_URL } from 'assets/urls/urls'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, Feather } from '@expo/vector-icons'
 
 const ChooseProject = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -120,10 +120,21 @@ const ChooseProject = ({ navigation, _id }) => {
                       <TouchableOpacity
                         onPress={() => {
                           navigation.navigate('WhatKindOfParty', { projectId: singleProject._id })
-                        }}>
-                        <Text key={_id} style={styles.row}>
-                          {singleProject.name}
-                        </Text>
+                        }}
+                        styles={styles.project}>
+                        <View>
+                          <Text key={_id} style={styles.row}>
+                            {singleProject.name}
+                          </Text>
+                        </View>
+                        <View>
+                          <Feather
+                            name='arrow-right'
+                            size={20}
+                            color='black'
+                            style={styles.moveToNext}
+                          />
+                        </View>
                       </TouchableOpacity>
                     </View>
                   )
@@ -134,6 +145,7 @@ const ChooseProject = ({ navigation, _id }) => {
               onPress={() => setShowForm(!showForm)}
               style={[styles.partyButton, styles.boxShadow]}>
               <Text style={styles.buttonText}>Create new project</Text>
+              <Ionicons name='add' size={20} color='black' style={{ padding: 8 }} />
             </TouchableOpacity>
             {showForm && (
               <View style={styles.form}>
@@ -141,10 +153,10 @@ const ChooseProject = ({ navigation, _id }) => {
                   {({ handleChange, handleSubmit, values }) => (
                     <View style={styles.input}>
                       <TextInput
-                        label='name'
+                        label='Name'
                         onChangeText={handleChange('name')}
                         value={values.name}
-                        placeholder={'Name'}
+                        placeholder={'+ Name'}
                         required
                         multiline={false}
                         autoCapitalize='none'
@@ -174,7 +186,7 @@ const ChooseProject = ({ navigation, _id }) => {
                           setCalendarVisible(true)
                         }}>
                         <Text style={styles.inputText}>
-                          {values.due_date ? values.due_date : 'YYYY-MM-DD'}
+                          {values.due_date ? values.due_date : '+ YY-MM-DD'}
                         </Text>
                       </TouchableOpacity>
 
@@ -187,7 +199,12 @@ const ChooseProject = ({ navigation, _id }) => {
                           const data = await addNewProject(values)
                           navigation.navigate('WhatKindOfParty', { projectId: data.response._id })
                         }}>
-                        <Ionicons name='add' size={35} color='black' />
+                        <Feather
+                          name='arrow-right'
+                          size={24}
+                          color='black'
+                          style={{ padding: 8 }}
+                        />
                       </TouchableOpacity>
                     </View>
                   )}
@@ -291,22 +308,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   listWrapper: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
     borderRadius: 8,
     backgroundColor: colors.lightGrey,
-    flexWrap: 'wrap',
     margin: 2,
   },
+  moveToNext: {
+    right: '-80%',
+    top: '-100%',
+  },
   row: {
-    paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingHorizontal: 15,
+    paddingTop: 15,
     fontSize: 18,
     fontFamily: fonts.text,
   },
   partyButton: {
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 10,

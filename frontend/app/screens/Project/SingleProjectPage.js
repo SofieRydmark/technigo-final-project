@@ -19,7 +19,7 @@ import CalendarPicker from 'react-native-calendar-picker'
 import fonts from 'assets/styling/fonts.js'
 import colors from 'assets/styling/colors'
 import { ONEPROJECT_URL, ONEPROJECT_CHANGE_URL } from 'assets/urls/urls'
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons'
 
 // Reducers
 import user from '../../reducers/user'
@@ -206,10 +206,10 @@ const SingleProjectPage = ({ navigation, route }) => {
     <ScrollView
       style={styles.background}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      {singleProject.map((project) => {
+      {singleProject.map((project, index) => {
         return (
-          <View>
-            <View key={project._id}>
+          <View style={{ width: '90%', paddingBottom: 100 }}>
+            <View key={index}>
               <View style={styles.headerContainer}>
                 <Text style={styles.headerH1}>{project.name}</Text>
                 <Text style={styles.headerH4}>{project.due_date}</Text>
@@ -217,9 +217,16 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <MaterialIcons name='edit' size={20} color='black' />
                 </TouchableOpacity>
               </View>
-              <Modal animationType='slide' visible={showModal} transparent={false}>
+              <Modal animationType='slide' visible={showModal}>
                 <View style={styles.modalContainer}>
                   <View style={styles.calendar}>
+                    <TouchableOpacity
+                      style={styles.closeBtn}
+                      onPress={() => {
+                        setShowModal(false)
+                      }}>
+                      <AntDesign name='close' size={25} color='black' />
+                    </TouchableOpacity>
                     <CalendarPicker
                       onDateChange={(date) => setDueDate(date.toISOString().slice(0, 10))}
                       minDate={new Date()}
@@ -230,16 +237,16 @@ const SingleProjectPage = ({ navigation, route }) => {
                         changeDueDate(dueDate)
                         setShowModal(false)
                       }}>
-                      <Text style={styles.buttonText}>CHANGE DATE</Text>
+                      <Text style={styles.buttonText}>Update date</Text>
                     </TouchableOpacity>
                   </View>
                   <View style={styles.changeNameContainer}>
-                    <Text style={styles.headerH1}>CHANGE NAME</Text>
                     <TextInput
                       style={styles.input}
                       value={name}
                       onChangeText={setName}
                       placeholder='New name'
+                      placeholderTextColor={colors.darkGrey}
                     />
                     <TouchableOpacity
                       style={[styles.submitButton, styles.boxShadow]}
@@ -248,7 +255,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                         setShowModal(false)
                         setName('')
                       }}>
-                      <Text style={styles.buttonText}>SUBMIT</Text>
+                      <Text style={styles.buttonText}>Update name</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -276,7 +283,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>THEME</Text>
                   {project.themeProjectList.map((theme) => {
                     return (
-                      <View key={theme._id} style={styles.itemWrapper}>
+                      <View key={theme.name} style={styles.itemWrapper}>
                         <View>
                           <Text style={styles.text}>{theme.themesName}</Text>
                         </View>
@@ -311,7 +318,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>ACTIVITIES</Text>
                   {project.activitiesProjectList.map((activity) => {
                     return (
-                      <View key={activity._id} style={styles.listWrapper}>
+                      <View key={activity.name} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{activity.activitiesName}</Text>
                         </View>
@@ -346,7 +353,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>DECORATION</Text>
                   {project.decorationsProjectList.map((decoration) => {
                     return (
-                      <View key={decoration._id} style={styles.listWrapper}>
+                      <View key={decoration.name} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{decoration.decorationsName}</Text>
                         </View>
@@ -383,7 +390,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>FOOD</Text>
                   {project.foodProjectList.map((food) => {
                     return (
-                      <View key={food._id} style={styles.listWrapper}>
+                      <View key={food.name} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{food.foodName}</Text>
                         </View>
@@ -418,7 +425,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>DRINKS</Text>
                   {project.drinksProjectList.map((drinks) => {
                     return (
-                      <View key={drinks._id} style={styles.listWrapper}>
+                      <View key={drinks.name} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{drinks.drinksName}</Text>
                         </View>
@@ -484,7 +491,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.labels,
     textAlign: 'left',
-    marginTop: 3,
+    marginVertical: 6,
   },
   headerH4: {
     fontSize: 17,
@@ -492,10 +499,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   headerContainer: {
-    marginTop: 100,
+    marginTop: 80,
     flexDirection: 'column',
     justifyContent: 'center',
-    paddingBottom: 40,
+    paddingBottom: 20,
   },
   itemWrapper: {
     flexDirection: 'row',
@@ -537,17 +544,16 @@ const styles = StyleSheet.create({
 
   // styling change name
   input: {
-    backgroundColor: colors.lightGrey,
+    backgroundColor: colors.white,
     marginBottom: 10,
-    marginTop: 30,
     borderWidth: 1,
-    padding: 5,
+    padding: 10,
     borderRadius: 12,
     fontSize: 16,
     width: 200,
     fontFamily: fonts.input,
     borderColor: colors.lightGrey,
-    color: colors.darkGrey,
+    placeholderColor: colors.black,
     paddingLeft: 20,
     paddingRight: 20,
   },
@@ -557,14 +563,17 @@ const styles = StyleSheet.create({
     fontFamily: fonts.button,
     textAlign: 'center',
   },
-
+  closeBtn: {
+    right: -150,
+    top: -30,
+  },
   partyButton: {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     marginTop: 5,
     marginBottom: 5,
-    width: '40%',
+    width: 120,
     height: 50,
     borderRadius: 8,
     backgroundColor: colors.peach,

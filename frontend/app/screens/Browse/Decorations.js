@@ -192,7 +192,6 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.lightGrey,
     width: '85%',
-    marginBottom: 5,
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
@@ -206,14 +205,14 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   h1: {
-    marginBottom: 20,
-    marginTop: 60,
+    marginBottom: 10,
+    marginTop: 50,
     fontFamily: fonts.titles,
     fontSize: 30,
   },
   item: {
     width: '50%',
-    marginBottom: -60,
+    marginBottom: -70,
     padding: 4,
   },
   itemNameContainer: {
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
     height: 70,
-    width: '80%',
+    width: '87%',
     alignSelf: 'center',
   },
   itemName: {
