@@ -11,8 +11,7 @@ import {
   FlatList,
   Alert,
 } from 'react-native'
-import { Formik } from 'formik'
-import ProjectBoard from './ProjectBoard'
+
 
 // Assets import
 import colors from 'assets/styling/colors.js'
@@ -31,7 +30,9 @@ const GuestList = ({ route }) => {
   const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
   console.log('project id guest', projectId)
-  const project = route.params.project
+  const [project, setProject] = useState(route.params.project)
+  const [guestName, setGuestName] = useState('')
+  const [phone, setPhone] = useState('')
 
   // *** ADD NEW GUEST FETCH *** //
   const addNewGuest = (values) => {
@@ -43,8 +44,10 @@ const GuestList = ({ route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        guestName: values.guestName, // values comes from Formik
-        phone: values.phone,
+        // guestName: values.guestName, // values comes from Formik
+        // phone: values.phone,
+        guestName: guestName,
+        phone: phone
       }),
     }
     fetch(
@@ -55,6 +58,14 @@ const GuestList = ({ route }) => {
       .then((data) => console.log(data))
       .catch((error) => console.log(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
+  }
+  const handleCreate = () => {
+    addNewGuest()
+    setGuestName('')
+    setPhone('')
+    setProject((prev) => {
+      return { ...prev, guestList: [...prev.guestList, { guestName, phone }] }
+    })
   }
 
 
@@ -94,7 +105,14 @@ const GuestList = ({ route }) => {
       .finally(() => dispatch(ui.actions.setLoading(false)))
     }
   }
+  
   ])
+
+  }
+
+  const handleDelete = (itemId) => {
+    deleteGuest(itemId)
+    setProject({ ...project, guestList: project.guestList.filter((item) => item._id !== itemId) })
   }
   // *** BOX SHADOW STYLING FUNCTION IOS & ANDROID *** //
   const generateBoxShadowStyle = (
@@ -132,47 +150,28 @@ const GuestList = ({ route }) => {
           </TouchableOpacity> */}
       </View>
       <View style={[styles.form, styles.boxShadow]}>
-        <Formik
-          initialValues={{ guestName: '', phone: '' }}
-          onSubmit={(values, actions) => {
-            if (values.guestName === '') {
-              return setLoginError('Please fill the name')
-            } else {
-              addNewGuest(values)
-              actions.resetForm()
-            }
-          }}>
-          {({ handleChange, handleSubmit, values }) => (
-            <View style={styles.input}>
-              <TextInput
-                label='guestName'
-                onChangeText={handleChange('guestName')}
-                value={values.guestName}
-                placeholder={'Name'}
+          <View style={styles.input}>
+               <TextInput
+                // style={styles.input}
+                value={guestName}
+                onChangeText={setGuestName}
+                placeholder='Enter guest name'
                 required
-                multiline={false}
-                autoCapitalize='none'
-                maxLength={20}
-                style={styles.inputText}
               />
-              <TextInput
-                label='phone'
-                onChangeText={handleChange('phone')}
-                value={values.phone}
-                placeholder={'Phonenumber'}
-                multiline={false}
-                autoCapitalize='none'
-                style={styles.inputText}
+               <TextInput
+                // style={styles.input}
+                value={phone}
+                onChangeText={setPhone}
+                placeholder='Enter phone number'
+                required
               />
 
-              <TouchableOpacity
-                style={[styles.addGuestButton, styles.boxShadow]}
-                onPress={handleSubmit}>
-                <Ionicons name='add' size={35} color='black' />
+              <TouchableOpacity style={[styles.addGuestButton, styles.boxShadow]}
+              onPress ={handleCreate}>
+                    <Ionicons name='add' size={35} color='black' />
               </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
+              </View>
+ 
         <View>
           <FlatList
             style={styles.flatList}
@@ -182,13 +181,12 @@ const GuestList = ({ route }) => {
                 <Text style={styles.row}>{item.guestName}</Text>
                 <Text style={styles.row}>{item.phone}</Text>
 
-                <TouchableOpacity style={styles.trashIcon} onPress={() => deleteGuest(item._id)}>
+                <TouchableOpacity style={styles.trashIcon} onPress={() => handleDelete(item._id)}>
                   <Text style={styles.row}>🗑</Text>
                 </TouchableOpacity>
               </View>
             )}
             keyExtractor={(item) => item._id}
-            // extraData={project.guestList}
           />
         </View>
       </View>
@@ -243,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-    top: -20,
+    top: -10,
     right: 5,
     marginTop: -20,
     textAlign: 'center',
