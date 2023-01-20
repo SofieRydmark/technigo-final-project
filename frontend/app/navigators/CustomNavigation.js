@@ -43,18 +43,16 @@ const HomeNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: 'transparent',
+        headerTitle: '',
+        headerBackTitle: '',
+        headerTintColor: 'black',
+        headerBackTitleVisible: false,
         headerTransparent: true,
-        headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
-          paddingLeft: 10,
+          paddingLeft: 13,
         },
       }}>
-      <Stack.Screen
-        name='WhatAreWeDoing'
-        component={WhatAreWeDoing}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name='WhatAreWeDoing' component={WhatAreWeDoing} />
       <Stack.Screen name='Loading' component={Loading} />
       <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
       <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
@@ -80,30 +78,9 @@ const ProfileNavigator = () => {
     <Stack.Navigator
       initialRouteName='Profile'
       screenOptions={{
-        headerStyle: {
-          backgroundColor: 'transparent',
-        },
-        headerTintColor: 'transparent',
-        headerTransparent: true,
-        headerBackTitle: <BackBtn />,
-        headerLeftContainerStyle: {
-          paddingLeft: 10,
-        },
+        headerShown: false,
       }}>
-      <Stack.Screen name='Loading' component={Loading} />
       <Stack.Screen name='Profile' component={Profile} />
-      <Stack.Screen name='ProjectBoard' component={ProjectBoard} />
-      <Stack.Screen name='SingleProjectPage' component={SingleProjectPage} />
-      <Stack.Screen name='Budget' component={Budget} />
-      <Stack.Screen name='GuestList' component={GuestList} />
-      <Stack.Screen name='FindStore' component={FindStore} />
-      <Stack.Screen name='WhatKindOfParty' component={WhatKindOfParty} />
-      <Stack.Screen name='BrowsingCategoriesPage' component={BrowsingCategoriesPage} />
-      <Stack.Screen name='Food & Drinks' component={FoodnDrinks} />
-      <Stack.Screen name='Themes' component={Themes} />
-      <Stack.Screen name='Decorations' component={Decorations} />
-      <Stack.Screen name='Activities' component={Activities} />
-      <Stack.Screen name='ChooseProject' component={ChooseProject} />
     </Stack.Navigator>
   )
 }
@@ -117,11 +94,13 @@ const ProjectNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: 'transparent',
+        headerTitle: '',
+        headerBackTitle: '',
+        headerTintColor: 'black',
+        headerBackTitleVisible: false,
         headerTransparent: true,
-        headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
-          paddingLeft: 10,
+          paddingLeft: 13,
         },
       }}>
       <Stack.Screen name='Loading' component={Loading} />
@@ -151,11 +130,13 @@ const BrowseNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
         },
-        headerTintColor: 'transparent',
+        headerTitle: '',
+        headerBackTitle: '',
+        headerTintColor: 'black',
+        headerBackTitleVisible: false,
         headerTransparent: true,
-        headerBackTitle: <BackBtn />,
         headerLeftContainerStyle: {
-          paddingLeft: 10,
+          paddingLeft: 13,
         },
       }}>
       <Stack.Screen name='Loading' component={Loading} />

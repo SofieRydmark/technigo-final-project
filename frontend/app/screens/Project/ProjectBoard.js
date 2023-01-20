@@ -130,7 +130,7 @@ const ProjectBoard = ({ navigation }) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={styles.headerH1}>Projectboard</Text>
+      <Text style={styles.headerH1}>Project board</Text>
       <Text style={styles.headerH2}>{email}</Text>
       <TouchableOpacity
         onPress={() => setShowModal(true)}
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerH1: {
-    marginTop: 50,
+    marginTop: 65,
     fontSize: 30,
     textAlign: 'center',
     fontFamily: fonts.titles,

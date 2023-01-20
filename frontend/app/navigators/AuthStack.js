@@ -8,18 +8,6 @@ const Stack = createStackNavigator()
 // Screen imports
 import { ResetPassword, SignIn, SignUp } from '../screens'
 
-// Icon
-import { SimpleLineIcons } from '@expo/vector-icons'
-
-// Back symbol in header
-const BackBtn = () => {
-  return (
-    <>
-      <SimpleLineIcons name='arrow-left' size={24} color='black' />
-    </>
-  )
-}
-
 // Navigation stack if you are not logged in
 const AuthStack = () => {
   return (
@@ -30,11 +18,13 @@ const AuthStack = () => {
           headerStyle: {
             backgroundColor: 'transparent',
           },
-          headerTintColor: 'transparent',
+          headerTitle: '',
+          headerBackTitle: '',
+          headerTintColor: 'black',
+          headerBackTitleVisible: false,
           headerTransparent: true,
-          headerBackTitle: <BackBtn />,
           headerLeftContainerStyle: {
-            paddingLeft: 10,
+            paddingLeft: 13,
           },
         }}>
         <Stack.Screen name='SignIn' component={SignIn} options={{ headerShown: false }} />

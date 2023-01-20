@@ -28,8 +28,6 @@ const ResetPassword = () => {
   const [emailSent, setEmailSent] = useState(false)
   const [loginError, setLoginError] = useState(null)
 
-  console.log(emailSent)
-
   // Box shadow styling IOS and android
   const generateBoxShadowStyle = (
     xOffset,
@@ -66,9 +64,6 @@ const ResetPassword = () => {
     fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/forgotPassword', options) // reset link
       .then((res) => res.json())
       .catch((error) => console.error(error))
-
-    setEmailSent(true)
-    console.log('fetch done', values.email)
   }
 
   return (
