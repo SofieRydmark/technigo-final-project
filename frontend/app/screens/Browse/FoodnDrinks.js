@@ -215,6 +215,7 @@ const FoodnDrinks = ({ route }) => {
                         objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                       ]}>
                       <Text style={styles.itemName}>{item.name}</Text>
+                      <Ionicons style={styles.plusIcone} name='add' size={30} color='black' />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -350,7 +351,6 @@ const styles = StyleSheet.create({
   headerWrapper: {
     flexDirection: 'row',
   },
-
 })
 
 export default FoodnDrinks
