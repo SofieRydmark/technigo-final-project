@@ -240,11 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   
-  plusIcone: {
-    // zIndex: 3,
-    marginLeft: 100,
 
-  }
 })
 
 export default Activities

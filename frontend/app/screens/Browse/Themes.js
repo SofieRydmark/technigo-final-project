@@ -158,7 +158,7 @@ const Themes = ({ route }) => {
                     objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                   ]}>
                   <Text style={styles.itemName}>{item.name}</Text>
-                  <Ionicons style={styles.plusIcone} name='add' size={30} color='black' />
+                  <Ionicons name='add' size={30} color='black' />
                 </View>
               </TouchableOpacity>
             </View>
@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
   },
   itemNameContainer: {
     borderRadius: 8,
+    // flexDirection: 'row',
     zIndex: 99,
     top: '-50%',
     justifyContent: 'center',
@@ -296,7 +297,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   plusIcone: {
-    marginLeft: 100,
+    // marginLeft: 100,
 
   }
 })

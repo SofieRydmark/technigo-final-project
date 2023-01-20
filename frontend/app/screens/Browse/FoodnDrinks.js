@@ -350,10 +350,7 @@ const styles = StyleSheet.create({
   headerWrapper: {
     flexDirection: 'row',
   },
-  plusIcone: {
-    marginLeft: 100,
 
-  }
 })
 
 export default FoodnDrinks
