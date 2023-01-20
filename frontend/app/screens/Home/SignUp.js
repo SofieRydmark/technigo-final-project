@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, batch } from 'react-redux'
 import {
   View,
@@ -21,7 +21,7 @@ import { Octicons } from '@expo/vector-icons'
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-import { SIGN_UP_URL } from 'assets/urls/urls.js'
+import { SIGN_UP_URL, BASE_URL } from 'assets/urls/urls.js'
 
 // Reducers
 import user from '../../reducers/user'
@@ -46,6 +46,16 @@ const SignUp = ({ navigation }) => {
   const showPassword = () => {
     setHidePassword(!hidePassword)
   }
+
+  // Get fetch to wake up the server to not have to sign in three times (server downtime)
+  const wakeServer = () => {
+    fetch(BASE_URL)
+      .then((data) => data.json())
+      .catch((error) => console.error(error))
+  }
+  useEffect(() => {
+    wakeServer()
+  }, [])
 
   // Sign up form function with post sign up url
   const signUpSubmit = (values) => {

@@ -22,7 +22,7 @@ import { Formik } from 'formik'
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { PROJECTS_URL, PROJECTS_ADD_URL } from 'assets/urls/urls'
-import { Ionicons, Feather } from '@expo/vector-icons'
+import { Ionicons, Feather, AntDesign } from '@expo/vector-icons'
 
 const ChooseProject = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -166,6 +166,13 @@ const ChooseProject = ({ navigation, _id }) => {
 
                       <Modal visible={calendarVisible} animationType={'slide'}>
                         <View style={styles.calendar}>
+                          <TouchableOpacity
+                            style={styles.closeBtn}
+                            onPress={() => {
+                              setCalendarVisible(false)
+                            }}>
+                            <AntDesign name='close' size={25} color='black' />
+                          </TouchableOpacity>
                           <CalendarPicker
                             onDateChange={(date) =>
                               handleChange('due_date')(date.toISOString().slice(0, 10))
@@ -240,6 +247,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.button,
   },
+  closeBtn: {
+    right: -150,
+    top: -30,
+  },
   calendar: {
     flex: 1,
     paddingTop: 100,
@@ -264,7 +275,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
   },
   doneButtonText: {
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: fonts.button,
   },
   errorText: {
