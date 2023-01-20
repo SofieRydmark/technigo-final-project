@@ -29,7 +29,7 @@ Our approach:
 
 <h2> What we have learned and practiced on: </h2>
 
-1. Project menagement 
+1. Project management 
       - Bigger project planning
       - Project code structure
       - How to work Agile
