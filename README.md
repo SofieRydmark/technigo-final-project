@@ -27,7 +27,7 @@ Our approach:
 - Soultion for Google Cloud dotenv file was a lot of searching through bug logs but found solution on Stack Overflow to add environmental variables when doing a new revision. Now Google cloud could read our email authentications
 - Android problem troubleshooting: We decided to come back to moment when everything was working, and check one by one, what is the feature that crashed the app. First of all we created a new app to check if it is not a problem with expo, new app worked without issue. Next we went to uppdates in app.json because we changed expo icon to our own, that was not an issue either. The third check was lottie animation in background in the app, which end up being an issue for android. After changing it back to picture, everything started working again. 
 
-<h2> What we have learned and practised: </h2>
+<h2> What we have learned and practiced on: </h2>
 
 1. Project menagement 
       - Bigger project planning
