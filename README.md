@@ -6,6 +6,8 @@ Expo Go: https://expo.dev/@sofierydmark/Planda?serviceType=classic&distribution=
 
 # Final Project - PLANDA 🐼
 
+⭐ Team: Sofie Rydmark, Amanda Elvkull, Kaja Wilbik
+
 We have created a party planner app (kids & grownups) with React Native that will be available in Google Play Store after final testing. Users will log in to their own account and then be able to browse inspiration and idées for themes, activities, food, drinks, and decorations. You will be able to choose if you want to plan a kid's party or a grownup party. 
 
 User can save projects/parties to their profile with a project board and make a guest list, estimated budget and check off tasks that she/he have done. User can add estimated costs for each part and the total estimated budget for their parties. 
@@ -55,5 +57,7 @@ Our approach:
      - Google Cloud
      - Mongo Atlas & Compass 
      - Postman
-
-⭐ Team: Sofie Rydmark, Amanda Elvkull, Kaja Wilbik
+ 
+ <h2> If we had more time </h2>
+ We would optimize the code even further, creating more reusable components and compiling reused styling and components to seperate files for better readability.
+ 
