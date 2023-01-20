@@ -17,6 +17,7 @@ import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { THEME_ADD_URL } from 'assets/urls/urls'
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 
 // Reducers
 import user from '../../reducers/user'
@@ -157,6 +158,7 @@ const Themes = ({ route }) => {
                     objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                   ]}>
                   <Text style={styles.itemName}>{item.name}</Text>
+                  <Ionicons style={styles.plusIcone} name='add' size={30} color='black' />
                 </View>
               </TouchableOpacity>
             </View>
@@ -293,6 +295,10 @@ const styles = StyleSheet.create({
     fontFamily: fonts.text,
     textAlign: 'center',
   },
+  plusIcone: {
+    marginLeft: 100,
+
+  }
 })
 
 export default Themes

@@ -16,6 +16,7 @@ import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { FOOD_ADD_URL, DRINK_ADD_URL } from 'assets/urls/urls'
 import { SimpleLineIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 
 // Reducers
 import user from '../../reducers/user'
@@ -253,6 +254,7 @@ const FoodnDrinks = ({ route }) => {
                         objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                       ]}>
                       <Text style={styles.itemName}>{item.name}</Text>
+                      <Ionicons style={styles.plusIcone} name='add' size={30} color='black' />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -348,6 +350,10 @@ const styles = StyleSheet.create({
   headerWrapper: {
     flexDirection: 'row',
   },
+  plusIcone: {
+    marginLeft: 100,
+
+  }
 })
 
 export default FoodnDrinks

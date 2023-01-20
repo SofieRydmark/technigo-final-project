@@ -16,6 +16,7 @@ import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { ACTIVITY_ADD_URL } from 'assets/urls/urls'
 import { SimpleLineIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 
 // Reducers
 import user from '../../reducers/user'
@@ -149,6 +150,7 @@ const Activities = ({ route }) => {
                     objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                   ]}>
                   <Text style={styles.itemName}>{item.name}</Text>
+                  <Ionicons style={styles.plusIcone} name='add' size={30} color='black' />
                 </View>
               </TouchableOpacity>
             </View>
@@ -237,6 +239,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 8,
   },
+  
+  plusIcone: {
+    // zIndex: 3,
+    marginLeft: 100,
+
+  }
 })
 
 export default Activities
