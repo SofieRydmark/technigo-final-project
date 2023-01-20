@@ -26,28 +26,7 @@ const ReviewSchema = Yup.object().shape({
 // Lottie animation, avatars and icons
 import LottieView from 'lottie-react-native'
 import { MaterialIcons, AntDesign, Octicons } from '@expo/vector-icons'
-import avatar1 from 'assets/lotties/avatar1.json'
-import avatar2 from 'assets/lotties/avatar2.json'
-import avatar3 from 'assets/lotties/avatar3.json'
-import avatar4 from 'assets/lotties/avatar4.json'
-const avatars = [
-  {
-    id: 1,
-    name: avatar1,
-  },
-  {
-    id: 2,
-    name: avatar2,
-  },
-  {
-    id: 3,
-    name: avatar3,
-  },
-  {
-    id: 4,
-    name: avatar4,
-  },
-]
+import avatars from 'assets/lotties/avatars.js'
 
 // Reducer
 import user from '../../reducers/user'
@@ -59,7 +38,7 @@ const Profile = () => {
   const [hidePassword, setHidePassword] = useState(true)
   const [passwordError, setPasswordError] = useState(null)
   const [avatarModal, setAvatarModal] = useState(false)
-  const [chosenAvatar, setChosenAvatar] = useState(avatar3)
+  const [chosenAvatar, setChosenAvatar] = useState(avatars[2].name)
   const [allProjects, setAllProjects] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
