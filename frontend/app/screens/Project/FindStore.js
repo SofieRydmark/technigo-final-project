@@ -8,8 +8,8 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 // Assets import
 import mapStyling from 'assets/styling/mapStyling.json'
 import colors from 'assets/styling/colors.js'
-import storeList from 'assets/storeList/stores.json'
-import findStore from 'assets/jsonData/findStore.json'
+import storeList from 'assets/stores/stores.json'
+// import findStore from 'assets/jsonData/findStore.json'
 import fonts from 'assets/styling/fonts.js'
 
 // Icons
