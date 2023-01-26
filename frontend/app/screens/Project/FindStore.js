@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 
 // Geolocation and map packages
@@ -9,7 +9,6 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import mapStyling from 'assets/styling/mapStyling.json'
 import colors from 'assets/styling/colors.js'
 import storeList from 'assets/stores/stores.json'
-// import findStore from 'assets/jsonData/findStore.json'
 import fonts from 'assets/styling/fonts.js'
 import { BASE_URL } from '@env'
 
@@ -25,7 +24,7 @@ const FindStore = () => {
   })
   const [errorMsg, setErrorMsg] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [stores, setStores] = useState('')
+  const [stores, setStores] = useState([])
 
   useEffect(() => {
     const options = {
@@ -100,8 +99,8 @@ const FindStore = () => {
           <Marker coordinate={location} title='You' pinColor={colors.lightYellow}>
             <MaterialCommunityIcons name='panda' size={40} color='black' />
           </Marker>
-          {stores.map((item) => (
-            <Marker key={item.id} title={item.company} coordinate={item.coordinates}>
+          {stores.map((store) => (
+            <Marker key={store.id} title={store.company} coordinate={store.coordinates}>
               <Ionicons name='location-outline' size={40} color='black' />
             </Marker>
           ))}
