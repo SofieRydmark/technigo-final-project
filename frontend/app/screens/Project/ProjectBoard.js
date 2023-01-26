@@ -23,6 +23,7 @@ import DatePicker from 'react-native-datepicker'
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { PROJECTS_URL } from 'assets/urls/urls'
+import { BASE_URL } from '@env'
 import { MaterialIcons, Ionicons, AntDesign } from '@expo/vector-icons'
 
 // Reducers
@@ -52,7 +53,7 @@ const ProjectBoard = ({ navigation }) => {
     fetch(PROJECTS_URL(userId), options)
       .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
-      .catch((error) => console.log(error))
+      .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }, [allProjects])
 
@@ -72,7 +73,7 @@ const ProjectBoard = ({ navigation }) => {
       }),
     }
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addProject`,
+      `${BASE_URL}/${userId}/project-board/projects/addProject`,
       options
     )
       .then((res) => res.json())
@@ -93,7 +94,7 @@ const ProjectBoard = ({ navigation }) => {
       body: JSON.stringify({ _id: projectId }),
     }
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/delete/${projectId}`,
+      `${BASE_URL}/${userId}/project-board/projects/delete/${projectId}`,
       options
     )
       .then((res) => res.json())

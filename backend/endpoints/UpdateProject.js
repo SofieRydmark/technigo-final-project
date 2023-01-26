@@ -9,7 +9,6 @@ export const UpdateProjectName = async (req, res) => {
 
   try {
     const projectToUpdate = await Project.findOne({ userId, projectId })
-    console.log('projectToUpdate', projectToUpdate, userId)
     if (projectToUpdate) {
       const updatedProject = await Project.findByIdAndUpdate(
         { _id: projectId },
@@ -38,10 +37,9 @@ export const UpdateProjectName = async (req, res) => {
 
 export const addNewGuest = async (req, res) => {
   const { userId, projectId } = req.params
-  const { guestList, guestName, phone } = req.body
+  const { guestName, phone } = req.body
   try {
     const projectToChange = await Project.findOne({ userProject: userId, _id: projectId })
-    console.log('project to change', projectToChange, userId)
     if (projectToChange) {
       const addedGuest = await Project.findByIdAndUpdate(
         { _id: projectId },
@@ -55,7 +53,6 @@ export const addNewGuest = async (req, res) => {
         response: 'Guest added',
         data: addedGuest,
       })
-      console.log('something', addedGuest)
     } else {
       res.status(500).json({
         response: 'Could not update',
@@ -72,17 +69,14 @@ export const addNewGuest = async (req, res) => {
 
 export const deleteGuest = async (req, res) => {
   const { userId, projectId, guestId } = req.params
-  const { guestList } = req.body
 
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
-    console.log('project', project)
     const guestToDelete = await Project.findByIdAndUpdate(
       { _id: projectId },
       { $pull: { guestList: { _id: mongoose.Types.ObjectId(guestId) } } }
     )
-    console.log('guestToDelete', guestToDelete)
     if (user && project) {
       res.status(200).json({
         response: `Guest has been deleted`,

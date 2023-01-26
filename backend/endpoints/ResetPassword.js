@@ -43,13 +43,11 @@ export const resetPassword = async (req, res) => {
 
       transporter.sendMail(mailOptions, (error) => {
         if (error) {
-          console.log(error)
           res.status(400).json({
             response: 'Error sending email',
             success: false,
           })
         } else {
-          console.log('Reset link sent to' + user.email)
           res.status(200).json({
             response: 'Reset link sent to your email',
             success: true,
@@ -58,7 +56,6 @@ export const resetPassword = async (req, res) => {
       })
     }
   } catch (err) {
-    console.log(err)
     res.status(500).json({
       response: 'Error resetting email',
       success: false,

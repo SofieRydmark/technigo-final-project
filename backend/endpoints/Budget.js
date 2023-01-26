@@ -38,7 +38,6 @@ export const AddBudget = async (req, res) => {
 
 export const deleteItemFromBudget = async (req, res) => {
   const { userId, projectId, itemId } = req.params
-  const { budgetList } = req.body
 
   try {
     const user = await User.find({ userId })

@@ -21,14 +21,14 @@ import { Formik } from 'formik'
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-import { PROJECTS_URL, PROJECTS_ADD_URL } from 'assets/urls/urls'
+import { PROJECTS_URL } from 'assets/urls/urls'
+import { BASE_URL } from '@env'
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons'
 
 const ChooseProject = ({ navigation, _id }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const [allProjects, setAllProjects] = useState([])
-  const [newProject, setNewProject] = useState('')
   const [showMap, setShowMap] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [loginError, setLoginError] = useState(null)
@@ -45,11 +45,11 @@ const ChooseProject = ({ navigation, _id }) => {
     fetch(PROJECTS_URL(userId), options)
       .then((res) => res.json())
       .then((data) => setAllProjects(data.response))
-      .catch((error) => console.log(error))
+      .catch((error) => console.error(error))
   }, [allProjects])
 
   /* --- ADD NEW PROJECT FETCH  --*/
-  const addNewProject = async (values) => {
+  const addNewProject = (values) => {
     const options = {
       method: 'POST',
       headers: {
@@ -62,16 +62,14 @@ const ChooseProject = ({ navigation, _id }) => {
       }),
     }
 
-    try {
-      const res = await fetch(PROJECTS_ADD_URL(userId), options)
-      const data = await res.json()
-      console.log('newProject', data.response)
-      console.log('id', data.response._id)
-      return data
-    } catch (error) {
-      console.log(error)
-      return error
-    }
+    fetch(
+      `${BASE_URL}/${userId}/project-board/projects/addProject`,
+      options
+    )
+      .then((res) => res.json())
+      .then((data) => navigation.navigate('WhatKindOfParty', { projectId: data.response._id }))
+      .catch((error) => console.error(error))
+
   }
 
   // Box shadow styling IOS and android
@@ -149,7 +147,18 @@ const ChooseProject = ({ navigation, _id }) => {
             </TouchableOpacity>
             {showForm && (
               <View style={styles.form}>
-                <Formik initialValues={{ name: '', due_date: '' }}>
+                <Formik 
+                initialValues={{ name: '', due_date: '' }}
+                onSubmit={(values, actions) => {
+                  if (values.name === '' || values.due_date === '') {
+                    return setLoginError('Please fill in name and due date')
+                  } else if (values.name.length < 3) {
+                    return setLoginError('Name needs to be min 3 characters')
+                  } else {
+                  addNewProject(values)
+                  actions.resetForm()
+                }
+                }}>
                   {({ handleChange, handleSubmit, values }) => (
                     <View style={styles.input}>
                       <TextInput
@@ -199,13 +208,7 @@ const ChooseProject = ({ navigation, _id }) => {
 
                       <TouchableOpacity
                         style={[styles.addProjectButton, styles.boxShadow]}
-                        onPress={async () => {
-                          if (values.name === '' || values.due_date === '') {
-                            return setLoginError('Please fill in name and due date')
-                          }
-                          const data = await addNewProject(values)
-                          navigation.navigate('WhatKindOfParty', { projectId: data.response._id })
-                        }}>
+                        onPress={handleSubmit}>
                         <Feather
                           name='arrow-right'
                           size={24}

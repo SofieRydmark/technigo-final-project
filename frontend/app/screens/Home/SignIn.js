@@ -21,7 +21,8 @@ import { Octicons } from '@expo/vector-icons'
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-import { SIGN_IN_URL, BASE_URL } from 'assets/urls/urls.js'
+import { SIGN_IN_URL } from 'assets/urls/urls.js'
+import { BASE_URL } from '@env'
 
 // Reducer
 import user from '../../reducers/user'

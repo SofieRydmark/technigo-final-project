@@ -16,6 +16,7 @@ import {
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { THEME_ADD_URL } from 'assets/urls/urls'
+import { BASE_URL } from '@env'
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -50,7 +51,7 @@ const Themes = ({ route }) => {
       },
     }
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/themes/${page}/type/${partyType}`,
+      `${BASE_URL}/themes/${page}/type/${partyType}`,
       options
     )
       .then((res) => res.json())

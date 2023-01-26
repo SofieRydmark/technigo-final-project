@@ -12,7 +12,7 @@ import {
 // Assets import
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
-import categories from 'assets/jsonData/categories.json'
+import categories from 'assets/images/browseImages.json'
 
 const BrowsCategoriesPage = ({ route, navigation }) => {
   const projectId = route.params.projectId

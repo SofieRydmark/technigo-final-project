@@ -1,5 +1,4 @@
 import Project from '../models/Project'
-import User from '../models/User'
 import ThemeProject from '../models/ThemeProject'
 import DrinksProject from '../models/DrinksProject'
 import FoodProject from '../models/FoodProject'
@@ -9,7 +8,7 @@ import DecorationProject from '../models/DecorationsProject'
 // Add on all objects except theme that you only can have 1 of .
 export const addTheme = async (req, res) => {
   const { userId, projectId } = req.params
-  const { themProjectList, themesName } = req.body
+  const { themesName } = req.body
 
   try {
     const projectToUpdate = await Project.findOne({ userProject: userId, _id: projectId })
@@ -43,7 +42,7 @@ export const addTheme = async (req, res) => {
 //********************** ADD DRINKS ************************* */
 export const addDrinks = async (req, res) => {
   const { userId, projectId } = req.params
-  const { drinksProjectList, drinksProject, drinksName } = req.body
+  const { drinksName } = req.body
 
   try {
     const projectToUpdate = await Project.findOne({ userProject: userId, _id: projectId })
@@ -78,7 +77,7 @@ export const addDrinks = async (req, res) => {
 //********************** ADD FOOD ************************* */
 export const addFood = async (req, res) => {
   const { userId, projectId } = req.params
-  const { foodProjectList, foodProject, foodName } = req.body
+  const { foodName } = req.body
 
   try {
     const projectToUpdate = await Project.findOne({ userProject: userId, _id: projectId })
@@ -113,7 +112,7 @@ export const addFood = async (req, res) => {
 //********************** ADD ACTIVITY  ************************* */
 export const addActivity = async (req, res) => {
   const { userId, projectId } = req.params
-  const { activitiesProjectList, activityProject, activitiesName } = req.body
+  const { activitiesName } = req.body
 
   try {
     const projectToUpdate = await Project.findOne({ userProject: userId, _id: projectId })
@@ -148,7 +147,7 @@ export const addActivity = async (req, res) => {
 //********************** ADD DECORATIONS  ************************* */
 export const addDecorations = async (req, res) => {
   const { userId, projectId } = req.params
-  const { decorationsProjectList, decorationProject, decorationsName } = req.body
+  const { decorationsName } = req.body
 
   try {
     const projectToUpdate = await Project.findOne({ userProject: userId, _id: projectId })

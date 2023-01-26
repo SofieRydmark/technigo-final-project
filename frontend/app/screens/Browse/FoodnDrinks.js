@@ -15,6 +15,7 @@ import {
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { FOOD_ADD_URL, DRINK_ADD_URL } from 'assets/urls/urls'
+import { BASE_URL } from '@env'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -51,7 +52,7 @@ const FoodnDrinks = ({ route }) => {
 
     // *** FOOD FETCH *** //
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/food/${page}/type/${partyType}`,
+      `${BASE_URL}/food/${page}/type/${partyType}`,
       options
     )
       .then((res) => res.json())
@@ -61,7 +62,7 @@ const FoodnDrinks = ({ route }) => {
 
     // *** DRINKS FETCH *** //
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/drinks/${page}/type/${partyType}`,
+      `${BASE_URL}/drinks/${page}/type/${partyType}`,
       options
     )
       .then((res) => res.json())

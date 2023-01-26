@@ -16,6 +16,7 @@ import {
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import LottieView from 'lottie-react-native'
+import { BASE_URL } from '@env'
 
 // Formik and validation
 import { Formik } from 'formik'
@@ -61,7 +62,7 @@ const ResetPassword = () => {
       body: JSON.stringify({ email: values.email }),
     }
 
-    fetch('https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/forgotPassword', options) // reset link
+    fetch(`${BASE_URL}/forgotPassword`, options) // reset link
       .then((res) => res.json())
       .catch((error) => console.error(error))
   }

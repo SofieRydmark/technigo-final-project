@@ -16,7 +16,7 @@ import {
 import colors from 'assets/styling/colors.js'
 import fonts from 'assets/styling/fonts.js'
 import { Ionicons } from '@expo/vector-icons'
-import { ONEPROJECT_URL } from 'assets/urls/urls'
+import { BASE_URL } from '@env'
 
 // Reducers
 import { ui } from '../../reducers/ui'
@@ -24,11 +24,8 @@ import { ui } from '../../reducers/ui'
 const GuestList = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const projectId = route.params.projectId
-  const [allGuests, setAllGuests] = useState([])
   const userId = useSelector((store) => store.user.userId)
-  const [loginError, setLoginError] = useState(null)
   const dispatch = useDispatch()
-  console.log('project id guest', projectId)
   const [project, setProject] = useState(route.params.project)
   const [guestName, setGuestName] = useState('')
   const [phone, setPhone] = useState('')
@@ -43,19 +40,16 @@ const GuestList = ({ route }) => {
         Authorization: accessToken,
       },
       body: JSON.stringify({
-        // guestName: values.guestName, // values comes from Formik
-        // phone: values.phone,
         guestName: guestName,
         phone: phone,
       }),
     }
     fetch(
-      `https:party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/addGuest/${projectId}`,
+      `${BASE_URL}/${userId}/project-board/projects/addGuest/${projectId}`,
       options
     )
       .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error))
+      .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
   const handleCreate = () => {
@@ -74,15 +68,12 @@ const GuestList = ({ route }) => {
       {
         text: 'Cancel',
         onPress: () => {
-          console.log('Cancel Pressed')
         },
         style: 'cancel',
       },
       {
         text: 'Delete',
         onPress: () => {
-          console.log('deleting item')
-
           dispatch(ui.actions.setLoading(true))
           const options = {
             method: 'DELETE',
@@ -93,11 +84,10 @@ const GuestList = ({ route }) => {
             body: JSON.stringify({ _id: guestId }),
           }
           fetch(
-            `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/deleteGuest/${guestId}`,
+            `${BASE_URL}/${userId}/project-board/projects/${projectId}/deleteGuest/${guestId}`,
             options
           )
             .then((res) => res.json())
-            .then((data) => console.log(data))
             .catch((error) => console.error(error))
             .finally(() => dispatch(ui.actions.setLoading(false)))
         },

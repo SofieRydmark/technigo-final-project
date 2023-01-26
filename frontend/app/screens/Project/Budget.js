@@ -20,7 +20,7 @@ import { ADD_BUDGET_URL, DELETE_BUDGET_OBJECT_URL } from '../../assets/urls/urls
 // Reducers
 import { ui } from '../../reducers/ui'
 
-const Budget = ({ navigation, route }) => {
+const Budget = ({ route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   const dispatch = useDispatch()
@@ -46,8 +46,7 @@ const Budget = ({ navigation, route }) => {
     }
     fetch(ADD_BUDGET_URL(userId, projectId), options)
       .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error))
+      .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
 
@@ -62,7 +61,6 @@ const Budget = ({ navigation, route }) => {
     }
     fetch(DELETE_BUDGET_OBJECT_URL(userId, projectId, itemId), options)
       .then((res) => res.json())
-      .then((data) => console.log(data))
       .catch((error) => console.error(error))
       .finally(() => dispatch(ui.actions.setLoading(false)))
   }
@@ -107,11 +105,6 @@ const Budget = ({ navigation, route }) => {
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
       <View style={styles.wrapper}>
         <Text style={styles.headerH1}>Budget</Text>
-        {/* <TouchableOpacity
-            onPress={() => navigation.navigate('SingleProjectPage', { projectId: project._id })}
-            style={[styles.partyButton, styles.boxShadow]}>
-            <Text style={styles.buttonText}>Back to overview</Text>
-          </TouchableOpacity> */}
         <View style={[styles.whiteContainer, styles.boxShadow]}>
           <View style={styles.smallHeaderContainer}>
             <View style={styles.leftColumn}>

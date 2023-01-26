@@ -1,14 +1,10 @@
 import mongoose from 'mongoose'
 import User from '../models/User'
 import Project from '../models/Project'
-import DrinksProject from '../models/DrinksProject'
-import FoodProject from '../models/FoodProject'
-import ActivityProject from '../models/ActivityProject'
-import DecorationProject from '../models/DecorationsProject'
 
 export const DeleteTheme = async (req, res) => {
   const { userId, projectId, themeId } = req.params
-  const { themProjectList, themesName } = req.body
+
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
@@ -38,7 +34,7 @@ export const DeleteTheme = async (req, res) => {
 
 export const DeleteDrink = async (req, res) => {
   const { userId, projectId, drinksId } = req.params
-  const { drinksProjectList, drinksProject, drinksName } = req.body
+
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
@@ -48,7 +44,6 @@ export const DeleteDrink = async (req, res) => {
     )
 
     if (user && project) {
-      console.log('guestToDelete', drinksToDelete)
       res.status(200).json({
         response: 'Drink has been deleted',
         success: true,
@@ -69,7 +64,7 @@ export const DeleteDrink = async (req, res) => {
 
 export const DeleteFood = async (req, res) => {
   const { userId, projectId, foodId } = req.params
-  const { foodProjectList, foodProject, foodName } = req.body
+
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
@@ -99,7 +94,7 @@ export const DeleteFood = async (req, res) => {
 
 export const DeleteActivity = async (req, res) => {
   const { userId, projectId, activityId } = req.params
-  const { activitiesProjectList, activityProject, activitiesName } = req.body
+
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })
@@ -129,7 +124,7 @@ export const DeleteActivity = async (req, res) => {
 
 export const DeleteDecoration = async (req, res) => {
   const { userId, projectId, decorationId } = req.params
-  const { decorationsProjectList, decorationProject, decorationsName } = req.body
+
   try {
     const user = await User.find({ userId })
     const project = await Project.find({ projectId })

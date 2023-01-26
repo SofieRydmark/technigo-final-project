@@ -1,5 +1,4 @@
-// Base url
-export const BASE_URL = 'https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app'
+import { BASE_URL} from '@env';
 
 // User and admin
 export const SIGN_IN_URL = `${BASE_URL}/signIn`

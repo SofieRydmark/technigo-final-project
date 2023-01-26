@@ -3,14 +3,11 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import {
   View,
-  SafeAreaView,
   ScrollView,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Button,
-  FlatList,
   Modal,
 } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker'
@@ -19,6 +16,7 @@ import CalendarPicker from 'react-native-calendar-picker'
 import fonts from 'assets/styling/fonts.js'
 import colors from 'assets/styling/colors'
 import { ONEPROJECT_URL, ONEPROJECT_CHANGE_URL } from 'assets/urls/urls'
+import { BASE_URL } from '@env'
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons'
 
 // Reducers
@@ -29,8 +27,6 @@ const SingleProjectPage = ({ navigation, route }) => {
   const accessToken = useSelector((store) => store.user.accessToken)
   const [singleProject, setSingleProject] = useState([])
   const userId = useSelector((store) => store.user.userId)
-  const [showInput, setShowInput] = useState(false)
-  const [showDateChange, setShowDateChange] = useState(false)
   const [name, setName] = useState('')
   const [dueDate, setDueDate] = useState('')
   const projectId = route.params.projectId
@@ -73,7 +69,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     }
 
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/completed/${endpoint}/${id}`,
+      `${BASE_URL}/${userId}/project-board/projects/${projectId}/completed/${endpoint}/${id}`,
       options
     )
       .then((res) => res.json())
@@ -113,7 +109,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     }
 
     fetch(
-      `https://party-planner-technigo-e5ufmqhf2q-lz.a.run.app/${userId}/project-board/projects/${projectId}/delete${endpoint}/${id}`,
+      `${BASE_URL}/${userId}/project-board/projects/${projectId}/delete/${endpoint}/${id}`,
       options
     )
       .then((res) => res.json())
@@ -432,7 +428,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                         <View style={styles.icons}>
                           <TouchableOpacity
                             title='Mark as completed'
-                            onPress={() => completedFood(drinks._id, drinks.isCompleted)}
+                            onPress={() => completedDrinks(drinks._id, drinks.isCompleted)}
                             style={styles.icon}>
                             <Text>
                               {drinks.isCompleted ? (
