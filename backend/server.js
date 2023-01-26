@@ -31,7 +31,7 @@ import {
 } from './endpoints/ToggleCompleted'
 import { AddBudget, deleteItemFromBudget } from './endpoints/Budget'
 import { resetPassword, setResetPassword } from './endpoints/ResetPassword'
-import findStores from './endpoints/FindStore'
+import { FindStore } from './endpoints/FindStore'
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -196,7 +196,7 @@ app.delete(
 )
 
 // ************ FIND STORES *************** //
-app.get('/stores', authenticateUser, findStores)
+app.get('/stores', FindStore)
 
 // ************ START SERVER *************** //
 app.listen(port, () => {

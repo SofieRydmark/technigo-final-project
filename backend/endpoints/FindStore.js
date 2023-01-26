@@ -1,6 +1,6 @@
 import Stores from '../models/Stores'
 
-export const findStores = async (req, res) => {
+export const FindStore = async (req, res) => {
   
     try {
       const storeCollection = await Stores.find()
