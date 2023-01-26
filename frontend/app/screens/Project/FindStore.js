@@ -11,6 +11,7 @@ import colors from 'assets/styling/colors.js'
 import storeList from 'assets/stores/stores.json'
 // import findStore from 'assets/jsonData/findStore.json'
 import fonts from 'assets/styling/fonts.js'
+import { BASE_URL } from '@env'
 
 // Icons
 import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
@@ -24,6 +25,25 @@ const FindStore = () => {
   })
   const [errorMsg, setErrorMsg] = useState(null)
   const [showModal, setShowModal] = useState(false)
+  const [stores, setStores] = useState('')
+
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: accessToken,
+      },
+    }
+    fetch(
+      `${BASE_URL}/stores`,
+      options
+    )
+      .then((res) => res.json())
+      .then((data) => setStores(data.response))
+      .catch((error) => console.error(error))
+  }, [stores])
+
 
   const setMyLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync()
@@ -80,7 +100,7 @@ const FindStore = () => {
           <Marker coordinate={location} title='You' pinColor={colors.lightYellow}>
             <MaterialCommunityIcons name='panda' size={40} color='black' />
           </Marker>
-          {findStore.map((item) => (
+          {stores.map((item) => (
             <Marker key={item.id} title={item.company} coordinate={item.coordinates}>
               <Ionicons name='location-outline' size={40} color='black' />
             </Marker>
