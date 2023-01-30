@@ -29,18 +29,6 @@ const themeProject = createSlice({
           setIsCompleted: (store, action) => {
             store.isCompleted = action.payload
           }, 
-        /*   deleteTheme: (store, action) => {
-            const decreasedDrinks = store.items.filter(
-              (item) => item._id !== action.payload
-            );
-            store.items = decreasedDrinks;
-          },
-          toggleTheme: (store, action) => {
-            const toggledDrinks = store.items.find(
-              (item) => item._id === action.payload
-            );
-            toggledDrinks.isCompleted = !toggledDrinks.isCompleted;
-          }, */
     }
 })
 

@@ -4,7 +4,6 @@ const user = createSlice({
   name: 'user',
   initialState: {
     userId: null,
-    // projectId: null,
     email: null,
     accessToken: null,
     error: null,
@@ -22,10 +21,6 @@ const user = createSlice({
     setError: (store, action) => {
       store.error = action.payload
     },
-    // setProjectId: (store, action) => {
-    //   console.log('projectid', action)
-    //   store.projectId = action.payload
-    // },
   },
 })
 
@@ -41,15 +36,6 @@ export const project = createSlice({
       console.log('setAllProjects', action)
       store.all = action.payload
     },
-    // setProjectId: (store, action) => {
-    //   console.log('projectid', action)
-    //   store.projectId = action.payload
-    // },
-
-    // setNewProject: (store, action) => {
-    //     console.log('projectName', action)
-    //     store.newProject = action.payload
-    // },
     setDueDate: (store, action) => {
       console.log('due_date', action)
       store.due_date = action.payload
