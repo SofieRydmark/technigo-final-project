@@ -109,7 +109,7 @@ const SingleProjectPage = ({ navigation, route }) => {
     }
 
     fetch(
-      `${BASE_URL}/${userId}/project-board/projects/${projectId}/delete/${endpoint}/${id}`,
+      `${BASE_URL}/${userId}/project-board/projects/${projectId}/delete${endpoint}/${id}`,
       options
     )
       .then((res) => res.json())
@@ -202,10 +202,10 @@ const SingleProjectPage = ({ navigation, route }) => {
     <ScrollView
       style={styles.background}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      {singleProject.map((project, index) => {
+      {singleProject.map((project) => {
         return (
           <View style={{ width: '90%', paddingBottom: 100 }}>
-            <View key={index}>
+            <View key={project.createdAt}>
               <View style={styles.headerContainer}>
                 <Text style={styles.headerH1}>{project.name}</Text>
                 <Text style={styles.headerH4}>{project.due_date}</Text>
@@ -279,7 +279,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>THEME</Text>
                   {project.themeProjectList.map((theme) => {
                     return (
-                      <View key={theme.name} style={styles.itemWrapper}>
+                      <View key={theme.image} style={styles.itemWrapper}>
                         <View>
                           <Text style={styles.text}>{theme.themesName}</Text>
                         </View>
@@ -314,7 +314,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>ACTIVITIES</Text>
                   {project.activitiesProjectList.map((activity) => {
                     return (
-                      <View key={activity.name} style={styles.listWrapper}>
+                      <View key={activity.image} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{activity.activitiesName}</Text>
                         </View>
@@ -349,7 +349,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>DECORATION</Text>
                   {project.decorationsProjectList.map((decoration) => {
                     return (
-                      <View key={decoration.name} style={styles.listWrapper}>
+                      <View key={decoration.image} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{decoration.decorationsName}</Text>
                         </View>
@@ -386,7 +386,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>FOOD</Text>
                   {project.foodProjectList.map((food) => {
                     return (
-                      <View key={food.name} style={styles.listWrapper}>
+                      <View key={food.image} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{food.foodName}</Text>
                         </View>
@@ -421,7 +421,7 @@ const SingleProjectPage = ({ navigation, route }) => {
                   <Text style={styles.headerh2}>DRINKS</Text>
                   {project.drinksProjectList.map((drinks) => {
                     return (
-                      <View key={drinks.name} style={styles.listWrapper}>
+                      <View key={drinks.image} style={styles.listWrapper}>
                         <View>
                           <Text style={styles.text}>{drinks.drinksName}</Text>
                         </View>
