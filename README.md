@@ -59,5 +59,5 @@ Our approach:
      - Postman
  
  <h2> If we had more time </h2>
- We would optimize the code even further, creating more reusable components and compiling reused styling and components to seperate files for better readability.
+ We would optimize the code even further, creating more reusable components and compiling reused styling
  
