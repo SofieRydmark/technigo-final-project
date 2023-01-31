@@ -9,7 +9,6 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { FindStoreStyles } from 'components/ProjectStyling/BudgetStoreGuestList.styling'
 import colors from 'assets/styling/colors'
 import mapStyling from 'assets/styling/mapStyling.json'
-import storeList from 'assets/stores/stores.json'
 import { BASE_URL } from '@env'
 
 // Icons
@@ -128,11 +127,16 @@ const FindStore = () => {
                 <AntDesign name='close' size={25} color='black' style={FindStoreStyles.closeModal} />
               </TouchableOpacity>
               <View style={FindStoreStyles.storeList}>
-                {storeList.map((store) => (
-                  <Text key={store.id} style={FindStoreStyles.storeTxt}>
-                    {store.name}
-                  </Text>
-                ))}
+              <Text style={FindStoreStyles.storeTxt}>Partykungen.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Kalaskompaniet.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Festfabriken.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Partajshop.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Temashop.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Buttericks.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Lagerhaus.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Partyhallen.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Partytajm.se</Text>
+              <Text style={FindStoreStyles.storeTxt}>Coolstuff.se</Text>
               </View>
             </View>
           </View>
