@@ -5,15 +5,14 @@ import {
   View,
   ScrollView,
   Text,
-  StyleSheet,
   TouchableOpacity,
   TextInput,
   Platform,
 } from 'react-native'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { ProfileStyles } from 'components/ProfileStyling/ProfileScreen.styling'
+import colors from 'assets/styling/colors'
 import { ADMIN_DELETE_URL, ADMIN_PASSWORD_URL, PROJECTS_URL } from 'assets/urls/urls.js'
 
 // Form handler and validation Yup
@@ -136,23 +135,23 @@ const Profile = () => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      ProfileStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      ProfileStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <ScrollView
-      style={styles.background}
+      style={ProfileStyles.background}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <View style={styles.avatarWrapper}>
+      <View style={ProfileStyles.avatarWrapper}>
         <LottieView
           autoPlay
           style={{
@@ -162,35 +161,35 @@ const Profile = () => {
           }}
           source={chosenAvatar}
         />
-        <View style={styles.signOutWrapper}>
-          <TouchableOpacity style={styles.signOutBtn} onPress={() => logout()}>
-            <Text style={styles.signOutBtnText}>Sign out</Text>
+        <View style={ProfileStyles.signOutWrapper}>
+          <TouchableOpacity style={ProfileStyles.signOutBtn} onPress={() => logout()}>
+            <Text style={ProfileStyles.signOutBtnText}>Sign out</Text>
             <MaterialIcons name='logout' size={15} color='black' />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.avatarBtn} onPress={() => changeAvatar()}>
+        <TouchableOpacity style={ProfileStyles.avatarBtn} onPress={() => changeAvatar()}>
           <MaterialIcons name='edit' size={20} color='black' />
         </TouchableOpacity>
       </View>
-      <View style={[styles.container, styles.boxShadow]}>
-        <View style={styles.userInfoWrapper}>
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoSubTitle}>Email</Text>
-            <Text style={styles.userEmail}>{email}</Text>
-            <Text style={styles.userInfoSubTitle}>Projects</Text>
-            <Text style={styles.userInfoProjectNb}>{projectCounter()}</Text>
+      <View style={[ProfileStyles.container, ProfileStyles.boxShadow]}>
+        <View style={ProfileStyles.userInfoWrapper}>
+          <View style={ProfileStyles.userInfoItem}>
+            <Text style={ProfileStyles.userInfoSubTitle}>Email</Text>
+            <Text style={ProfileStyles.userEmail}>{email}</Text>
+            <Text style={ProfileStyles.userInfoSubTitle}>Projects</Text>
+            <Text style={ProfileStyles.userInfoProjectNb}>{projectCounter()}</Text>
           </View>
         </View>
-        <View style={styles.userBtnWrapper}>
+        <View style={ProfileStyles.userBtnWrapper}>
           <TouchableOpacity
-            style={[styles.userBtn, styles.boxShadow]}
+            style={[ProfileStyles.userBtn, ProfileStyles.boxShadow]}
             onPress={() => setShowPasswordModal(true)}>
-            <Text style={styles.userBtnTxt}>Change password</Text>
+            <Text style={ProfileStyles.userBtnTxt}>Change password</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.userBtn, styles.boxShadow]}
+            style={[ProfileStyles.userBtn, ProfileStyles.boxShadow]}
             onPress={() => setShowDeleteModal(true)}>
-            <Text style={styles.userBtnTxt}>Delete user</Text>
+            <Text style={ProfileStyles.userBtnTxt}>Delete user</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -205,12 +204,12 @@ const Profile = () => {
         animationOutTiming={600}
         backdropTransitionInTiming={600}
         backdropTransitionOutTiming={600}>
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.userInfoSubTitle}>New password</Text>
+        <View style={ProfileStyles.modalBackground}>
+          <View style={ProfileStyles.modalContent}>
+            <View style={ProfileStyles.modalHeader}>
+              <Text style={ProfileStyles.userInfoSubTitle}>New password</Text>
               <TouchableOpacity onPress={() => setShowPasswordModal(false)}>
-                <AntDesign name='close' size={25} color='black' style={styles.closeModal} />
+                <AntDesign name='close' size={25} color='black' style={ProfileStyles.closeModal} />
               </TouchableOpacity>
             </View>
             <Formik
@@ -225,10 +224,10 @@ const Profile = () => {
                 }
               }}>
               {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
-                <View style={styles.form}>
+                <View style={ProfileStyles.form}>
                   <TextInput
                     label='password'
-                    style={styles.input}
+                    style={ProfileStyles.input}
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
                     value={values.password}
@@ -242,19 +241,19 @@ const Profile = () => {
                     <Octicons
                       name={hidePassword === true ? 'eye-closed' : 'eye'}
                       size={20}
-                      style={styles.eyeIcon}
+                      style={ProfileStyles.eyeIcon}
                     />
                   </TouchableOpacity>
                   {errors.email && touched.email ? (
-                    <Text style={styles.loginError}>{errors.email}</Text>
+                    <Text style={ProfileStyles.loginError}>{errors.email}</Text>
                   ) : null}
                   <TouchableOpacity
                     onPress={handleSubmit}
-                    style={[styles.userBtn, styles.boxShadow]}>
-                    <Text style={styles.userBtnTxt}>Confirm</Text>
+                    style={[ProfileStyles.userBtn, ProfileStyles.boxShadow]}>
+                    <Text style={ProfileStyles.userBtnTxt}>Confirm</Text>
                   </TouchableOpacity>
                   {passwordError !== null && (
-                    <Text style={styles.passwordError}>{passwordError}</Text>
+                    <Text style={ProfileStyles.passwordError}>{passwordError}</Text>
                   )}
                 </View>
               )}
@@ -273,23 +272,23 @@ const Profile = () => {
         animationOutTiming={600}
         backdropTransitionInTiming={600}
         backdropTransitionOutTiming={600}>
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.userInfoSubTitle}>Are you sure you want to delete user?</Text>
+        <View style={ProfileStyles.modalBackground}>
+          <View style={ProfileStyles.modalContent}>
+            <View style={ProfileStyles.modalHeader}>
+              <Text style={ProfileStyles.userInfoSubTitle}>Are you sure you want to delete user?</Text>
               <TouchableOpacity onPress={() => setShowDeleteModal(false)}>
-                <AntDesign name='close' size={25} color='black' style={styles.closeModal2} />
+                <AntDesign name='close' size={25} color='black' style={ProfileStyles.closeModal2} />
               </TouchableOpacity>
             </View>
             <TouchableOpacity
               onPress={deleteUserSubmit}
-              style={[styles.deleteBtn, styles.boxShadow]}>
-              <Text style={styles.userBtnTxt}>Yes, delete user</Text>
+              style={[ProfileStyles.deleteBtn, ProfileStyles.boxShadow]}>
+              <Text style={ProfileStyles.userBtnTxt}>Yes, delete user</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setShowDeleteModal(false)}
-              style={[styles.userBtn, styles.boxShadow]}>
-              <Text style={styles.userBtnTxt}>No, go back</Text>
+              style={[ProfileStyles.userBtn, ProfileStyles.boxShadow]}>
+              <Text style={ProfileStyles.userBtnTxt}>No, go back</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -305,9 +304,9 @@ const Profile = () => {
         animationOutTiming={600}
         backdropTransitionInTiming={600}
         backdropTransitionOutTiming={600}>
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContent}>
-            <View style={styles.avatarPicker}>
+        <View style={ProfileStyles.modalBackground}>
+          <View style={ProfileStyles.modalContent}>
+            <View style={ProfileStyles.avatarPicker}>
               {avatars.map((avatar) => (
                 <TouchableOpacity key={avatar.id} onPress={() => setChosenAvatar(avatar.name)}>
                   <LottieView
@@ -323,7 +322,7 @@ const Profile = () => {
                 </TouchableOpacity>
               ))}
               <TouchableOpacity onPress={() => setAvatarModal(false)}>
-                <AntDesign name='close' size={28} color='black' style={styles.closeAvatarModal} />
+                <AntDesign name='close' size={28} color='black' style={ProfileStyles.closeAvatarModal} />
               </TouchableOpacity>
             </View>
           </View>
@@ -332,172 +331,5 @@ const Profile = () => {
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  avatarWrapper: {
-    top: 40,
-    padding: 40,
-  },
-  avatarBtn: {
-    position: 'absolute',
-    right: 40,
-    bottom: 50,
-    padding: 5,
-    backgroundColor: colors.lightGrey,
-    borderRadius: 50,
-  },
-  avatarPicker: {
-    flexDirection: 'row',
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  background: {
-    flex: 1,
-    backgroundColor: colors.green,
-    padding: 20,
-  },
-  container: {
-    borderRadius: 20,
-    padding: 20,
-    width: '100%',
-    backgroundColor: colors.white,
-    padding: 20,
-  },
-  closeModal: {
-    right: -65,
-    top: -10,
-  },
-  closeModal2: {
-    right: -22,
-    top: -10,
-  },
-  closeAvatarModal: {
-    top: -35,
-    right: 10,
-  },
-  confirmBtn: {
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-    width: 150,
-    padding: 5,
-  },
-  eyeIcon: {
-    color: colors.darkGrey,
-    zIndex: 10,
-    position: 'absolute',
-    right: 20,
-    bottom: 35,
-  },
-  form: {
-    width: '100%',
-    backgroundColor: 'transparent',
-  },
-  userEmail: {
-    fontSize: 15,
-    fontFamily: fonts.button,
-    marginBottom: 10,
-  },
-  userBtnWrapper: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  userBtn: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginBottom: 10,
-    width: '100%',
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-    textAlign: 'center',
-  },
-  deleteBtn: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginBottom: 10,
-    width: '100%',
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: colors.fail,
-    textAlign: 'center',
-  },
-  userBtnTxt: {
-    color: colors.black,
-    fontFamily: fonts.button,
-    fontSize: 16,
-  },
-  userInfoWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginVertical: 20,
-  },
-  userInfoItem: {
-    justifyContent: 'center',
-  },
-  userInfoProjectNb: {
-    fontSize: 15,
-    fontFamily: fonts.button,
-    marginBottom: 5,
-    textAlign: 'center',
-  },
-  userInfoSubTitle: {
-    fontSize: 18,
-    fontFamily: fonts.text,
-    textTransform: 'uppercase',
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  input: {
-    backgroundColor: colors.lightGrey,
-    marginBottom: 20,
-    marginTop: 10,
-    borderWidth: 1,
-    padding: 15,
-    borderRadius: 12,
-    fontSize: 16,
-    fontFamily: fonts.text,
-    borderColor: colors.lightGrey,
-    color: colors.darkGrey,
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    width: '90%',
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-  },
-  signOutWrapper: {
-    position: 'absolute',
-    top: 10,
-    right: -20,
-  },
-  signOutBtn: {
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  signOutBtnText: {
-    fontSize: 15,
-    fontFamily: fonts.text,
-  },
-})
 
 export default Profile

@@ -2,7 +2,6 @@ import React from 'react'
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   Image,
   FlatList,
@@ -10,8 +9,7 @@ import {
 } from 'react-native'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { BrowseStyles } from 'components/BrowseStyling/BrowseCategoriesScreen.styling'
 import categories from 'assets/images/browseImages.json'
 
 const BrowsCategoriesPage = ({ route, navigation }) => {
@@ -20,30 +18,30 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
 
   let backgroundStyle
   if (partyType === 'grownup') {
-    backgroundStyle = styles.grownupBackground
+    backgroundStyle = BrowseStyles.grownupBackground
   } else if (partyType === 'kids') {
-    backgroundStyle = styles.kidsBackground
+    backgroundStyle = BrowseStyles.kidsBackground
   }
 
   return (
     <SafeAreaView
-      style={[styles.background, backgroundStyle]}
+      style={[BrowseStyles.background, backgroundStyle]}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <View style={styles.container}>
+      <View style={BrowseStyles.container}>
         <FlatList
-          style={styles.flatList}
+          style={BrowseStyles.flatList}
           data={categories}
           numColumns={2}
           contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
           renderItem={({ item }) => (
-            <View style={styles.item}>
+            <View style={BrowseStyles.item}>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate(item.name, { partyType: partyType, projectId: projectId })
                 }>
-                <Image source={{ uri: item.image }} style={styles.image} />
-                <View style={[styles.itemNameContainer]}>
-                  <Text style={styles.itemName}>{item.name}</Text>
+                <Image source={{ uri: item.image }} style={BrowseStyles.image} />
+                <View style={[BrowseStyles.itemNameContainer]}>
+                  <Text style={BrowseStyles.itemName}>{item.name}</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -54,49 +52,5 @@ const BrowsCategoriesPage = ({ route, navigation }) => {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 110,
-  },
-  flatList: {
-    width: '95%',
-    height: '80%',
-  },
-  grownupBackground: {
-    backgroundColor: colors.green,
-  },
-  kidsBackground: {
-    backgroundColor: colors.peach,
-  },
-  image: {
-    width: 160,
-    height: 160,
-    borderRadius: 8,
-  },
-  item: {
-    marginBottom: -65,
-    marginHorizontal: 10,
-  },
-  itemNameContainer: {
-    borderRadius: 8,
-    zIndex: 99,
-    top: '-50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    height: 70,
-    margin: 10,
-  },
-  itemName: {
-    fontSize: 16,
-    fontFamily: fonts.titles,
-  },
-})
 
 export default BrowsCategoriesPage

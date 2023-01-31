@@ -1,9 +1,8 @@
 import React from 'react'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
 
 // Assets imports
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { WhatAreWeDoingStyles } from 'components/HomeStyling/HomeScreens.styling'
 
 const WhatAreWeDoing = ({ navigation }) => {
   // Box shadow styling IOS and android
@@ -17,79 +16,37 @@ const WhatAreWeDoing = ({ navigation }) => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      WhatAreWeDoingStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      WhatAreWeDoingStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
-    <ScrollView contentContainerStyle={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.headerH1}>What are we doing today?</Text>
+    <ScrollView contentContainerStyle={WhatAreWeDoingStyles.background}>
+      <View style={WhatAreWeDoingStyles.header}>
+        <Text style={WhatAreWeDoingStyles.headerH1}>What are we doing today?</Text>
       </View>
-      <View style={[styles.container, styles.boxShadow]}>
+      <View style={[WhatAreWeDoingStyles.container, WhatAreWeDoingStyles.boxShadow]}>
         <TouchableOpacity
           onPress={() => navigation.navigate('ProjectBoard')}
-          style={[styles.partyButton, styles.boxShadow]}>
-          <Text style={styles.buttonText}>Go to my project board</Text>
+          style={[WhatAreWeDoingStyles.partyButton, WhatAreWeDoingStyles.boxShadow]}>
+          <Text style={WhatAreWeDoingStyles.buttonText}>Go to my project board</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('ChooseProject')}
-          style={[styles.partyButton, styles.boxShadow]}>
-          <Text style={styles.buttonText}>Choose your project</Text>
+          style={[WhatAreWeDoingStyles.partyButton, WhatAreWeDoingStyles.boxShadow]}>
+          <Text style={WhatAreWeDoingStyles.buttonText}>Choose your project</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   )
 }
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: colors.green,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 16,
-    fontFamily: fonts.button,
-  },
-  container: {
-    borderRadius: 30,
-    padding: 30,
-    width: '90%',
-    backgroundColor: colors.white,
-  },
-  header: {
-    marginBottom: 30,
-    marginHorizontal: 15,
-  },
-  headerH1: {
-    fontSize: 25,
-    fontFamily: fonts.titles,
-    textAlign: 'center',
-  },
-  pressable: {
-    flex: 1,
-    background: 'transparent',
-  },
-  partyButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    width: '100%',
-    height: 70,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-})
 export default WhatAreWeDoing

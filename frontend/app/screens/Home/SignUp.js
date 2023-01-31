@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   Text,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -19,8 +18,7 @@ import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { SignUpStyles } from 'components/HomeStyling/HomeScreens.styling'
 import { SIGN_UP_URL } from 'assets/urls/urls.js'
 import { BASE_URL } from '@env'
 
@@ -108,32 +106,32 @@ const SignUp = ({ navigation }) => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      SignUpStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      SignUpStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <KeyboardAvoidingView
-      style={styles.keyboard}
+      style={SignUpStyles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
+      <Pressable onPress={Keyboard.dismiss} style={SignUpStyles.pressable}>
         <ImageBackground
           source={require('assets/images/BubbleImg.png')}
-          style={styles.backgroundBubble}>
-          <ScrollView contentContainerStyle={styles.background}>
-            <View style={styles.header}>
-              <Text style={styles.headerH1}>Create new account</Text>
-              <Text style={styles.headerH2}>
+          style={SignUpStyles.backgroundBubble}>
+          <ScrollView contentContainerStyle={SignUpStyles.background}>
+            <View style={SignUpStyles.header}>
+              <Text style={SignUpStyles.headerH1}>Create new account</Text>
+              <Text style={SignUpStyles.headerH2}>
                 Already a member? Sign in
-                <Text style={styles.here} onPress={() => navigation.navigate('SignIn')}>
+                <Text style={SignUpStyles.here} onPress={() => navigation.navigate('SignIn')}>
                   {' '}
                   here
                 </Text>
@@ -155,11 +153,11 @@ const SignUp = ({ navigation }) => {
                 }
               }}>
               {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
-                <View style={[styles.form, styles.boxShadow]}>
-                  <Text style={styles.label}>EMAIL</Text>
+                <View style={[SignUpStyles.form, SignUpStyles.boxShadow]}>
+                  <Text style={SignUpStyles.label}>EMAIL</Text>
                   <TextInput
                     label='email'
-                    style={styles.input}
+                    style={SignUpStyles.input}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}
@@ -170,13 +168,13 @@ const SignUp = ({ navigation }) => {
                     keyboardType='email-address'
                   />
                   {errors.email && touched.email ? (
-                    <Text style={styles.loginError}>{errors.email}</Text>
+                    <Text style={SignUpStyles.loginError}>{errors.email}</Text>
                   ) : null}
-                  <Text style={styles.label}>PASSWORD</Text>
-                  <View styles={styles.passwordInput}>
+                  <Text style={SignUpStyles.label}>PASSWORD</Text>
+                  <View styles={SignUpStyles.passwordInput}>
                     <TextInput
                       label='password'
-                      style={styles.input}
+                      style={SignUpStyles.input}
                       onChangeText={handleChange('password')}
                       onBlur={handleBlur('password')}
                       value={values.password}
@@ -190,18 +188,18 @@ const SignUp = ({ navigation }) => {
                       <Octicons
                         name={hidePassword === true ? 'eye-closed' : 'eye'}
                         size={20}
-                        style={styles.eyeIcon}
+                        style={SignUpStyles.eyeIcon}
                       />
                     </TouchableOpacity>
                     {errors.password && touched.password ? (
-                      <Text style={styles.loginError}>{errors.password}</Text>
+                      <Text style={SignUpStyles.loginError}>{errors.password}</Text>
                     ) : null}
                   </View>
-                  <Text style={styles.label}>CONFIRM PASSWORD</Text>
-                  <View styles={styles.passwordInput}>
+                  <Text style={SignUpStyles.label}>CONFIRM PASSWORD</Text>
+                  <View styles={SignUpStyles.passwordInput}>
                     <TextInput
                       label='confirmPassword'
-                      style={styles.input}
+                      style={SignUpStyles.input}
                       onChangeText={handleChange('confirmPassword')}
                       onBlur={handleBlur('confirmPassword')}
                       value={values.confirmPassword}
@@ -215,16 +213,16 @@ const SignUp = ({ navigation }) => {
                       <Octicons
                         name={hidePassword === true ? 'eye-closed' : 'eye'}
                         size={20}
-                        style={styles.eyeIcon}
+                        style={SignUpStyles.eyeIcon}
                       />
                     </TouchableOpacity>
                     {errors.confirmPassword && touched.confirmPassword ? (
-                      <Text style={styles.loginError}>{errors.confirmPassword}</Text>
+                      <Text style={SignUpStyles.loginError}>{errors.confirmPassword}</Text>
                     ) : null}
                   </View>
-                  {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
-                  <TouchableOpacity onPress={handleSubmit} style={styles.signUpButton}>
-                    <Text style={styles.buttonText}>Sign Up</Text>
+                  {loginError !== null && <Text style={SignUpStyles.loginError}>{loginError}</Text>}
+                  <TouchableOpacity onPress={handleSubmit} style={SignUpStyles.signUpButton}>
+                    <Text style={SignUpStyles.buttonText}>Sign Up</Text>
                   </TouchableOpacity>
                 </View>
               )}
@@ -236,91 +234,4 @@ const SignUp = ({ navigation }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backgroundBubble: {
-    flex: 1,
-  },
-  buttonText: {
-    fontSize: 20,
-    fontFamily: fonts.button,
-  },
-  eyeIcon: {
-    color: colors.darkGrey,
-    zIndex: 10,
-    position: 'absolute',
-    right: 10,
-    bottom: 35,
-  },
-  form: {
-    borderRadius: 10,
-    padding: 25,
-    width: '80%',
-    backgroundColor: colors.white,
-  },
-  header: {
-    marginBottom: 20,
-  },
-  headerH1: {
-    fontSize: 30,
-    fontFamily: fonts.titles,
-    textAlign: 'center',
-  },
-  headerH2: {
-    fontSize: 16,
-    fontFamily: fonts.text,
-    textAlign: 'center',
-  },
-  here: {
-    fontFamily: fonts.button,
-  },
-  keyboard: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-  input: {
-    backgroundColor: colors.lightGrey,
-    marginBottom: 20,
-    marginTop: 10,
-    borderWidth: 1,
-    padding: 15,
-    borderRadius: 12,
-    fontSize: 16,
-    fontFamily: fonts.input,
-    borderColor: colors.lightGrey,
-    color: colors.darkGrey,
-  },
-  label: {
-    fontSize: 15,
-    fontFamily: fonts.text,
-    color: colors.darkGrey,
-  },
-  loginError: {
-    fontSize: 15,
-    color: 'red',
-    marginBottom: 15,
-    marginTop: -15,
-  },
-  passwordInput: {
-    position: 'relative',
-  },
-  pressable: {
-    flex: 1,
-    background: 'transparent',
-  },
-  signUpButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-    textAlign: 'center',
-    width: '100%',
-    height: 70,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-})
 export default SignUp

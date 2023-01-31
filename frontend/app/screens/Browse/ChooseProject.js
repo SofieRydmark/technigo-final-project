@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   Text,
-  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
@@ -19,8 +18,7 @@ import CalendarPicker from 'react-native-calendar-picker'
 import { Formik } from 'formik'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { ChooseProjectStyles } from 'components/BrowseStyling/ChooseProject.styling'
 import { PROJECTS_URL } from 'assets/urls/urls'
 import { BASE_URL } from '@env'
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons'
@@ -83,45 +81,45 @@ const ChooseProject = ({ navigation, _id }) => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      ChooseProjectStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      ChooseProjectStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <KeyboardAvoidingView
-      style={styles.keyboard}
+      style={ChooseProjectStyles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
-        <ScrollView contentContainerStyle={styles.background}>
-          <View style={styles.header}>
-            <Text style={styles.headerH1}> Which project do you want to plan? </Text>
+      <Pressable onPress={Keyboard.dismiss} style={ChooseProjectStyles.pressable}>
+        <ScrollView contentContainerStyle={ChooseProjectStyles.background}>
+          <View style={ChooseProjectStyles.header}>
+            <Text style={ChooseProjectStyles.headerH1}> Which project do you want to plan? </Text>
           </View>
-          <View style={[styles.container, styles.boxShadow]}>
+          <View style={[ChooseProjectStyles.container, ChooseProjectStyles.boxShadow]}>
             <View>
               <TouchableOpacity
                 onPress={() => setShowMap(!showMap)}
-                style={[styles.partyButton, styles.boxShadow]}>
-                <Text style={styles.buttonText}>Active Projects</Text>
+                style={[ChooseProjectStyles.partyButton, ChooseProjectStyles.boxShadow]}>
+                <Text style={ChooseProjectStyles.buttonText}>Active Projects</Text>
               </TouchableOpacity>
               {showMap &&
                 allProjects.map((singleProject) => {
                   return (
-                    <View key={singleProject._id} style={styles.listWrapper}>
+                    <View key={singleProject._id} style={ChooseProjectStyles.listWrapper}>
                       <TouchableOpacity
                         onPress={() => {
                           navigation.navigate('WhatKindOfParty', { projectId: singleProject._id })
                         }}
-                        styles={styles.project}>
+                        styles={ChooseProjectStyles.project}>
                         <View>
-                          <Text key={_id} style={styles.row}>
+                          <Text key={_id} style={ChooseProjectStyles.row}>
                             {singleProject.name}
                           </Text>
                         </View>
@@ -130,7 +128,7 @@ const ChooseProject = ({ navigation, _id }) => {
                             name='arrow-right'
                             size={20}
                             color='black'
-                            style={styles.moveToNext}
+                            style={ChooseProjectStyles.moveToNext}
                           />
                         </View>
                       </TouchableOpacity>
@@ -141,12 +139,12 @@ const ChooseProject = ({ navigation, _id }) => {
 
             <TouchableOpacity
               onPress={() => setShowForm(!showForm)}
-              style={[styles.partyButton, styles.boxShadow]}>
-              <Text style={styles.buttonText}>Create new project</Text>
+              style={[ChooseProjectStyles.partyButton, ChooseProjectStyles.boxShadow]}>
+              <Text style={ChooseProjectStyles.buttonText}>Create new project</Text>
               <Ionicons name='add' size={20} color='black' style={{ padding: 8 }} />
             </TouchableOpacity>
             {showForm && (
-              <View style={styles.form}>
+              <View style={ChooseProjectStyles.form}>
                 <Formik 
                 initialValues={{ name: '', due_date: '' }}
                 onSubmit={(values, actions) => {
@@ -160,7 +158,7 @@ const ChooseProject = ({ navigation, _id }) => {
                 }
                 }}>
                   {({ handleChange, handleSubmit, values }) => (
-                    <View style={styles.input}>
+                    <View style={ChooseProjectStyles.input}>
                       <TextInput
                         label='Name'
                         onChangeText={handleChange('name')}
@@ -170,13 +168,13 @@ const ChooseProject = ({ navigation, _id }) => {
                         multiline={false}
                         autoCapitalize='none'
                         maxLength={20}
-                        style={styles.inputName}
+                        style={ChooseProjectStyles.inputName}
                       />
 
                       <Modal visible={calendarVisible} animationType={'slide'}>
-                        <View style={styles.calendar}>
+                        <View style={ChooseProjectStyles.calendar}>
                           <TouchableOpacity
-                            style={styles.closeBtn}
+                            style={ChooseProjectStyles.closeBtn}
                             onPress={() => {
                               setCalendarVisible(false)
                             }}>
@@ -186,28 +184,28 @@ const ChooseProject = ({ navigation, _id }) => {
                             onDateChange={(date) =>
                               handleChange('due_date')(date.toISOString().slice(0, 10))
                             }
-                            style={styles.calendar}
+                            style={ChooseProjectStyles.calendar}
                             minDate={new Date()}
                           />
                           <TouchableOpacity
-                            style={[styles.doneButton, styles.boxShadow]}
+                            style={[ChooseProjectStyles.doneButton, ChooseProjectStyles.boxShadow]}
                             onPress={() => setCalendarVisible(false)}>
-                            <Text style={styles.doneButtonText}>Add date</Text>
+                            <Text style={ChooseProjectStyles.doneButtonText}>Add date</Text>
                           </TouchableOpacity>
                         </View>
                       </Modal>
-                      {loginError && <Text style={styles.errorText}>{loginError}</Text>}
+                      {loginError && <Text style={ChooseProjectStyles.errorText}>{loginError}</Text>}
                       <TouchableOpacity
                         onPress={() => {
                           setCalendarVisible(true)
                         }}>
-                        <Text style={styles.inputText}>
+                        <Text style={ChooseProjectStyles.inputText}>
                           {values.due_date ? values.due_date : '+ YY-MM-DD'}
                         </Text>
                       </TouchableOpacity>
 
                       <TouchableOpacity
-                        style={[styles.addProjectButton, styles.boxShadow]}
+                        style={[ChooseProjectStyles.addProjectButton, ChooseProjectStyles.boxShadow]}
                         onPress={handleSubmit}>
                         <Feather
                           name='arrow-right'
@@ -228,130 +226,4 @@ const ChooseProject = ({ navigation, _id }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  addProjectButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'flex-end',
-    top: -25,
-    marginTop: -20,
-    textAlign: 'center',
-    borderRadius: 50,
-    backgroundColor: colors.peach,
-  },
-  background: {
-    flex: 1,
-    backgroundColor: colors.green,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontFamily: fonts.button,
-  },
-  closeBtn: {
-    right: -150,
-    top: -30,
-  },
-  calendar: {
-    flex: 1,
-    paddingTop: 100,
-    fontFamily: fonts.text,
-    backgroundColor: colors.green,
-    alignItems: 'center',
-  },
-  container: {
-    borderRadius: 30,
-    padding: 30,
-    width: '90%',
-    backgroundColor: colors.white,
-  },
-  doneButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    textAlign: 'center',
-    width: '80%',
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-  doneButtonText: {
-    fontSize: 20,
-    fontFamily: fonts.button,
-  },
-  errorText: {
-    fontFamily: fonts.text,
-    color: 'red',
-  },
-  form: {
-    borderRadius: 10,
-    width: '100%',
-    backgroundColor: colors.white,
-  },
-  header: {
-    marginBottom: 30,
-    marginHorizontal: 15,
-  },
-  headerH1: {
-    fontSize: 25,
-    textAlign: 'center',
-    fontFamily: fonts.titles,
-  },
-  input: {
-    padding: 20,
-    backgroundColor: colors.lightGrey,
-    borderWidth: 1,
-    borderRadius: 12,
-    fontSize: 12,
-    borderColor: colors.lightGrey,
-    color: colors.darkGrey,
-  },
-  inputDate: {
-    fontFamily: fonts.input,
-    fontSize: 17,
-  },
-  inputName: {
-    fontFamily: fonts.input,
-    fontSize: 17,
-    marginBottom: 10,
-  },
-  keyboard: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-  listWrapper: {
-    borderRadius: 8,
-    backgroundColor: colors.lightGrey,
-    margin: 2,
-  },
-  moveToNext: {
-    right: '-80%',
-    top: '-100%',
-  },
-  row: {
-    paddingHorizontal: 15,
-    paddingTop: 15,
-    fontSize: 18,
-    fontFamily: fonts.text,
-  },
-  partyButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    width: '100%',
-    height: 70,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-    fontFamily: fonts.button,
-  },
-  pressable: {
-    flex: 1,
-    background: 'transparent',
-  },
-})
 export default ChooseProject

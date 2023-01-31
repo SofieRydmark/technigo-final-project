@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   Text,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -19,8 +18,7 @@ import { Formik } from 'formik'
 import { Octicons } from '@expo/vector-icons'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { SignInStyles } from 'components/HomeStyling/HomeScreens.styling'
 import { SIGN_IN_URL } from 'assets/urls/urls.js'
 import { BASE_URL } from '@env'
 
@@ -102,32 +100,32 @@ const SignIn = ({ navigation }) => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      SignInStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      SignInStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <KeyboardAvoidingView
-      style={styles.keyboard}
+      style={SignInStyles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Pressable onPress={Keyboard.dismiss} style={styles.pressable}>
+      <Pressable onPress={Keyboard.dismiss} style={SignInStyles.pressable}>
         <ImageBackground
           source={require('assets/images/BubbleImg.png')}
-          style={styles.backgroundBubble}>
-          <ScrollView contentContainerStyle={styles.background}>
-            <View style={styles.header}>
-              <Text style={styles.headerH1}>Welcome</Text>
-              <Text style={styles.headerH2}>
+          style={SignInStyles.backgroundBubble}>
+          <ScrollView contentContainerStyle={SignInStyles.background}>
+            <View style={SignInStyles.header}>
+              <Text style={SignInStyles.headerH1}>Welcome</Text>
+              <Text style={SignInStyles.headerH2}>
                 Not a member yet? Sign up
-                <Text style={styles.here} onPress={() => navigation.navigate('SignUp')}>
+                <Text style={SignInStyles.here} onPress={() => navigation.navigate('SignUp')}>
                   {' '}
                   here
                 </Text>
@@ -145,11 +143,11 @@ const SignIn = ({ navigation }) => {
                 }
               }}>
               {({ errors, touched, handleChange, handleBlur, handleSubmit, values }) => (
-                <View style={[styles.form, styles.boxShadow]}>
-                  <Text style={styles.label}>EMAIL</Text>
+                <View style={[SignInStyles.form, SignInStyles.boxShadow]}>
+                  <Text style={SignInStyles.label}>EMAIL</Text>
                   <TextInput
                     label='email'
-                    style={styles.input}
+                    style={SignInStyles.input}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}
@@ -160,12 +158,12 @@ const SignIn = ({ navigation }) => {
                     keyboardType='email-address'
                   />
                   {errors.email && touched.email ? (
-                    <Text style={styles.loginError}>{errors.email}</Text>
+                    <Text style={SignInStyles.loginError}>{errors.email}</Text>
                   ) : null}
-                  <Text style={styles.label}>PASSWORD</Text>
+                  <Text style={SignInStyles.label}>PASSWORD</Text>
                   <TextInput
                     label='password'
-                    style={styles.input}
+                    style={SignInStyles.input}
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
                     value={values.password}
@@ -179,23 +177,23 @@ const SignIn = ({ navigation }) => {
                     <Octicons
                       name={hidePassword === true ? 'eye-closed' : 'eye'}
                       size={20}
-                      style={styles.eyeIcon}
+                      style={SignInStyles.eyeIcon}
                     />
                   </TouchableOpacity>
                   {errors.password && touched.password ? (
-                    <Text style={styles.loginError}>{errors.password}</Text>
+                    <Text style={SignInStyles.loginError}>{errors.password}</Text>
                   ) : null}
-                  {loginError !== null && <Text style={styles.loginError}>{loginError}</Text>}
+                  {loginError !== null && <Text style={SignInStyles.loginError}>{loginError}</Text>}
                   <TouchableOpacity
                     onPress={handleSubmit}
-                    style={[styles.signInButton, styles.boxShadow]}>
-                    <Text style={styles.buttonText}>Sign in</Text>
+                    style={[SignInStyles.signInButton, SignInStyles.boxShadow]}>
+                    <Text style={SignInStyles.buttonText}>Sign in</Text>
                   </TouchableOpacity>
                 </View>
               )}
             </Formik>
             <Text
-              style={styles.forgotPassword}
+              style={SignInStyles.forgotPassword}
               onPress={() => navigation.navigate('ResetPassword')}>
               Forgot password?
             </Text>
@@ -206,97 +204,4 @@ const SignIn = ({ navigation }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  background: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  backgroundBubble: {
-    justifyContent: 'center',
-    flex: 1,
-  },
-  buttonText: {
-    fontSize: 20,
-    fontFamily: fonts.button,
-  },
-  eyeIcon: {
-    color: colors.darkGrey,
-    zIndex: 10,
-    position: 'absolute',
-    right: 10,
-    bottom: 35,
-  },
-  form: {
-    borderRadius: 10,
-    padding: 25,
-    width: '80%',
-    backgroundColor: colors.white,
-    zIndex: 99,
-  },
-  forgotPassword: {
-    marginTop: 20,
-    fontSize: 16,
-    fontFamily: fonts.text,
-    color: colors.black,
-    textAlign: 'center',
-  },
-  header: {
-    marginBottom: 30,
-    marginTop: 150,
-  },
-  headerH1: {
-    fontSize: 35,
-    fontFamily: fonts.titles,
-    textAlign: 'center',
-  },
-  headerH2: {
-    fontSize: 16,
-    fontFamily: fonts.text,
-    textAlign: 'center',
-  },
-  here: {
-    fontFamily: fonts.button,
-  },
-  keyboard: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-  input: {
-    backgroundColor: colors.lightGrey,
-    marginBottom: 20,
-    marginTop: 10,
-    borderWidth: 1,
-    padding: 15,
-    borderRadius: 12,
-    fontSize: 16,
-    fontFamily: fonts.input,
-    borderColor: colors.lightGrey,
-    color: colors.darkGrey,
-  },
-  label: {
-    fontSize: 15,
-    color: colors.darkGrey,
-    fontFamily: fonts.text,
-  },
-  loginError: {
-    fontSize: 15,
-    color: 'red',
-    marginBottom: 15,
-    marginTop: -15,
-  },
-  pressable: {
-    flex: 1,
-    background: 'transparent',
-  },
-  signInButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-    textAlign: 'center',
-    width: '100%',
-    height: 70,
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-  },
-})
 export default SignIn

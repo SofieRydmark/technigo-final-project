@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Modal } from 'react-native'
 
 // Geolocation and map packages
 import * as Location from 'expo-location'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 
 // Assets import
+import { FindStoreStyles } from 'components/ProjectStyling/BudgetStoreGuestList.styling'
+import colors from 'assets/styling/colors'
 import mapStyling from 'assets/styling/mapStyling.json'
-import colors from 'assets/styling/colors.js'
 import storeList from 'assets/stores/stores.json'
-import fonts from 'assets/styling/fonts.js'
 import { BASE_URL } from '@env'
 
 // Icons
@@ -70,29 +70,29 @@ const FindStore = () => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      FindStoreStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      FindStoreStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
   return (
-    <ScrollView contentContainerStyle={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.headerH1}>Find a store</Text>
-        <TouchableOpacity style={styles.locationBtn} onPress={() => setMyLocation()}>
-          <Text style={styles.locationTxt}>Use my current location</Text>
+    <ScrollView contentContainerStyle={FindStoreStyles.background}>
+      <View style={FindStoreStyles.header}>
+        <Text style={FindStoreStyles.headerH1}>Find a store</Text>
+        <TouchableOpacity style={FindStoreStyles.locationBtn} onPress={() => setMyLocation()}>
+          <Text style={FindStoreStyles.locationTxt}>Use my current location</Text>
           <Ionicons name='location-outline' size={30} color='black' />
         </TouchableOpacity>
       </View>
-      <View style={styles.mapWrapper}>
+      <View style={FindStoreStyles.mapWrapper}>
         <MapView
-          style={styles.map}
+          style={FindStoreStyles.map}
           region={location}
           provider={PROVIDER_GOOGLE}
           customMapStyle={mapStyling}>
@@ -107,9 +107,9 @@ const FindStore = () => {
         </MapView>
 
         <TouchableOpacity
-          style={[styles.onlineBtn, styles.boxShadow]}
+          style={[FindStoreStyles.onlineBtn, FindStoreStyles.boxShadow]}
           onPress={() => setShowModal(true)}>
-          <Text style={styles.onlineTxt}>Want to shop online instead? Here are some tips</Text>
+          <Text style={FindStoreStyles.onlineTxt}>Want to shop online instead? Here are some tips</Text>
         </TouchableOpacity>
         <Modal
           animationType={'slide'}
@@ -122,14 +122,14 @@ const FindStore = () => {
           animationOutTiming={600}
           backdropTransitionInTiming={600}
           backdropTransitionOutTiming={600}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContent}>
+          <View style={FindStoreStyles.modalBackground}>
+            <View style={FindStoreStyles.modalContent}>
               <TouchableOpacity onPress={() => setShowModal(false)}>
-                <AntDesign name='close' size={25} color='black' style={styles.closeModal} />
+                <AntDesign name='close' size={25} color='black' style={FindStoreStyles.closeModal} />
               </TouchableOpacity>
-              <View style={styles.storeList}>
+              <View style={FindStoreStyles.storeList}>
                 {storeList.map((store) => (
-                  <Text key={store.id} style={styles.storeTxt}>
+                  <Text key={store.id} style={FindStoreStyles.storeTxt}>
                     {store.name}
                   </Text>
                 ))}
@@ -142,87 +142,4 @@ const FindStore = () => {
   )
 }
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: colors.green,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  closeModal: {
-    top: 0,
-    right: -130,
-  },
-  header: {
-    top: -50,
-    padding: 10,
-    marginBottom: 10,
-  },
-  headerH1: {
-    fontSize: 35,
-    fontFamily: fonts.titles,
-    textAlign: 'center',
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-  mapWrapper: {
-    height: 350,
-    width: 350,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  locationBtn: {
-    width: '100%',
-    padding: 5,
-    textAlign: 'center',
-    fontSize: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  locationTxt: {
-    fontSize: 16,
-    textDecorationLine: 'underline',
-    fontFamily: fonts.text,
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    width: '90%',
-    padding: 30,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  onlineBtn: {
-    borderRadius: 8,
-    backgroundColor: colors.peach,
-    width: '80%',
-    padding: 13,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  onlineTxt: {
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: fonts.button,
-  },
-  storeList: {
-    flexDirection: 'column',
-    marginTop: -20,
-  },
-  storeTxt: {
-    fontSize: 20,
-    textTransform: 'uppercase',
-  },
-})
 export default FindStore

@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   View,
-  ScrollView,
   SafeAreaView,
   Text,
-  StyleSheet,
   TouchableOpacity,
   TextInput,
   FlatList,
@@ -13,8 +11,7 @@ import {
 } from 'react-native'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { GuestListStyles } from 'components/ProjectStyling/BudgetStoreGuestList.styling'
 import { Ionicons } from '@expo/vector-icons'
 import { BASE_URL } from '@env'
 
@@ -110,27 +107,27 @@ const GuestList = ({ route }) => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      GuestListStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      GuestListStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <SafeAreaView
-      style={styles.background}
+      style={GuestListStyles.background}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <View style={styles.wrapper}>
-        <Text style={styles.headerH1}>Guest list</Text>
+      <View style={GuestListStyles.wrapper}>
+        <Text style={GuestListStyles.headerH1}>Guest list</Text>
       </View>
-      <View style={[styles.form, styles.boxShadow]}>
-        <View style={styles.input}>
+      <View style={[GuestListStyles.form, GuestListStyles.boxShadow]}>
+        <View style={GuestListStyles.input}>
           <TextInput
             value={guestName}
             onChangeText={setGuestName}
@@ -147,7 +144,7 @@ const GuestList = ({ route }) => {
           />
 
           <TouchableOpacity
-            style={[styles.addGuestButton, styles.boxShadow]}
+            style={[GuestListStyles.addGuestButton, GuestListStyles.boxShadow]}
             onPress={handleCreate}>
             <Ionicons name='add' size={35} color='black' />
           </TouchableOpacity>
@@ -155,15 +152,15 @@ const GuestList = ({ route }) => {
 
         <View>
           <FlatList
-            style={styles.flatList}
+            style={GuestListStyles.flatList}
             data={project.guestList}
             renderItem={({ item }) => (
-              <View style={styles.listWrapper}>
-                <Text style={styles.row}>{item.guestName}</Text>
-                <Text style={styles.row}>{item.phone}</Text>
+              <View style={GuestListStyles.listWrapper}>
+                <Text style={GuestListStyles.row}>{item.guestName}</Text>
+                <Text style={GuestListStyles.row}>{item.phone}</Text>
 
-                <TouchableOpacity style={styles.trashIcon} onPress={() => handleDelete(item._id)}>
-                  <Text style={styles.row}>🗑</Text>
+                <TouchableOpacity style={GuestListStyles.trashIcon} onPress={() => handleDelete(item._id)}>
+                  <Text style={GuestListStyles.row}>🗑</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -175,76 +172,4 @@ const GuestList = ({ route }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: colors.green,
-    alignItems: 'center',
-    flex: 1,
-    paddingVertical: 60,
-  },
-  headerH1: {
-    marginTop: 50,
-    fontSize: 30,
-    fontFamily: fonts.titles,
-    textAlign: 'center',
-  },
-  pressable: {
-    flex: 1,
-    background: 'transparent',
-  },
-  wrapper: {
-    marginBottom: 30,
-    marginTop: 20,
-  },
-  listWrapper: {
-    flexDirection: 'row',
-    backgroundColor: colors.lightGrey,
-    borderRadius: 10,
-    flexWrap: 'wrap',
-    margin: 2,
-  },
-  // single item styling
-  row: {
-    padding: 15,
-    fontSize: 20,
-    fontFamily: fonts.text,
-  },
-  // maping + formik with white background
-  form: {
-    borderRadius: 10,
-    padding: 30,
-    width: '90%',
-    backgroundColor: colors.white,
-  },
-  // add new guest input + button styling
-  addGuestButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'flex-end',
-    top: -20,
-    right: 5,
-    marginTop: -20,
-    textAlign: 'center',
-    borderRadius: 50,
-    backgroundColor: colors.peach,
-  },
-  input: {
-    padding: 25,
-    justifyContent: 'center',
-    borderWidth: 1,
-    padding: 15,
-    borderRadius: 12,
-    borderColor: 'transparent',
-    backgroundColor: colors.lightGrey,
-    color: colors.darkGrey,
-  },
-  //delete icon styling
-  trashIcon: {
-    zIndex: 10,
-    position: 'absolute',
-    right: 10,
-    bottom: 1,
-  },
-})
 export default GuestList

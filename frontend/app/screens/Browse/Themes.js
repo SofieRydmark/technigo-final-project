@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import {
   View,
   Text,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   Image,
@@ -13,8 +12,7 @@ import {
 } from 'react-native'
 
 // Assets import
-import colors from 'assets/styling/colors.js'
-import fonts from 'assets/styling/fonts.js'
+import { ThemeStyles } from 'components/BrowseStyling/ThemeScreen.styling'
 import { THEME_ADD_URL } from 'assets/urls/urls'
 import { BASE_URL } from '@env'
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
@@ -37,9 +35,9 @@ const Themes = ({ route }) => {
 
   let backgroundStyle
   if (partyType === 'grownup') {
-    backgroundStyle = styles.grownupBackground
+    backgroundStyle = ThemeStyles.grownupBackground
   } else if (partyType === 'kids') {
-    backgroundStyle = styles.kidsBackground
+    backgroundStyle = ThemeStyles.kidsBackground
   }
 
   useEffect(() => {
@@ -109,56 +107,56 @@ const Themes = ({ route }) => {
     shadowColorAndroid
   ) => {
     if (Platform.OS === 'ios') {
-      styles.boxShadow = {
+      ThemeStyles.boxShadow = {
         shadowColor: shadowColorIos,
         shadowOpacity,
         shadowRadius,
         shadowOffset: { width: xOffset, height: yOffset },
       }
     } else if (Platform.OS === 'android') {
-      styles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
+      ThemeStyles.boxShadow = { elevation, shadowColor: shadowColorAndroid }
     }
   }
   generateBoxShadowStyle(-8, 6, '#171717', 0.2, 6, 8, '#171717')
 
   return (
     <SafeAreaView
-      style={[styles.background, backgroundStyle]}
+      style={[ThemeStyles.background, backgroundStyle]}
       contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-      <View style={styles.container}>
-        <Text style={styles.h1}>Themes</Text>
+      <View style={ThemeStyles.container}>
+        <Text style={ThemeStyles.h1}>Themes</Text>
 
         <TextInput
-          style={styles.input}
+          style={ThemeStyles.input}
           placeholder='Search for a theme...'
           onChangeText={(text) => setSearchTerm(text)}
           value={searchTerm}
         />
 
         <FlatList
-          style={styles.flatList}
+          style={ThemeStyles.flatList}
           data={allThemes.filter((theme) =>
             theme.name.toLowerCase().includes(searchTerm.toLowerCase())
           )}
           numColumns={2}
           contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
           renderItem={({ item }) => (
-            <View style={styles.item}>
+            <View style={ThemeStyles.item}>
               <TouchableOpacity onPress={() => sendObjectToProject(item.name)}>
                 <Image
                   source={{ uri: item.image }}
                   style={[
-                    styles.image,
+                    ThemeStyles.image,
                     objectSent.includes(item.name) ? { opacity: 0.5 } : { borderColor: 'none' },
                   ]}
                 />
                 <View
                   style={[
-                    styles.itemNameContainer,
-                    styles.boxShadow,
+                    ThemeStyles.itemNameContainer,
+                    ThemeStyles.boxShadow,
                     objectSent.includes(item.name) ? { opacity: 0.5 } : { opacity: 1 },
                   ]}>
-                  <Text style={styles.itemName}>{item.name}</Text>
+                  <Text style={ThemeStyles.itemName}>{item.name}</Text>
                   <Ionicons name='add' size={30} color='black' />
                 </View>
               </TouchableOpacity>
@@ -166,7 +164,7 @@ const Themes = ({ route }) => {
           )}
           keyExtractor={(item) => item.name}
         />
-        <View style={styles.arrows}>
+        <View style={ThemeStyles.arrows}>
           <TouchableOpacity onPress={prevPage} style={{ paddingRight: 60 }}>
             <SimpleLineIcons name='arrow-left' size={24} color='black' />
           </TouchableOpacity>
@@ -185,12 +183,12 @@ const Themes = ({ route }) => {
           animationOutTiming={600}
           backdropTransitionInTiming={600}
           backdropTransitionOutTiming={600}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContent}>
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalText}>Are you sure you want more than one theme?</Text>
+          <View style={ThemeStyles.modalBackground}>
+            <View style={ThemeStyles.modalContent}>
+              <View style={ThemeStyles.modalHeader}>
+                <Text style={ThemeStyles.modalText}>Are you sure you want more than one theme?</Text>
                 <TouchableOpacity onPress={() => setShowModal(false)}>
-                  <AntDesign name='close' size={25} color='black' style={styles.closeModal2} />
+                  <AntDesign name='close' size={25} color='black' style={ThemeStyles.closeModal2} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -200,107 +198,5 @@ const Themes = ({ route }) => {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  arrows: {
-    flexDirection: 'row',
-  },
-  background: {
-    flex: 1,
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  grownupBackground: {
-    backgroundColor: colors.green,
-  },
-  kidsBackground: {
-    backgroundColor: colors.peach,
-  },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  closeModal2: {
-    right: -20,
-    top: -15,
-  },
-  input: {
-    backgroundColor: colors.lightGrey,
-    width: '85%',
-    borderWidth: 1,
-    padding: 15,
-    borderRadius: 12,
-    fontSize: 16,
-    fontFamily: fonts.input,
-    borderColor: colors.lightGrey,
-    color: colors.darkGrey,
-  },
-  flatList: {
-    width: '90%',
-    marginVertical: 30,
-  },
-  h1: {
-    marginBottom: 10,
-    marginTop: 50,
-    fontFamily: fonts.titles,
-    fontSize: 30,
-  },
-  item: {
-    width: '50%',
-    marginBottom: -70,
-    padding: 4,
-  },
-  itemNameContainer: {
-    borderRadius: 8,
-    // flexDirection: 'row',
-    zIndex: 99,
-    top: '-50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    height: 70,
-    width: '87%',
-    alignSelf: 'center',
-  },
-  itemName: {
-    fontSize: 14,
-    fontFamily: fonts.titles,
-    textTransform: 'capitalize',
-  },
-  image: {
-    width: '100%',
-    height: 120,
-    alignSelf: 'center',
-    borderRadius: 8,
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    width: '90%',
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-  },
-  modalText: {
-    fontFamily: fonts.text,
-    textAlign: 'center',
-  },
-  plusIcone: {
-    // marginLeft: 100,
-
-  }
-})
 
 export default Themes

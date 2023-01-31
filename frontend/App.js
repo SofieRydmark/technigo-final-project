@@ -16,12 +16,10 @@ import { Provider, useSelector } from 'react-redux'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import user from './app/reducers/user'
 import { ui } from './app/reducers/ui'
-import themeProject from './app/reducers/themeProject'
 
 const reducer = combineReducers({
   user: user.reducer,
   ui: ui.reducer,
-  themeProject: themeProject.reducer,
 })
 const store = configureStore({ reducer })
 
